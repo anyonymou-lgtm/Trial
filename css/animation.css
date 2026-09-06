@@ -13,6 +13,7 @@
     visibility: visible;
     transition: opacity 0.6s ease 0.2s, visibility 0.6s ease 0.2s;
     will-change: opacity, visibility;
+    min-height: 100vh; /* Ensures it always fills the screen */
 }
 
 .preloader-overlay.fade-out {
@@ -25,7 +26,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2rem;
+    gap: 2.5rem; /* INCREASED from 2rem to 2.5rem for breathing room */
+    padding: 20px; /* Prevents touching edges on tiny screens */
 }
 
 .chip-assembly {
@@ -143,6 +145,7 @@
     animation: textFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     animation-delay: 1.8s;
     text-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+    line-height: 1.2; /* Prevents text from clipping into itself */
 }
 
 @keyframes slideDown {
@@ -181,7 +184,33 @@
     100% { opacity: 1; transform: translateY(0); letter-spacing: 0.3em; }
 }
 
+/* ==================================================
+   FIX: Mobile & Small Screen Adjustments
+================================================== */
 @media (max-width: 480px) {
-    .chip-assembly { transform: scale(0.85); }
-    .preloader-text { font-size: 1.8rem; }
+    .chip-assembly {
+        transform: scale(0.8); /* Slightly smaller to save vertical space */
+    }
+    
+    .preloader-container {
+        gap: 3rem; /* Increased gap specifically for small screens */
+    }
+
+    .preloader-text {
+        font-size: 1.8rem;
+        letter-spacing: 0.2em;
+    }
+}
+
+/* Extra safety for very short viewports (like small laptops) */
+@media (max-height: 600px) {
+    .chip-assembly {
+        transform: scale(0.7);
+    }
+    .preloader-container {
+        gap: 2rem;
+    }
+    .preloader-text {
+        font-size: 1.5rem;
+    }
 }
