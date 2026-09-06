@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events - IEEE-RGIT Student Branch</title>
+    <meta name="description" content="Upcoming events, hackathons, and technical challenges by the IEEE-RGIT Student Branch.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <script src="js/theme.js"></script>
+
+    <style>
+        :root {
+            --glow-rgb: 0, 98, 155;
+        }
+        html.dark {
+            --glow-rgb: 56, 189, 248;
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(var(--glow-rgb), 0.4); }
+            70% { box-shadow: 0 0 0 12px rgba(var(--glow-rgb), 0); }
+            100% { box-shadow: 0 0 0 0 rgba(var(--glow-rgb), 0); }
+        }
+
+        .page-header {
+            padding: 120px 0 60px 0;
+            text-align: center;
+            background: linear-gradient(180deg, var(--bg-alt) 0%, var(--bg-main) 100%);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .event-overview-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 4rem;
+            align-items: stretch;
+        }
+
+        .highlight-card {
+            background: var(--surface);
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 98, 155, 0.1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        html.dark .highlight-card {
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.05);
+        }
+
+        .info-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .info-row svg {
+            width: 24px;
+            color: var(--primary);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .info-text h4 {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 2px;
+        }
+        .info-text p {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .btn-register {
+            width: 100%;
+            justify-content: center;
+            padding: 16px;
+            font-size: 1.1rem;
+            margin-top: auto;
+            animation: pulse-glow 2s infinite;
+        }
+
+        .benefit-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(0, 98, 155, 0.1);
+            color: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        html.dark .benefit-icon { background: rgba(56, 189, 248, 0.1); }
+        .benefit-icon svg { width: 24px; }
+
+        .judging-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .judging-item {
+            background: var(--surface-hover);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        .judging-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .judging-percent {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+        .progress-bg {
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        @media (max-width: 900px) {
+            .event-overview-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+            .judging-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="brand">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">IEEE-RGIT</span>
+                    <span class="brand-subtitle">Student Branch</span>
+                </div>
+            </a>
+
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="projects.html" class="nav-link">Projects</a>
+                <a href="events.html" class="nav-link" style="color: var(--primary); font-weight: 700;">Events</a>
+                <a href="gallery.html" class="nav-link">Gallery</a>
+            </nav>
+
+            <div class="nav-actions">
+                <button id="theme-toggle" class="icon-btn" aria-label="Toggle Dark Mode">
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                    <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+                </button>
+                <button id="mobile-menu-btn" class="icon-btn mobile-only" aria-label="Menu">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+                </button>
+            </div>
+        </div>
+        
+        <div class="mobile-menu" id="mobile-menu">
+            <a href="index.html" class="mobile-link">Home</a>
+            <a href="about.html" class="mobile-link">About</a>
+            <a href="projects.html" class="mobile-link">Projects</a>
+            <a href="events.html" class="mobile-link" style="color: var(--primary);">Events</a>
+            <a href="gallery.html" class="mobile-link">Gallery</a>
+        </div>
+    </header>
+
+    <section class="page-header relative overflow-hidden">
+        <div class="tech-lines-container" id="events-tech-lines"></div>
+        <div class="container reveal-up">
+            <span class="badge" style="margin-bottom: 1rem;">Flagship Hackathon</span>
+            <h1 class="hero-title" style="font-size: 3.5rem; margin-bottom: 0.5rem;">⚡ TechForge <span class="highlight">2026</span></h1>
+            <p class="hero-subtitle" style="margin-bottom: 0;">The Ultimate E&TC Innovation Challenge.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container event-overview-grid">
+            <div class="reveal-left">
+                <h2 class="section-title">What is TechForge?</h2>
+                <div class="section-line"></div>
+                <p class="text-muted" style="font-size: 1.1rem;">TechForge 2026 is a 48-hour hardware-software integration hackathon designed exclusively for electronics, telecommunications, and embedded systems enthusiasts. This is not a regular coding hackathon — we challenge you to build real systems that bridge the physical and digital worlds.</p>
+                <p class="text-muted" style="font-size: 1.1rem;">Whether it's a custom PCB with an FPGA, a software-defined radio transceiver, an IoT-based predictive maintenance system, or a 5G NR simulation running on edge hardware — if it involves signals, circuits, or wireless communication, it belongs here.</p>
+                
+                <h3 class="section-title" style="font-size: 1.8rem; margin-top: 3rem;">Team Structure & Rules</h3>
+                <ul class="objective-list" style="margin-top: 1.5rem;">
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> <strong>Team Size:</strong> 2 – 4 members per team.</li>
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> <strong>Eligibility:</strong> Cross-branch teams are allowed, but at least <em>one E&TC student</em> is mandatory.</li>
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> <strong>Deadline:</strong> All registrations must be completed by April 10, 2026.</li>
+                </ul>
+            </div>
+
+            <div class="highlight-card reveal-right">
+                <div class="tech-decorative-icon" style="opacity: 0.03; right: -50px; bottom: -50px; width: 200px; height: 200px;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </div>
+                
+                <h3 style="font-size: 1.5rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem;">Event Details</h3>
+                
+                <div class="info-row">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    <div class="info-text">
+                        <h4>Date & Time</h4>
+                        <p>April 18 – 20, 2026<br><span style="font-size: 0.85rem; font-weight: 500; color: var(--text-muted);">48-Hour Continuous Hackathon</span></p>
+                    </div>
+                </div>
+
+                <div class="info-row">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    <div class="info-text">
+                        <h4>Venue</h4>
+                        <p>IEEE E&TC Lab<br><span style="font-size: 0.85rem; font-weight: 500; color: var(--text-muted);">RGIT, Mumbai</span></p>
+                    </div>
+                </div>
+
+                <div class="info-row">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    <div class="info-text">
+                        <h4>Prize Pool</h4>
+                        <p>₹30,000 + Goodies</p>
+                    </div>
+                </div>
+
+                <a href="#" class="btn btn-primary btn-register mt-4">
+                    Register Now
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:20px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section bg-alt">
+        <div class="container">
+            <div class="section-header reveal-up">
+                <h2 class="section-title">Why Participate?</h2>
+                <p class="section-subtitle">Beyond the code—experience real engineering hardware and industry mentorship.</p>
+            </div>
+            
+            <div class="grid-3-col stagger-container">
+                <div class="card hover-lift stagger-item">
+                    <div class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg></div>
+                    <h3>₹30,000 Prize Pool</h3>
+                    <p class="text-muted">Split across 3 winning teams (₹15,000 / ₹10,000 / ₹5,000) to fund your next big prototype.</p>
+                </div>
+                <div class="card hover-lift stagger-item">
+                    <div class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg></div>
+                    <h3>Premium Hardware Access</h3>
+                    <p class="text-muted">Get hands-on with oscilloscopes, spectrum analyzers, RTL-SDRs, Xilinx Zynq FPGAs, and LoRa modules.</p>
+                </div>
+                <div class="card hover-lift stagger-item">
+                    <div class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+                    <h3>Industry Mentorship</h3>
+                    <p class="text-muted">Experts from telecom and semiconductor domains will be on the floor to guide your architecture and debugging.</p>
+                </div>
+                <div class="card hover-lift stagger-item">
+                    <div class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+                    <h3>IEEE Certification</h3>
+                    <p class="text-muted">All participants receive an official IEEE-certified participation certificate to bolster your professional resume.</p>
+                </div>
+                <div class="card hover-lift stagger-item">
+                    <div class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></div>
+                    <h3>Expand Your Network</h3>
+                    <p class="text-muted">Connect with like-minded engineers across different branches and network with potential industry recruiters.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-header reveal-up">
+                <h2 class="section-title">Themes & Tracks</h2>
+                <div class="section-line" style="margin: 0 auto 3rem auto;"></div>
+            </div>
+            
+            <div class="grid-2-col stagger-container">
+                <div class="card hover-lift stagger-item">
+                    <div class="info-row" style="margin-bottom:0;">
+                        <div class="benefit-icon mb-0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+                        <div style="margin-left: 1rem;">
+                            <h3 style="margin-bottom: 0.5rem;">Embedded & IoT</h3>
+                            <p class="text-muted mb-0">Build a smart sensor node, a real-time data logger, or an interconnected mesh network utilizing edge hardware.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card hover-lift stagger-item">
+                    <div class="info-row" style="margin-bottom:0;">
+                        <div class="benefit-icon mb-0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></div>
+                        <div style="margin-left: 1rem;">
+                            <h3 style="margin-bottom: 0.5rem;">RF & Communication</h3>
+                            <p class="text-muted mb-0">Design an antenna, construct a modulator/demodulator pipeline, or develop a robust low-power wide-area network (LPWAN) solution.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card hover-lift stagger-item">
+                    <div class="info-row" style="margin-bottom:0;">
+                        <div class="benefit-icon mb-0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
+                        <div style="margin-left: 1rem;">
+                            <h3 style="margin-bottom: 0.5rem;">Signal Processing</h3>
+                            <p class="text-muted mb-0">Implement active noise cancellation, real-time audio/video filtering, or advanced spectrum analysis using DSP algorithms or FPGAs.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card hover-lift stagger-item">
+                    <div class="info-row" style="margin-bottom:0;">
+                        <div class="benefit-icon mb-0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div>
+                        <div style="margin-left: 1rem;">
+                            <h3 style="margin-bottom: 0.5rem;">Industry 4.0</h3>
+                            <p class="text-muted mb-0">Create a predictive maintenance system utilizing vibration and current analysis combined with Edge AI modeling.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section bg-alt" style="border-top: none;">
+        <div class="container grid-2-col" style="align-items: start;">
+            
+            <div class="reveal-left">
+                <h2 class="section-title">Judging Criteria</h2>
+                <div class="section-line"></div>
+                <div class="judging-grid">
+                    <div class="judging-item">
+                        <div class="judging-header">
+                            <span>Tech Complexity</span>
+                            <span class="judging-percent">40%</span>
+                        </div>
+                        <div class="progress-bg"><div class="progress-bar" style="width: 40%;"></div></div>
+                        <p class="text-muted mt-2 mb-0" style="font-size: 0.85rem;">Innovation and depth of hardware/software integration.</p>
+                    </div>
+
+                    <div class="judging-item">
+                        <div class="judging-header">
+                            <span>Real-world Impact</span>
+                            <span class="judging-percent">30%</span>
+                        </div>
+                        <div class="progress-bg"><div class="progress-bar" style="width: 30%;"></div></div>
+                        <p class="text-muted mt-2 mb-0" style="font-size: 0.85rem;">Applicability and efficiency in solving actual industry problems.</p>
+                    </div>
+
+                    <div class="judging-item">
+                        <div class="judging-header">
+                            <span>Presentation</span>
+                            <span class="judging-percent">20%</span>
+                        </div>
+                        <div class="progress-bg"><div class="progress-bar" style="width: 20%;"></div></div>
+                        <p class="text-muted mt-2 mb-0" style="font-size: 0.85rem;">Clarity of documentation, architecture diagrams, and pitch.</p>
+                    </div>
+
+                    <div class="judging-item">
+                        <div class="judging-header">
+                            <span>Team Agility</span>
+                            <span class="judging-percent">10%</span>
+                        </div>
+                        <div class="progress-bg"><div class="progress-bar" style="width: 10%;"></div></div>
+                        <p class="text-muted mt-2 mb-0" style="font-size: 0.85rem;">Collaboration and ability to pivot during the 48-hour crunch.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card reveal-right" style="background: var(--surface);">
+                <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Have Questions?</h3>
+                <p class="text-muted mb-4">If you need clarification regarding tracks, hardware availability, or team formation, our coordinators are here to help.</p>
+                
+                <div class="info-row" style="margin-bottom: 1rem;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                    <div class="info-text">
+                        <h4>Coordinator</h4>
+                        <p style="font-size: 1rem;">[Coordinator Name]<br><span style="font-size: 0.85rem; font-weight: 500; color: var(--text-muted);">+91-XXXXXXXXXX</span></p>
+                    </div>
+                </div>
+
+                <div class="info-row" style="margin-bottom: 0;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    <div class="info-text">
+                        <h4>Email Us</h4>
+                        <p style="font-size: 1rem;">[Coordinator Email]<br><span style="font-size: 0.85rem; font-weight: 500; color: var(--text-muted);">ieee@college.edu</span></p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <div class="footer-brand">
+                    <div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
+                    <span class="brand-title">IEEE-RGIT</span>
+                </div>
+                <p class="footer-desc">Rajiv Gandhi Institute of Technology Student Branch dedicated to fostering technical innovation and engineering excellence.</p>
+                <div class="footer-highlight">IEEE-RGIT Student Run Program for VLSI and Embedded Systems</div>
+            </div>
+            
+            <div class="footer-col">
+                <h4 class="footer-title">Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="events.html">Events</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h4 class="footer-title">Connect With Us</h4>
+                <div class="social-icons">
+                    <a href="#" class="social-icon" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
+                    <a href="#" class="social-icon" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></a>
+                    <a href="#" class="social-icon" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+                    <a href="#" class="social-icon" aria-label="Twitter"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+                </div>
+            </div>
+            
+            <div class="footer-col">
+                <h4 class="footer-title">Location</h4>
+                <div class="location">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    <span>RGIT, Versova, Andheri West – 400 053</span>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; <span id="year"></span> IEEE-RGIT Student Branch. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/animations.js"></script>
+    <script src="js/main.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const container = document.getElementById('events-tech-lines');
+            if (!container) return;
+            let numLines = window.innerWidth < 768 ? 5 : 12;
+            for (let i = 0; i < numLines; i++) {
+                const isHorizontal = Math.random() > 0.5;
+                const line = document.createElement('div');
+                line.classList.add('circuit-line');
+                line.style.top = `${Math.random() * 100}%`;
+                line.style.left = `${Math.random() * 100}%`;
+                if (isHorizontal) {
+                    line.style.width = `${Math.random() * 150 + 50}px`;
+                    line.style.height = '1px';
+                } else {
+                    line.style.width = '1px';
+                    line.style.height = `${Math.random() * 150 + 50}px`;
+                }
+                container.appendChild(line);
+                if (Math.random() > 0.6) {
+                    const dot = document.createElement('div');
+                    dot.classList.add('circuit-dot');
+                    dot.style.top = line.style.top;
+                    dot.style.left = line.style.left;
+                    dot.style.transform = 'translate(-1.5px, -1.5px)'; 
+                    container.appendChild(dot);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

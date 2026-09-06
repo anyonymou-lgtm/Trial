@@ -1,0 +1,76 @@
+/* Tablet (max-width: 1024px) */
+@media (max-width: 1024px) {
+    .grid-3-col {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobile & Small Tablet (max-width: 768px) */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none; /* Hidden, handled by mobile menu */
+    }
+    
+    .mobile-only {
+        display: flex;
+    }
+    
+    .hero-title {
+        font-size: 2.8rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .hero-cta {
+        flex-direction: column;
+    }
+    
+    .grid-2-col, .grid-3-col {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .section {
+        padding: 60px 0;
+    }
+    
+    .event-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+    }
+    
+    .footer-brand {
+        justify-content: center;
+    }
+    
+    .social-icons {
+        justify-content: center;
+    }
+    
+    .location {
+        justify-content: center;
+    }
+}
+
+/* Hide desktop menu items completely on small screens */
+@media (min-width: 769px) {
+    .mobile-only {
+        display: none;
+    }
+    .mobile-menu {
+        display: none !important;
+    }
+}
