@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>IEEE E&TC - Spectrum Snake</title>
     <style>
         * {
@@ -18,19 +18,24 @@
             min-height: 100vh;
             font-family: 'Courier New', monospace;
             color: #00e5ff;
+            padding: 10px;
         }
         .game-wrapper {
             background: #111927;
-            padding: 25px;
+            padding: 20px;
             border-radius: 20px;
             border: 1px solid #2a4055;
             box-shadow: 0 0 40px rgba(0, 229, 255, 0.15);
             display: flex;
-            gap: 30px;
-            align-items: flex-start;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            width: 100%;
+            max-width: 820px;
         }
         .canvas-container {
             text-align: center;
+            width: 100%;
         }
         canvas {
             background: #0d1420;
@@ -38,34 +43,44 @@
             border: 2px solid #1e3347;
             display: block;
             box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            margin: 0 auto;
+            touch-action: none; /* prevent scrolling on canvas */
         }
         .status-bar {
             display: flex;
             justify-content: space-between;
             margin-top: 12px;
-            font-size: 18px;
+            font-size: 16px;
             letter-spacing: 1px;
+            flex-wrap: wrap;
+            gap: 8px;
         }
         .status-bar span {
             background: #1a2533;
-            padding: 6px 18px;
+            padding: 4px 14px;
             border-radius: 30px;
             border-left: 3px solid #00e5ff;
+            font-size: 14px;
         }
         .leaderboard {
             background: #0f1822;
-            padding: 20px 25px;
+            padding: 16px 20px;
             border-radius: 16px;
             border: 1px solid #1e3347;
-            min-width: 200px;
+            width: 100%;
+            max-width: 400px;
         }
         .leaderboard h3 {
             text-align: center;
             color: #ffb347;
             border-bottom: 1px solid #2a4055;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-            font-size: 20px;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            font-size: 18px;
         }
         .leaderboard ul {
             list-style: none;
@@ -73,9 +88,9 @@
         .leaderboard li {
             display: flex;
             justify-content: space-between;
-            padding: 6px 0;
+            padding: 4px 0;
             border-bottom: 1px dashed #1a2533;
-            font-size: 14px;
+            font-size: 13px;
         }
         .leaderboard .rank {
             color: #8899aa;
@@ -96,6 +111,7 @@
             margin-top: 15px;
             transition: 0.3s;
             font-family: 'Courier New', monospace;
+            touch-action: manipulation;
         }
         .btn:hover {
             background: #ffb347;
@@ -113,7 +129,60 @@
             font-weight: bold;
             margin-top: 8px;
             min-height: 24px;
+            font-size: 14px;
         }
+
+        /* Responsive: stack layout on small screens */
+        @media (min-width: 700px) {
+            .game-wrapper {
+                flex-direction: row;
+                align-items: flex-start;
+                padding: 25px;
+            }
+            .canvas-container {
+                flex: 1;
+            }
+            .leaderboard {
+                max-width: 220px;
+                min-width: 180px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .game-wrapper {
+                padding: 12px;
+                border-radius: 12px;
+            }
+            .status-bar {
+                font-size: 13px;
+            }
+            .status-bar span {
+                font-size: 12px;
+                padding: 3px 10px;
+            }
+            .leaderboard {
+                padding: 12px 14px;
+            }
+            .leaderboard h3 {
+                font-size: 16px;
+            }
+            .leaderboard li {
+                font-size: 12px;
+            }
+            .btn {
+                font-size: 16px;
+                padding: 8px 20px;
+            }
+            #gameOverMsg {
+                font-size: 12px;
+            }
+            .hint {
+                font-size: 10px;
+            }
+        }
+
+        /* Dark/light theme support via body background – but we keep dark */
+        /* (The parent website will embed this, and it respects its own theme) */
     </style>
 </head>
 <body>
@@ -127,7 +196,7 @@
         </div>
         <div id="gameOverMsg"></div>
         <button class="btn" id="playBtn">▶ PLAY NOW</button>
-        <div class="hint">⬆ ⬇ ⬅ ➡  |  Eat Photons to shift the Spectrum!</div>
+        <div class="hint">⬆ ⬇ ⬅ ➡  |  Swipe to steer  |  Eat Photons to shift the Spectrum!</div>
     </div>
 
     <div class="leaderboard">
@@ -170,21 +239,16 @@
 
     // Initialize default leaderboard display
     function updateLeaderboardUI() {
-        // We only store high score locally, but we display it like a leaderboard.
         const list = document.getElementById('leaderboardList');
-        // Keep default entries, but highlight the local high score if it beats them.
         let items = [
             { name: 'IEEE_Photon', score: 120 },
             { name: 'WaveRider', score: 95 },
             { name: 'OhmBoy', score: 70 }
         ];
-        // Add local player if highScore > 0
         if (highScore > 0) {
             items.push({ name: '🌟 YOU (Local)', score: highScore });
         }
-        // Sort descending
         items.sort((a, b) => b.score - a.score);
-        // Take top 5
         items = items.slice(0, 5);
         list.innerHTML = items.map((item, idx) => 
             `<li><span class="rank">${idx+1}.</span> <span>${item.name}</span> <span class="score">${item.score}</span></li>`
@@ -207,7 +271,6 @@
                 return true;
             }
         }
-        // If board is almost full, scan linearly
         for (let y = 0; y < GRID_SIZE; y++) {
             for (let x = 0; x < GRID_SIZE; x++) {
                 if (!snake.some(seg => seg.x === x && seg.y === y)) {
@@ -216,16 +279,14 @@
                 }
             }
         }
-        return false; // You win! (but we treat as game over condition later)
+        return false;
     }
 
     function resetGame() {
-        // Stop old loop
         if (gameLoop) {
             clearInterval(gameLoop);
             gameLoop = null;
         }
-        // Initial snake: length 4, horizontal
         snake = [
             { x: 8, y: 10 },
             { x: 7, y: 10 },
@@ -251,21 +312,18 @@
             clearInterval(gameLoop);
             gameLoop = null;
         }
-        // Update high score
         if (score > highScore) {
             highScore = score;
             localStorage.setItem('spectrumSnakeHigh', highScore.toString());
             updateLeaderboardUI();
         }
         gameOverMsg.innerText = '💥 SIGNAL LOST! Press PLAY NOW to retune.';
-        drawGame(); // draw final state with overlay text
+        drawGame();
     }
 
-    // Core update function
     function updateGame() {
         if (!gameRunning || gameOver) return;
 
-        // Apply queued direction
         if ((nextDirection.dx !== 0 || nextDirection.dy !== 0) &&
             (direction.dx !== -nextDirection.dx || direction.dy !== -nextDirection.dy)) {
             direction = { ...nextDirection };
@@ -277,41 +335,33 @@
             y: head.y + direction.dy
         };
 
-        // Check wall collision
         if (newHead.x < 0 || newHead.x >= GRID_SIZE || newHead.y < 0 || newHead.y >= GRID_SIZE) {
             endGame();
             return;
         }
 
-        // Check if food is eaten
         const isEating = (newHead.x === food.x && newHead.y === food.y);
 
-        // Build new snake array
         let newSnake = [newHead, ...snake];
         if (!isEating) {
-            newSnake.pop(); // remove tail
+            newSnake.pop();
         }
 
-        // Check self-collision (head collides with body)
         const headCollision = newSnake.slice(1).some(seg => seg.x === newHead.x && seg.y === newHead.y);
         if (headCollision) {
             endGame();
             return;
         }
 
-        // Apply new snake
         snake = newSnake;
 
         if (isEating) {
             score++;
             scoreSpan.innerText = score;
-            // Update frequency display (Visible light: 430 THz Red to 750 THz Violet)
-            // Map score 0-30 to frequency range
             const freq = Math.min(750, 430 + (score * 10));
             freqSpan.innerText = Math.round(freq) + ' THz';
 
             if (!generateFood()) {
-                // If no space for food, player wins! But we treat as a win condition.
                 gameRunning = false;
                 gameOverMsg.innerText = '🏆 YOU DOMINATED THE SPECTRUM! 🏆';
                 if (gameLoop) clearInterval(gameLoop);
@@ -323,11 +373,10 @@
         drawGame();
     }
 
-    // Drawing with Spectrum effect
+    // Drawing (unchanged)
     function drawGame() {
         ctx.clearRect(0, 0, 400, 400);
 
-        // Draw subtle grid
         ctx.strokeStyle = '#1a2a3a';
         ctx.lineWidth = 0.5;
         for (let i = 0; i <= GRID_SIZE; i++) {
@@ -341,33 +390,27 @@
             ctx.stroke();
         }
 
-        // --- Draw the Food (Photon) ---
+        // Food
         ctx.shadowColor = '#ffffaa';
         ctx.shadowBlur = 20;
         ctx.beginPath();
         ctx.arc(food.x * CELL_SIZE + CELL_SIZE/2, food.y * CELL_SIZE + CELL_SIZE/2, 8, 0, Math.PI * 2);
         ctx.fillStyle = '#ffffff';
         ctx.fill();
-        // Inner glow
         ctx.shadowBlur = 35;
         ctx.beginPath();
         ctx.arc(food.x * CELL_SIZE + CELL_SIZE/2, food.y * CELL_SIZE + CELL_SIZE/2, 4, 0, Math.PI * 2);
         ctx.fillStyle = '#ffdd44';
         ctx.fill();
-        ctx.shadowBlur = 0; // reset
+        ctx.shadowBlur = 0;
 
-        // --- Draw the Snake (Spectrum Gradient) ---
+        // Snake
         const len = snake.length;
         for (let i = 0; i < len; i++) {
             const seg = snake[i];
             const x = seg.x * CELL_SIZE;
             const y = seg.y * CELL_SIZE;
-            const padding = i === 0 ? 1 : 2; // head slightly bigger
-
-            // Map index to Hue: tail (Red=0) -> Head (Violet=280)
-            // This makes the snake look like a rainbow wave traveling.
-            const hue = (i / len) * 280; 
-            // Saturation and Lightness: bright, except head glows more
+            const hue = (i / len) * 280;
             const sat = i === 0 ? '100%' : '90%';
             const light = i === 0 ? '70%' : '55%';
 
@@ -379,7 +422,6 @@
             ctx.roundRect(x + 1, y + 1, CELL_SIZE - 2, CELL_SIZE - 2, 4);
             ctx.fill();
 
-            // Add a small highlight on the head
             if (i === 0) {
                 ctx.shadowBlur = 0;
                 ctx.fillStyle = 'rgba(255,255,255,0.3)';
@@ -389,7 +431,6 @@
             }
         }
 
-        // If game over, draw dark overlay and message
         if (gameOver && !gameRunning) {
             ctx.fillStyle = 'rgba(0,0,0,0.6)';
             ctx.fillRect(0, 0, 400, 400);
@@ -405,7 +446,7 @@
         }
     }
 
-    // Polyfill roundRect if needed
+    // Polyfill roundRect
     if (!CanvasRenderingContext2D.prototype.roundRect) {
         CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
             if (r > w/2) r = w/2;
@@ -424,10 +465,12 @@
         };
     }
 
-    // Keyboard controls
+    // === Keyboard controls ===
     document.addEventListener('keydown', (e) => {
         const key = e.key;
-        e.preventDefault(); // prevent scrolling
+        if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(key)) {
+            e.preventDefault();
+        }
 
         if (!gameRunning && !gameOver) {
             resetGame();
@@ -442,7 +485,56 @@
         }
     });
 
-    // Play button
+    // === Touch / Swipe controls ===
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let isSwiping = false;
+
+    canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        const touch = e.touches[0];
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
+        isSwiping = true;
+    }, { passive: false });
+
+    canvas.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        if (!isSwiping) return;
+        const touch = e.touches[0];
+        const dx = touch.clientX - touchStartX;
+        const dy = touch.clientY - touchStartY;
+
+        // Only change direction if swipe is long enough (threshold 20px)
+        if (Math.abs(dx) < 20 && Math.abs(dy) < 20) return;
+
+        // Determine primary axis
+        if (Math.abs(dx) > Math.abs(dy)) {
+            // Horizontal swipe
+            if (dx > 0 && direction.dx !== -1) {
+                nextDirection = { dx: 1, dy: 0 };
+            } else if (dx < 0 && direction.dx !== 1) {
+                nextDirection = { dx: -1, dy: 0 };
+            }
+        } else {
+            // Vertical swipe
+            if (dy > 0 && direction.dy !== -1) {
+                nextDirection = { dx: 0, dy: 1 };
+            } else if (dy < 0 && direction.dy !== 1) {
+                nextDirection = { dx: 0, dy: -1 };
+            }
+        }
+
+        // Reset to avoid multiple direction changes during one swipe
+        isSwiping = false;
+    }, { passive: false });
+
+    canvas.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        isSwiping = false;
+    }, { passive: false });
+
+    // === Play button ===
     playBtn.addEventListener('click', () => {
         if (gameLoop) clearInterval(gameLoop);
         resetGame();
@@ -453,9 +545,8 @@
         gameOverMsg.innerText = '';
     });
 
-    // Initial draw
+    // Initial start
     resetGame();
-    // Start the loop
     if (gameLoop) clearInterval(gameLoop);
     gameLoop = setInterval(updateGame, TICK_INTERVAL);
 </script>
