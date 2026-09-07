@@ -260,7 +260,7 @@ html.dark .navbar.scrolled {
 }
 
 /* ==================================================
-   5. HERO SECTION – EXACT VISUAL REPLICATION
+   5. HERO SECTION
 ================================================== */
 .hero {
     min-height: auto;
@@ -607,7 +607,7 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
 .gallery-item:hover { transform: scale(1.03); border-color: var(--primary); color: var(--primary); }
 
 /* ==================================================
-   7. TECHNOLOGIES MARQUEE — TWO-ROW
+   7. TECHNOLOGIES MARQUEE
 ================================================== */
 .tech-marquee-section {
     padding: 60px 0 40px 0;
@@ -654,12 +654,10 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
     will-change: transform;
 }
 
-/* Row 1: Right → Left */
 .marquee-track-1 {
     animation: marquee-scroll-right-to-left 55s linear infinite;
 }
 
-/* Row 2: Left → Right */
 .marquee-track-2 {
     animation: marquee-scroll-left-to-right 55s linear infinite;
 }
@@ -695,7 +693,6 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
     border-color: var(--primary);
 }
 
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
     .marquee-track-1,
     .marquee-track-2 {
@@ -716,7 +713,39 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
 }
 
 /* ==================================================
-   8. FOOTER
+   8. SNAKE GAME SECTION (NEW)
+================================================== */
+.snake-section {
+    padding: 80px 0 60px 0;
+}
+
+.game-wrapper {
+    max-width: 700px;
+    margin: 0 auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.game-wrapper:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow-md);
+}
+
+.game-iframe {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    border: none;
+    display: block;
+    background: var(--bg-main);
+}
+
+/* ==================================================
+   9. FOOTER
 ================================================== */
 .footer {
     background-color: #0f172a;
@@ -813,7 +842,7 @@ html.dark .footer { background-color: #020617; }
 }
 
 /* ==================================================
-   9. REVEAL ANIMATIONS
+   10. REVEAL ANIMATIONS
 ================================================== */
 .reveal-up {
     opacity: 0;
@@ -852,7 +881,7 @@ html.dark .footer { background-color: #020617; }
 .stagger-item:nth-child(6) { transition-delay: 0.52s; }
 
 /* ==================================================
-   10. TECH LINES
+   11. TECH LINES
 ================================================== */
 .tech-lines-container {
     position: absolute;
@@ -885,7 +914,7 @@ html.dark .footer { background-color: #020617; }
 }
 
 /* ==================================================
-   11. LIGHTBOX
+   12. LIGHTBOX
 ================================================== */
 .lightbox {
     display: none;
@@ -937,7 +966,7 @@ html.dark .footer { background-color: #020617; }
 }
 
 /* ==================================================
-   12. UTILITY CLASSES
+   13. UTILITY CLASSES
 ================================================== */
 .mt-1 { margin-top: 0.5rem; }
 .mt-2 { margin-top: 1rem; }
@@ -953,7 +982,7 @@ html.dark .footer { background-color: #020617; }
 .text-center { text-align: center; }
 
 /* ==================================================
-   13. RESPONSIVE OVERRIDES
+   14. RESPONSIVE OVERRIDES
 ================================================== */
 @media (max-width: 1024px) {
     .grid-3-col { grid-template-columns: repeat(2, 1fr); }
@@ -978,7 +1007,7 @@ html.dark .footer { background-color: #020617; }
     .reveal-right { transform: translateX(20px); }
     .stagger-item { transform: translateY(12px); }
 
-    /* Marquee mobile adjustments */
+    /* Marquee mobile */
     .tech-marquee-section {
         padding: 40px 0 20px 0;
     }
@@ -995,6 +1024,14 @@ html.dark .footer { background-color: #020617; }
     .marquee-track-1,
     .marquee-track-2 {
         animation-duration: 40s;
+    }
+
+    /* Snake mobile */
+    .snake-section {
+        padding: 60px 0 40px 0;
+    }
+    .game-iframe {
+        aspect-ratio: 4 / 3;
     }
 }
 
