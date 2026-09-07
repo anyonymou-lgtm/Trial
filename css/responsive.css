@@ -63,6 +63,25 @@
     .location {
         justify-content: center;
     }
+
+    /* Technologies marquee mobile */
+    .tech-marquee-section {
+        padding: 40px 0 20px 0;
+    }
+    .tech-section-title {
+        font-size: 0.9rem !important;
+    }
+    .tech-pill {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.85rem;
+    }
+    .marquee-track {
+        gap: 0.75rem;
+    }
+    .marquee-track-1,
+    .marquee-track-2 {
+        animation-duration: 35s;
+    }
 }
 
 /* Hide desktop menu items completely on small screens */
