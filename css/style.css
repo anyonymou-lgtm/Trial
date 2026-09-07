@@ -260,7 +260,7 @@ html.dark .navbar.scrolled {
 }
 
 /* ==================================================
-   5. HERO SECTION — FIXED: content starts at top
+   5. HERO SECTION
 ================================================== */
 .hero {
     min-height: 100vh;
@@ -273,13 +273,12 @@ html.dark .navbar.scrolled {
     overflow: hidden;
 }
 
-/* Hero content uses its own entrance (hero-ready), not reveal-up */
 .hero-content {
     position: relative;
     z-index: 10;
     max-width: 800px;
     padding: 0 20px;
-    margin-top: 60px; /* gentle spacing from navbar */
+    margin-top: 60px;
     opacity: 0;
     transform: translateY(12px);
     transition: opacity 0.8s ease, transform 0.8s ease;
@@ -289,7 +288,6 @@ html.dark .navbar.scrolled {
     transform: translateY(0);
 }
 
-/* Individual hero elements stagger */
 .hero-content .badge {
     opacity: 0;
     transform: translateY(8px);
@@ -610,7 +608,93 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
 .gallery-item:hover { transform: scale(1.03); border-color: var(--primary); color: var(--primary); }
 
 /* ==================================================
-   7. FOOTER
+   7. MARQUEE SECTION (NEW)
+================================================== */
+.marquee-section {
+    padding-top: 60px;
+    padding-bottom: 60px;
+    background: var(--bg-alt);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+}
+
+.marquee-title {
+    font-size: 1.1rem !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    margin-bottom: 0;
+}
+
+.marquee-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-main);
+}
+
+.marquee-track {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    animation: marquee-scroll 40s linear infinite;
+    width: fit-content;
+}
+
+.marquee-item {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--text-main);
+    padding: 0 0.5rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    letter-spacing: -0.01em;
+    user-select: none;
+}
+
+.marquee-dot {
+    font-size: 1.2rem;
+    color: var(--primary);
+    font-weight: 300;
+    padding: 0 0.75rem;
+    user-select: none;
+}
+
+@keyframes marquee-scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+        animation: none !important;
+        flex-wrap: wrap;
+        justify-content: center;
+        white-space: normal;
+        width: 100%;
+        gap: 0.25rem 0.5rem;
+    }
+    .marquee-item {
+        font-size: 1rem;
+        padding: 0.25rem 0.5rem;
+        white-space: nowrap;
+    }
+    .marquee-dot {
+        padding: 0 0.25rem;
+    }
+}
+
+/* ==================================================
+   8. FOOTER
 ================================================== */
 .footer {
     background-color: #0f172a;
@@ -707,7 +791,7 @@ html.dark .footer { background-color: #020617; }
 }
 
 /* ==================================================
-   8. REVEAL ANIMATIONS (for sections below hero)
+   9. REVEAL ANIMATIONS (for sections below hero)
 ================================================== */
 .reveal-up {
     opacity: 0;
@@ -746,7 +830,7 @@ html.dark .footer { background-color: #020617; }
 .stagger-item:nth-child(6) { transition-delay: 0.52s; }
 
 /* ==================================================
-   9. TECH LINES
+   10. TECH LINES
 ================================================== */
 .tech-lines-container {
     position: absolute;
@@ -779,7 +863,7 @@ html.dark .footer { background-color: #020617; }
 }
 
 /* ==================================================
-   10. LIGHTBOX
+   11. LIGHTBOX
 ================================================== */
 .lightbox {
     display: none;
@@ -831,7 +915,7 @@ html.dark .footer { background-color: #020617; }
 }
 
 /* ==================================================
-   11. UTILITY CLASSES
+   12. UTILITY CLASSES
 ================================================== */
 .mt-1 { margin-top: 0.5rem; }
 .mt-2 { margin-top: 1rem; }
@@ -847,7 +931,7 @@ html.dark .footer { background-color: #020617; }
 .text-center { text-align: center; }
 
 /* ==================================================
-   12. RESPONSIVE OVERRIDES
+   13. RESPONSIVE OVERRIDES
 ================================================== */
 @media (max-width: 1024px) {
     .grid-3-col { grid-template-columns: repeat(2, 1fr); }
@@ -872,6 +956,21 @@ html.dark .footer { background-color: #020617; }
     .reveal-right { transform: translateX(20px); }
     .stagger-item { transform: translateY(12px); }
     .hero-content { margin-top: 40px; }
+
+    .marquee-section {
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+    .marquee-item {
+        font-size: 0.95rem;
+    }
+    .marquee-dot {
+        font-size: 0.95rem;
+        padding: 0 0.5rem;
+    }
+    .marquee-track {
+        animation-duration: 30s;
+    }
 }
 
 @media (min-width: 769px) {
