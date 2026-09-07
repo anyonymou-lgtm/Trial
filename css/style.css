@@ -260,15 +260,15 @@ html.dark .navbar.scrolled {
 }
 
 /* ==================================================
-   5. HERO SECTION
+   5. HERO SECTION — FIXED ALIGNMENT TO TOP
 ================================================== */
 .hero {
     min-height: 100vh;
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* changed from center to eliminate empty space */
     justify-content: center;
     text-align: center;
-    padding-top: 70px;
+    padding-top: 70px; /* navbar height */
     position: relative;
     overflow: hidden;
 }
@@ -450,12 +450,12 @@ html.dark .btn-primary {
 }
 
 /* ==================================================
-   6. GRIDS & CARDS
+   6. GRIDS & CARDS (project styles removed)
 ================================================== */
 .grid-2-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
 .grid-3-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
 
-.card, .project-card, .event-card {
+.card, .event-card {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 16px;
@@ -547,32 +547,6 @@ html.dark .card-icon { background: rgba(56, 189, 248, 0.1); }
     flex-shrink: 0;
     margin-top: 2px;
 }
-
-/* Project cards (homepage) – kept */
-.project-tag {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--primary);
-    background: rgba(0, 98, 155, 0.1);
-    padding: 4px 10px;
-    border-radius: 6px;
-    display: inline-block;
-    margin-bottom: 1rem;
-}
-html.dark .project-tag { background: rgba(56, 189, 248, 0.1); }
-.project-card { display: flex; flex-direction: column; }
-.project-desc { flex-grow: 1; color: var(--text-muted); font-size: 0.9rem; margin: 1rem 0 1.5rem 0;}
-.project-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid var(--border);
-    padding-top: 1rem;
-}
-.project-meta { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
-.project-link { display: flex; align-items: center; gap: 4px; font-size: 0.85rem; font-weight: 600; color: var(--primary); }
-.project-link svg { width: 16px; transition: transform 0.2s; }
-.project-link:hover svg { transform: translateX(3px); }
 
 .event-list {
     max-width: 800px;
