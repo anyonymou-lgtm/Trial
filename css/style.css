@@ -260,7 +260,7 @@ html.dark .navbar.scrolled {
 }
 
 /* ==================================================
-   5. HERO SECTION — FIXED: no forced 100vh, natural spacing
+   5. HERO SECTION – EXACT VISUAL REPLICATION
 ================================================== */
 .hero {
     min-height: auto;
@@ -607,7 +607,7 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
 .gallery-item:hover { transform: scale(1.03); border-color: var(--primary); color: var(--primary); }
 
 /* ==================================================
-   7. TECHNOLOGIES MARQUEE — TWO-ROW, OPPOSITE DIRECTIONS
+   7. TECHNOLOGIES MARQUEE — TWO-ROW
 ================================================== */
 .tech-marquee-section {
     padding: 60px 0 40px 0;
@@ -674,7 +674,6 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
     100% { transform: translateX(0); }
 }
 
-/* Pill-shaped technology labels */
 .tech-pill {
     font-size: 0.95rem;
     font-weight: 500;
