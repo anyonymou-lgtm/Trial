@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IEEE E&TC - Spectrum Snake</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #0a0e17;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Courier New', monospace;
+            color: #00e5ff;
+        }
+        .game-wrapper {
+            background: #111927;
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid #2a4055;
+            box-shadow: 0 0 40px rgba(0, 229, 255, 0.15);
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+        .canvas-container {
+            text-align: center;
+        }
+        canvas {
+            background: #0d1420;
+            border-radius: 12px;
+            border: 2px solid #1e3347;
+            display: block;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+        }
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+            font-size: 18px;
+            letter-spacing: 1px;
+        }
+        .status-bar span {
+            background: #1a2533;
+            padding: 6px 18px;
+            border-radius: 30px;
+            border-left: 3px solid #00e5ff;
+        }
+        .leaderboard {
+            background: #0f1822;
+            padding: 20px 25px;
+            border-radius: 16px;
+            border: 1px solid #1e3347;
+            min-width: 200px;
+        }
+        .leaderboard h3 {
+            text-align: center;
+            color: #ffb347;
+            border-bottom: 1px solid #2a4055;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        .leaderboard ul {
+            list-style: none;
+        }
+        .leaderboard li {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px dashed #1a2533;
+            font-size: 14px;
+        }
+        .leaderboard .rank {
+            color: #8899aa;
+            margin-right: 10px;
+        }
+        .leaderboard .score {
+            color: #ffd700;
+        }
+        .btn {
+            background: #00e5ff;
+            border: none;
+            color: #0a0e17;
+            font-weight: bold;
+            padding: 10px 25px;
+            border-radius: 40px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: 0.3s;
+            font-family: 'Courier New', monospace;
+        }
+        .btn:hover {
+            background: #ffb347;
+            box-shadow: 0 0 20px #ffb34750;
+            transform: scale(1.02);
+        }
+        .hint {
+            font-size: 12px;
+            color: #5a7a8a;
+            margin-top: 10px;
+            text-align: center;
+        }
+        #gameOverMsg {
+            color: #ff4d6d;
+            font-weight: bold;
+            margin-top: 8px;
+            min-height: 24px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-wrapper">
+    <div class="canvas-container">
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+        <div class="status-bar">
+            <span>📡 Frequency: <span id="freqDisplay">484 THz</span></span>
+            <span>🏆 Score: <span id="scoreDisplay">0</span></span>
+        </div>
+        <div id="gameOverMsg"></div>
+        <button class="btn" id="playBtn">▶ PLAY NOW</button>
+        <div class="hint">⬆ ⬇ ⬅ ➡  |  Eat Photons to shift the Spectrum!</div>
+    </div>
+
+    <div class="leaderboard">
+        <h3>⚡ TOP SIGNALS</h3>
+        <ul id="leaderboardList">
+            <li><span class="rank">1.</span> <span>IEEE_Photon</span> <span class="score">120</span></li>
+            <li><span class="rank">2.</span> <span>WaveRider</span> <span class="score">95</span></li>
+            <li><span class="rank">3.</span> <span>OhmBoy</span> <span class="score">70</span></li>
+        </ul>
+        <p style="font-size:11px; color:#3a5a6a; text-align:center; margin-top:10px;">* Local High Score stored</p>
+    </div>
+</div>
+
+<script>
+    // ============================================================
+    // IEEE E&TC - SPECTRUM SNAKE (Full Game Logic)
+    // ============================================================
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const scoreSpan = document.getElementById('scoreDisplay');
+    const freqSpan = document.getElementById('freqDisplay');
+    const gameOverMsg = document.getElementById('gameOverMsg');
+    const playBtn = document.getElementById('playBtn');
+
+    // Grid settings
+    const GRID_SIZE = 20;        // 20x20 grid
+    const CELL_SIZE = 20;        // 400px / 20
+    const TICK_INTERVAL = 150;   // ms
+
+    // Game state
+    let snake = [];
+    let food = { x: 8, y: 10 };
+    let direction = { dx: 1, dy: 0 };
+    let nextDirection = { dx: 1, dy: 0 };
+    let score = 0;
+    let highScore = parseInt(localStorage.getItem('spectrumSnakeHigh')) || 0;
+    let gameRunning = false;
+    let gameOver = false;
+    let gameLoop = null;
+
+    // Initialize default leaderboard display
+    function updateLeaderboardUI() {
+        // We only store high score locally, but we display it like a leaderboard.
+        const list = document.getElementById('leaderboardList');
+        // Keep default entries, but highlight the local high score if it beats them.
+        let items = [
+            { name: 'IEEE_Photon', score: 120 },
+            { name: 'WaveRider', score: 95 },
+            { name: 'OhmBoy', score: 70 }
+        ];
+        // Add local player if highScore > 0
+        if (highScore > 0) {
+            items.push({ name: '🌟 YOU (Local)', score: highScore });
+        }
+        // Sort descending
+        items.sort((a, b) => b.score - a.score);
+        // Take top 5
+        items = items.slice(0, 5);
+        list.innerHTML = items.map((item, idx) => 
+            `<li><span class="rank">${idx+1}.</span> <span>${item.name}</span> <span class="score">${item.score}</span></li>`
+        ).join('');
+    }
+    updateLeaderboardUI();
+
+    // Helpers
+    function randomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function generateFood() {
+        const maxAttempts = 100;
+        for (let i = 0; i < maxAttempts; i++) {
+            const fx = randomInt(0, GRID_SIZE - 1);
+            const fy = randomInt(0, GRID_SIZE - 1);
+            if (!snake.some(seg => seg.x === fx && seg.y === fy)) {
+                food = { x: fx, y: fy };
+                return true;
+            }
+        }
+        // If board is almost full, scan linearly
+        for (let y = 0; y < GRID_SIZE; y++) {
+            for (let x = 0; x < GRID_SIZE; x++) {
+                if (!snake.some(seg => seg.x === x && seg.y === y)) {
+                    food = { x, y };
+                    return true;
+                }
+            }
+        }
+        return false; // You win! (but we treat as game over condition later)
+    }
+
+    function resetGame() {
+        // Stop old loop
+        if (gameLoop) {
+            clearInterval(gameLoop);
+            gameLoop = null;
+        }
+        // Initial snake: length 4, horizontal
+        snake = [
+            { x: 8, y: 10 },
+            { x: 7, y: 10 },
+            { x: 6, y: 10 },
+            { x: 5, y: 10 }
+        ];
+        direction = { dx: 1, dy: 0 };
+        nextDirection = { dx: 1, dy: 0 };
+        score = 0;
+        gameOver = false;
+        gameRunning = true;
+        gameOverMsg.innerText = '';
+        scoreSpan.innerText = '0';
+        freqSpan.innerText = '484 THz';
+        generateFood();
+        drawGame();
+    }
+
+    function endGame() {
+        gameRunning = false;
+        gameOver = true;
+        if (gameLoop) {
+            clearInterval(gameLoop);
+            gameLoop = null;
+        }
+        // Update high score
+        if (score > highScore) {
+            highScore = score;
+            localStorage.setItem('spectrumSnakeHigh', highScore.toString());
+            updateLeaderboardUI();
+        }
+        gameOverMsg.innerText = '💥 SIGNAL LOST! Press PLAY NOW to retune.';
+        drawGame(); // draw final state with overlay text
+    }
+
+    // Core update function
+    function updateGame() {
+        if (!gameRunning || gameOver) return;
+
+        // Apply queued direction
+        if ((nextDirection.dx !== 0 || nextDirection.dy !== 0) &&
+            (direction.dx !== -nextDirection.dx || direction.dy !== -nextDirection.dy)) {
+            direction = { ...nextDirection };
+        }
+
+        const head = snake[0];
+        const newHead = {
+            x: head.x + direction.dx,
+            y: head.y + direction.dy
+        };
+
+        // Check wall collision
+        if (newHead.x < 0 || newHead.x >= GRID_SIZE || newHead.y < 0 || newHead.y >= GRID_SIZE) {
+            endGame();
+            return;
+        }
+
+        // Check if food is eaten
+        const isEating = (newHead.x === food.x && newHead.y === food.y);
+
+        // Build new snake array
+        let newSnake = [newHead, ...snake];
+        if (!isEating) {
+            newSnake.pop(); // remove tail
+        }
+
+        // Check self-collision (head collides with body)
+        const headCollision = newSnake.slice(1).some(seg => seg.x === newHead.x && seg.y === newHead.y);
+        if (headCollision) {
+            endGame();
+            return;
+        }
+
+        // Apply new snake
+        snake = newSnake;
+
+        if (isEating) {
+            score++;
+            scoreSpan.innerText = score;
+            // Update frequency display (Visible light: 430 THz Red to 750 THz Violet)
+            // Map score 0-30 to frequency range
+            const freq = Math.min(750, 430 + (score * 10));
+            freqSpan.innerText = Math.round(freq) + ' THz';
+
+            if (!generateFood()) {
+                // If no space for food, player wins! But we treat as a win condition.
+                gameRunning = false;
+                gameOverMsg.innerText = '🏆 YOU DOMINATED THE SPECTRUM! 🏆';
+                if (gameLoop) clearInterval(gameLoop);
+                drawGame();
+                return;
+            }
+        }
+
+        drawGame();
+    }
+
+    // Drawing with Spectrum effect
+    function drawGame() {
+        ctx.clearRect(0, 0, 400, 400);
+
+        // Draw subtle grid
+        ctx.strokeStyle = '#1a2a3a';
+        ctx.lineWidth = 0.5;
+        for (let i = 0; i <= GRID_SIZE; i++) {
+            ctx.beginPath();
+            ctx.moveTo(i * CELL_SIZE, 0);
+            ctx.lineTo(i * CELL_SIZE, 400);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(0, i * CELL_SIZE);
+            ctx.lineTo(400, i * CELL_SIZE);
+            ctx.stroke();
+        }
+
+        // --- Draw the Food (Photon) ---
+        ctx.shadowColor = '#ffffaa';
+        ctx.shadowBlur = 20;
+        ctx.beginPath();
+        ctx.arc(food.x * CELL_SIZE + CELL_SIZE/2, food.y * CELL_SIZE + CELL_SIZE/2, 8, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+        // Inner glow
+        ctx.shadowBlur = 35;
+        ctx.beginPath();
+        ctx.arc(food.x * CELL_SIZE + CELL_SIZE/2, food.y * CELL_SIZE + CELL_SIZE/2, 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffdd44';
+        ctx.fill();
+        ctx.shadowBlur = 0; // reset
+
+        // --- Draw the Snake (Spectrum Gradient) ---
+        const len = snake.length;
+        for (let i = 0; i < len; i++) {
+            const seg = snake[i];
+            const x = seg.x * CELL_SIZE;
+            const y = seg.y * CELL_SIZE;
+            const padding = i === 0 ? 1 : 2; // head slightly bigger
+
+            // Map index to Hue: tail (Red=0) -> Head (Violet=280)
+            // This makes the snake look like a rainbow wave traveling.
+            const hue = (i / len) * 280; 
+            // Saturation and Lightness: bright, except head glows more
+            const sat = i === 0 ? '100%' : '90%';
+            const light = i === 0 ? '70%' : '55%';
+
+            ctx.shadowBlur = i === 0 ? 20 : 8;
+            ctx.shadowColor = i === 0 ? '#aa88ff' : `hsl(${hue}, 100%, 50%)`;
+
+            ctx.fillStyle = `hsl(${hue}, ${sat}, ${light})`;
+            ctx.beginPath();
+            ctx.roundRect(x + 1, y + 1, CELL_SIZE - 2, CELL_SIZE - 2, 4);
+            ctx.fill();
+
+            // Add a small highlight on the head
+            if (i === 0) {
+                ctx.shadowBlur = 0;
+                ctx.fillStyle = 'rgba(255,255,255,0.3)';
+                ctx.beginPath();
+                ctx.arc(x + 14, y + 6, 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // If game over, draw dark overlay and message
+        if (gameOver && !gameRunning) {
+            ctx.fillStyle = 'rgba(0,0,0,0.6)';
+            ctx.fillRect(0, 0, 400, 400);
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = '#ff4d6d';
+            ctx.font = 'bold 24px "Courier New", monospace';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('📡 CARRIER LOST', 200, 180);
+            ctx.fillStyle = '#8899aa';
+            ctx.font = '16px "Courier New", monospace';
+            ctx.fillText('Score: ' + score, 200, 230);
+        }
+    }
+
+    // Polyfill roundRect if needed
+    if (!CanvasRenderingContext2D.prototype.roundRect) {
+        CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
+            if (r > w/2) r = w/2;
+            if (r > h/2) r = h/2;
+            this.moveTo(x + r, y);
+            this.lineTo(x + w - r, y);
+            this.quadraticCurveTo(x + w, y, x + w, y + r);
+            this.lineTo(x + w, y + h - r);
+            this.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            this.lineTo(x + r, y + h);
+            this.quadraticCurveTo(x, y + h, x, y + h - r);
+            this.lineTo(x, y + r);
+            this.quadraticCurveTo(x, y, x + r, y);
+            this.closePath();
+            return this;
+        };
+    }
+
+    // Keyboard controls
+    document.addEventListener('keydown', (e) => {
+        const key = e.key;
+        e.preventDefault(); // prevent scrolling
+
+        if (!gameRunning && !gameOver) {
+            resetGame();
+            return;
+        }
+
+        switch (key) {
+            case 'ArrowUp':    if (direction.dy !== 1)  nextDirection = { dx: 0, dy: -1 }; break;
+            case 'ArrowDown':  if (direction.dy !== -1) nextDirection = { dx: 0, dy: 1 }; break;
+            case 'ArrowLeft':  if (direction.dx !== 1)  nextDirection = { dx: -1, dy: 0 }; break;
+            case 'ArrowRight': if (direction.dx !== -1) nextDirection = { dx: 1, dy: 0 }; break;
+        }
+    });
+
+    // Play button
+    playBtn.addEventListener('click', () => {
+        if (gameLoop) clearInterval(gameLoop);
+        resetGame();
+        if (gameLoop) clearInterval(gameLoop);
+        gameLoop = setInterval(updateGame, TICK_INTERVAL);
+        gameRunning = true;
+        gameOver = false;
+        gameOverMsg.innerText = '';
+    });
+
+    // Initial draw
+    resetGame();
+    // Start the loop
+    if (gameLoop) clearInterval(gameLoop);
+    gameLoop = setInterval(updateGame, TICK_INTERVAL);
+</script>
+</body>
+</html>
