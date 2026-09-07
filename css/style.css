@@ -260,24 +260,26 @@ html.dark .navbar.scrolled {
 }
 
 /* ==================================================
-   5. HERO SECTION — FIXED ALIGNMENT TO TOP
+   5. HERO SECTION — FIXED: content starts at top
 ================================================== */
 .hero {
     min-height: 100vh;
     display: flex;
-    align-items: flex-start; /* changed from center to eliminate empty space */
+    align-items: flex-start;
     justify-content: center;
     text-align: center;
-    padding-top: 70px; /* navbar height */
+    padding-top: 70px;
     position: relative;
     overflow: hidden;
 }
 
+/* Hero content uses its own entrance (hero-ready), not reveal-up */
 .hero-content {
     position: relative;
     z-index: 10;
     max-width: 800px;
     padding: 0 20px;
+    margin-top: 60px; /* gentle spacing from navbar */
     opacity: 0;
     transform: translateY(12px);
     transition: opacity 0.8s ease, transform 0.8s ease;
@@ -287,6 +289,7 @@ html.dark .navbar.scrolled {
     transform: translateY(0);
 }
 
+/* Individual hero elements stagger */
 .hero-content .badge {
     opacity: 0;
     transform: translateY(8px);
@@ -318,6 +321,7 @@ html.dark .navbar.scrolled {
     opacity: 1;
     transform: translateY(0);
 }
+
 .scroll-indicator {
     opacity: 0;
     transition: opacity 1s ease;
@@ -450,7 +454,7 @@ html.dark .btn-primary {
 }
 
 /* ==================================================
-   6. GRIDS & CARDS (project styles removed)
+   6. GRIDS & CARDS
 ================================================== */
 .grid-2-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
 .grid-3-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
@@ -703,7 +707,7 @@ html.dark .footer { background-color: #020617; }
 }
 
 /* ==================================================
-   8. REVEAL ANIMATIONS
+   8. REVEAL ANIMATIONS (for sections below hero)
 ================================================== */
 .reveal-up {
     opacity: 0;
@@ -867,6 +871,7 @@ html.dark .footer { background-color: #020617; }
     .reveal-left { transform: translateX(-20px); }
     .reveal-right { transform: translateX(20px); }
     .stagger-item { transform: translateY(12px); }
+    .hero-content { margin-top: 40px; }
 }
 
 @media (min-width: 769px) {
