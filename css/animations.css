@@ -26,11 +26,11 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2.8rem; /* Increased gap to prevent overlap */
+    gap: 3.5rem; /* Increased to prevent any overlap */
     padding: 20px;
 }
 
-/* ===== EXISTING CHIP ASSEMBLY (UNCHANGED) ===== */
+/* ===== EXISTING CHIP ASSEMBLY (100% UNCHANGED) ===== */
 .chip-assembly {
     position: relative;
     width: 90px;
@@ -115,21 +115,21 @@
 .right-lines { flex-direction: column; right: -50px; animation: slideLeft 0.9s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 .right-lines span { width: 30px; height: 3px; }
 
-/* ===== NEW: PRELOADER LOGO (Appears after chip assembles) ===== */
+/* ===== NEW: PRELOADER LOGO – appears ONLY after chip finishes ===== */
 .preloader-logo {
     height: 60px;
     width: auto;
     display: block;
     opacity: 0;
-    transform: translateY(10px) scale(0.95);
+    transform: translateY(12px) scale(0.96);
     animation: logoFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: 1.4s; /* After chip assembly completes (~1.7s) */
+    animation-delay: 2.2s; /* After chip assembly completes (1.0s + 0.7s = 1.7s) */
 }
 
 @keyframes logoFadeIn {
     0% {
         opacity: 0;
-        transform: translateY(10px) scale(0.95);
+        transform: translateY(12px) scale(0.96);
     }
     100% {
         opacity: 1;
@@ -137,7 +137,7 @@
     }
 }
 
-/* ===== EXISTING IEEE TEXT (adjusted delay to appear after logo) ===== */
+/* ===== EXISTING IEEE TEXT – appears after logo ===== */
 .preloader-text {
     font-size: 2.2rem;
     font-weight: 800;
@@ -147,7 +147,7 @@
     opacity: 0;
     transform: translateY(12px);
     animation: textFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: 1.9s; /* Slightly after logo appears */
+    animation-delay: 2.8s; /* After logo finishes appearing */
     text-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
     line-height: 1.2;
 }
@@ -192,7 +192,7 @@
 }
 @media (max-height: 600px) {
     .chip-assembly { transform: scale(0.7); }
-    .preloader-container { gap: 2.2rem; }
+    .preloader-container { gap: 2.5rem; }
     .preloader-logo { height: 40px; }
     .preloader-text { font-size: 1.5rem; }
 }
