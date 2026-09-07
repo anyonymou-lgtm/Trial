@@ -26,7 +26,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2rem; /* Clean spacing between chip and IEEE text */
+    gap: 5rem; /* Increased to prevent overlap between circuit lines and IEEE text */
     padding: 20px;
 }
 
@@ -115,7 +115,7 @@
 .right-lines { flex-direction: column; right: -50px; animation: slideLeft 0.9s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 .right-lines span { width: 30px; height: 3px; }
 
-/* ===== IEEE TEXT (appears after chip assembles) ===== */
+/* ===== IEEE TEXT ===== */
 .preloader-text {
     font-size: 2.2rem;
     font-weight: 800;
@@ -125,7 +125,7 @@
     opacity: 0;
     transform: translateY(12px);
     animation: textFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: 1.8s; /* Appears right after chip assembly finishes (~1.7s) */
+    animation-delay: 1.8s;
     text-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
     line-height: 1.2;
 }
@@ -164,11 +164,11 @@
 /* ===== RESPONSIVE TWEAKS ===== */
 @media (max-width: 480px) {
     .chip-assembly { transform: scale(0.8); }
-    .preloader-container { gap: 2.5rem; }
+    .preloader-container { gap: 3.5rem; } /* Slightly smaller gap on mobile */
     .preloader-text { font-size: 1.8rem; letter-spacing: 0.2em; }
 }
 @media (max-height: 600px) {
     .chip-assembly { transform: scale(0.7); }
-    .preloader-container { gap: 1.8rem; }
+    .preloader-container { gap: 2.5rem; }
     .preloader-text { font-size: 1.5rem; }
 }
