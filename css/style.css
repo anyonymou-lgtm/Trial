@@ -116,7 +116,7 @@ ul {
 }
 
 /* ==================================================
-   4. NAVBAR (UPDATED BRAND ICON)
+   4. NAVBAR (UPDATED: text removed)
 ================================================== */
 .navbar {
     position: fixed;
@@ -145,7 +145,7 @@ ul {
     gap: 10px;
 }
 
-/* ---- UPDATED: Brand icon now holds the image logo ---- */
+/* Navbar logo image */
 .brand-icon {
     width: auto;
     height: auto;
@@ -164,24 +164,11 @@ ul {
     object-fit: contain;
 }
 
-.brand-text {
-    display: flex;
-    flex-direction: column;
-}
-
+/* Note: .brand-title is kept for the footer */
 .brand-title {
     font-weight: 800;
     font-size: 1.1rem;
     line-height: 1;
-}
-
-.brand-subtitle {
-    font-size: 0.65rem;
-    color: var(--primary);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-top: 2px;
 }
 
 .nav-links {
@@ -201,7 +188,6 @@ ul {
     color: var(--primary);
 }
 
-/* Navigation link underline indicator */
 .nav-link::after {
     content: '';
     position: absolute;
@@ -247,13 +233,11 @@ ul {
 
 .icon-btn svg { width: 20px; }
 
-/* Theme Toggle Logic */
 html.dark .sun-icon { display: block; }
 html.dark .moon-icon { display: none; }
 html:not(.dark) .sun-icon { display: none; }
 html:not(.dark) .moon-icon { display: block; }
 
-/* Mobile Menu */
 .mobile-menu {
     display: none;
     background: var(--bg-main);
@@ -280,7 +264,7 @@ html.dark .navbar.scrolled {
 }
 
 /* ==================================================
-   5. HERO SECTION
+   5. HERO SECTION (unchanged)
 ================================================== */
 .hero {
     min-height: 100vh;
@@ -307,7 +291,6 @@ html.dark .navbar.scrolled {
     transform: translateY(0);
 }
 
-/* Hero individual stagger */
 .hero-content .badge {
     opacity: 0;
     transform: translateY(8px);
@@ -439,7 +422,6 @@ html.dark .btn-primary {
     transform: scale(0.97);
 }
 
-/* Scroll indicator */
 .scroll-indicator {
     position: absolute;
     bottom: 40px;
@@ -472,7 +454,7 @@ html.dark .btn-primary {
 }
 
 /* ==================================================
-   6. GRIDS & CARDS
+   6. GRIDS & CARDS (unchanged)
 ================================================== */
 .grid-2-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
 .grid-3-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
@@ -531,7 +513,6 @@ html.dark .card-icon { background: rgba(56, 189, 248, 0.1); }
 .card-icon svg { width: 24px; }
 .card h3 { margin-bottom: 0.75rem; font-size: 1.25rem; }
 
-/* About specific */
 .section-line {
     width: 40px;
     height: 4px;
@@ -571,7 +552,6 @@ html.dark .card-icon { background: rgba(56, 189, 248, 0.1); }
     margin-top: 2px;
 }
 
-/* Projects */
 .project-tag {
     font-size: 0.75rem;
     font-weight: 700;
@@ -597,7 +577,6 @@ html.dark .project-tag { background: rgba(56, 189, 248, 0.1); }
 .project-link svg { width: 16px; transition: transform 0.2s; }
 .project-link:hover svg { transform: translateX(3px); }
 
-/* Events */
 .event-list {
     max-width: 800px;
     margin: 0 auto;
@@ -633,7 +612,6 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
     font-weight: 700;
 }
 
-/* Gallery */
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -657,7 +635,7 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
 .gallery-item:hover { transform: scale(1.03); border-color: var(--primary); color: var(--primary); }
 
 /* ==================================================
-   7. FOOTER
+   7. FOOTER (unchanged)
 ================================================== */
 .footer {
     background-color: #0f172a;
@@ -679,7 +657,7 @@ html.dark .footer { background-color: #020617; }
     gap: 10px;
     margin-bottom: 1rem;
 }
-.footer-brand .brand-icon { background: #38bdf8; color: #0f172a; width: auto; height: auto; background: none; border-radius: 0; }
+.footer-brand .brand-icon { background: none; width: auto; height: auto; border-radius: 0; }
 .footer-brand .brand-icon img { height: 32px; width: auto; display: block; filter: brightness(0) invert(1); }
 .footer-brand .brand-title { color: #f8fafc; }
 .footer-desc {
@@ -711,216 +689,4 @@ html.dark .footer { background-color: #020617; }
 }
 .footer-links a:hover { color: #38bdf8; }
 
-.social-icons { display: flex; gap: 10px; }
-.social-icon {
-    width: 40px;
-    height: 40px;
-    background: #1e293b;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #94a3b8;
-    transition: all 0.3s ease;
-}
-.social-icon svg { width: 18px; }
-.social-icon:hover {
-    background: #38bdf8;
-    color: #0f172a;
-    transform: translateY(-3px);
-}
-
-.location {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    color: #94a3b8;
-    font-size: 0.9rem;
-    line-height: 1.5;
-}
-.location svg {
-    width: 20px;
-    color: #38bdf8;
-    flex-shrink: 0;
-    margin-top: 2px;
-}
-
-.footer-bottom {
-    border-top: 1px solid #1e293b;
-    padding: 1.5rem 0;
-    text-align: center;
-    color: #64748b;
-    font-size: 0.8rem;
-}
-
-/* ==================================================
-   8. REVEAL ANIMATIONS (SCROLL)
-================================================== */
-.reveal-up {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.reveal-left {
-    opacity: 0;
-    transform: translateX(-30px);
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.reveal-right {
-    opacity: 0;
-    transform: translateX(30px);
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.reveal-visible {
-    opacity: 1 !important;
-    transform: translateX(0) translateY(0) !important;
-}
-
-.stagger-item {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.stagger-item.reveal-visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-.stagger-item:nth-child(1) { transition-delay: 0.02s; }
-.stagger-item:nth-child(2) { transition-delay: 0.08s; }
-.stagger-item:nth-child(3) { transition-delay: 0.16s; }
-.stagger-item:nth-child(4) { transition-delay: 0.26s; }
-.stagger-item:nth-child(5) { transition-delay: 0.38s; }
-.stagger-item:nth-child(6) { transition-delay: 0.52s; }
-
-/* ==================================================
-   9. TECH LINES
-================================================== */
-.tech-lines-container {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-    opacity: 0.25;
-    z-index: 0;
-}
-.circuit-line {
-    position: absolute;
-    background: var(--primary);
-    opacity: 0.12;
-    border-radius: 1px;
-    transition: opacity 0.5s ease;
-}
-.circuit-dot {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: var(--primary);
-    border-radius: 50%;
-    opacity: 0.15;
-    box-shadow: 0 0 6px var(--primary);
-    animation: pulse-dot 4s infinite ease-in-out;
-}
-@keyframes pulse-dot {
-    0%, 100% { opacity: 0.1; transform: scale(0.8); }
-    50% { opacity: 0.4; transform: scale(1.2); }
-}
-
-/* ==================================================
-   10. LIGHTBOX
-================================================== */
-.lightbox {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(8px);
-    z-index: 999;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-}
-.lightbox.active {
-    display: flex;
-}
-.lightbox-close {
-    position: absolute;
-    top: 30px;
-    right: 40px;
-    font-size: 3rem;
-    color: #fff;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-    line-height: 1;
-}
-.lightbox-close:hover {
-    transform: rotate(90deg);
-}
-.lightbox-content {
-    background: var(--surface);
-    padding: 3rem;
-    border-radius: 20px;
-    max-width: 600px;
-    width: 100%;
-    text-align: center;
-    border: 1px solid var(--border);
-}
-.lightbox-content svg {
-    width: 80px;
-    height: 80px;
-    color: var(--primary);
-    margin-bottom: 1.5rem;
-    opacity: 0.7;
-}
-.lightbox-content p {
-    color: var(--text-main);
-    font-size: 1.1rem;
-    font-weight: 500;
-}
-
-/* ==================================================
-   11. UTILITY CLASSES
-================================================== */
-.mt-1 { margin-top: 0.5rem; }
-.mt-2 { margin-top: 1rem; }
-.mt-3 { margin-top: 1.5rem; }
-.mt-4 { margin-top: 2rem; }
-.mt-5 { margin-top: 3rem; }
-.mb-0 { margin-bottom: 0 !important; }
-.mb-1 { margin-bottom: 0.5rem; }
-.mb-2 { margin-bottom: 1rem; }
-.mb-3 { margin-bottom: 1.5rem; }
-.mb-4 { margin-bottom: 2rem; }
-.mb-5 { margin-bottom: 3rem; }
-.text-center { text-align: center; }
-
-/* ==================================================
-   12. RESPONSIVE OVERRIDES
-================================================== */
-@media (max-width: 1024px) {
-    .grid-3-col { grid-template-columns: repeat(2, 1fr); }
-    .footer-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 768px) {
-    .nav-links { display: none; }
-    .mobile-only { display: flex !important; }
-    .hero-title { font-size: 2.8rem; }
-    .hero-subtitle { font-size: 1rem; }
-    .hero-cta { flex-direction: column; align-items: center; }
-    .grid-2-col, .grid-3-col { grid-template-columns: 1fr; gap: 2rem; }
-    .section { padding: 60px 0; }
-    .event-card { flex-direction: column; text-align: center; gap: 1rem; }
-    .footer-grid { grid-template-columns: 1fr; gap: 2rem; text-align: center; }
-    .footer-brand { justify-content: center; }
-    .social-icons { justify-content: center; }
-    .location { justify-content: center; }
-    .reveal-up { transform: translateY(20px); }
-    .reveal-left { transform: translateX(-20px); }
-    .reveal-right { transform: translateX(20px); }
-    .stagger-item { transform: translateY(12px); }
-}
-
-@media (min-width: 769px) {
-    .mobile-only { display: none !important; }
-    .mobile-menu { display: none !important; }
-}
+.social-icons { display: flex;
