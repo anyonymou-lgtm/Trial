@@ -48,7 +48,7 @@
             height: auto;
             aspect-ratio: 1 / 1;
             margin: 0 auto;
-            touch-action: none; /* prevent scrolling on canvas */
+            touch-action: none;
         }
         .status-bar {
             display: flex;
@@ -132,7 +132,6 @@
             font-size: 14px;
         }
 
-        /* Responsive: stack layout on small screens */
         @media (min-width: 700px) {
             .game-wrapper {
                 flex-direction: row;
@@ -180,9 +179,6 @@
                 font-size: 10px;
             }
         }
-
-        /* Dark/light theme support via body background – but we keep dark */
-        /* (The parent website will embed this, and it respects its own theme) */
     </style>
 </head>
 <body>
@@ -222,9 +218,9 @@
     const playBtn = document.getElementById('playBtn');
 
     // Grid settings
-    const GRID_SIZE = 20;        // 20x20 grid
-    const CELL_SIZE = 20;        // 400px / 20
-    const TICK_INTERVAL = 150;   // ms
+    const GRID_SIZE = 20;
+    const CELL_SIZE = 20;
+    const TICK_INTERVAL = 150;
 
     // Game state
     let snake = [];
@@ -237,7 +233,6 @@
     let gameOver = false;
     let gameLoop = null;
 
-    // Initialize default leaderboard display
     function updateLeaderboardUI() {
         const list = document.getElementById('leaderboardList');
         let items = [
@@ -256,7 +251,6 @@
     }
     updateLeaderboardUI();
 
-    // Helpers
     function randomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
@@ -373,7 +367,6 @@
         drawGame();
     }
 
-    // Drawing (unchanged)
     function drawGame() {
         ctx.clearRect(0, 0, 400, 400);
 
@@ -446,7 +439,6 @@
         }
     }
 
-    // Polyfill roundRect
     if (!CanvasRenderingContext2D.prototype.roundRect) {
         CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
             if (r > w/2) r = w/2;
@@ -473,7 +465,7 @@
         }
 
         if (!gameRunning && !gameOver) {
-            resetGame();
+            // If game is idle, we do nothing – the modal handles start.
             return;
         }
 
@@ -505,19 +497,15 @@
         const dx = touch.clientX - touchStartX;
         const dy = touch.clientY - touchStartY;
 
-        // Only change direction if swipe is long enough (threshold 20px)
         if (Math.abs(dx) < 20 && Math.abs(dy) < 20) return;
 
-        // Determine primary axis
         if (Math.abs(dx) > Math.abs(dy)) {
-            // Horizontal swipe
             if (dx > 0 && direction.dx !== -1) {
                 nextDirection = { dx: 1, dy: 0 };
             } else if (dx < 0 && direction.dx !== 1) {
                 nextDirection = { dx: -1, dy: 0 };
             }
         } else {
-            // Vertical swipe
             if (dy > 0 && direction.dy !== -1) {
                 nextDirection = { dx: 0, dy: 1 };
             } else if (dy < 0 && direction.dy !== 1) {
@@ -525,7 +513,6 @@
             }
         }
 
-        // Reset to avoid multiple direction changes during one swipe
         isSwiping = false;
     }, { passive: false });
 
@@ -534,21 +521,65 @@
         isSwiping = false;
     }, { passive: false });
 
-    // === Play button ===
+    // === Play Button: send message to parent to open modal ===
     playBtn.addEventListener('click', () => {
-        if (gameLoop) clearInterval(gameLoop);
-        resetGame();
-        if (gameLoop) clearInterval(gameLoop);
-        gameLoop = setInterval(updateGame, TICK_INTERVAL);
-        gameRunning = true;
-        gameOver = false;
-        gameOverMsg.innerText = '';
+        // Instead of starting the game directly, tell parent to open modal.
+        // The parent will then send a 'startGame' message.
+        if (window.parent !== window) {
+            window.parent.postMessage('openSnakeModal', '*');
+        } else {
+            // Fallback if not in iframe (just start directly)
+            if (gameLoop) clearInterval(gameLoop);
+            resetGame();
+            if (gameLoop) clearInterval(gameLoop);
+            gameLoop = setInterval(updateGame, TICK_INTERVAL);
+            gameRunning = true;
+            gameOver = false;
+            gameOverMsg.innerText = '';
+        }
     });
 
-    // Initial start
+    // === Listen for messages from parent ===
+    window.addEventListener('message', (e) => {
+        if (e.data === 'startGame') {
+            // Start the game
+            if (gameLoop) clearInterval(gameLoop);
+            resetGame();
+            if (gameLoop) clearInterval(gameLoop);
+            gameLoop = setInterval(updateGame, TICK_INTERVAL);
+            gameRunning = true;
+            gameOver = false;
+            gameOverMsg.innerText = '';
+        } else if (e.data === 'stopGame') {
+            // Stop the game and reset to idle state
+            if (gameLoop) {
+                clearInterval(gameLoop);
+                gameLoop = null;
+            }
+            gameRunning = false;
+            gameOver = false;
+            // Reset to initial state (draw but not running)
+            resetGame();
+            gameRunning = false;
+            gameOver = false;
+            if (gameLoop) {
+                clearInterval(gameLoop);
+                gameLoop = null;
+            }
+            drawGame();
+            gameOverMsg.innerText = '';
+        }
+    });
+
+    // === Initial state: game is idle, not running ===
     resetGame();
-    if (gameLoop) clearInterval(gameLoop);
-    gameLoop = setInterval(updateGame, TICK_INTERVAL);
+    gameRunning = false;
+    if (gameLoop) {
+        clearInterval(gameLoop);
+        gameLoop = null;
+    }
+    drawGame();
+    gameOverMsg.innerText = 'Press PLAY NOW to start!';
 </script>
 </body>
 </html>
