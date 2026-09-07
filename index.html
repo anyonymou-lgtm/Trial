@@ -77,7 +77,7 @@
         </div>
     </header>
 
-    <!-- HERO -->
+    <!-- HERO – Fixed: content centered, no empty gap -->
     <section class="hero" id="home">
         <div class="tech-lines-container" id="hero-tech-lines"></div>
         <div class="hero-content">
@@ -90,73 +90,6 @@
         </div>
         <div class="scroll-indicator">
             <div class="mouse"></div>
-        </div>
-    </section>
-
-    <!-- TECHNOLOGIES & TOOLS MARQUEE (Replaces Featured Projects) -->
-    <section class="section marquee-section" id="technologies">
-        <div class="container">
-            <div class="section-header reveal-up">
-                <h2 class="section-title marquee-title">Technologies &amp; Tools</h2>
-                <div class="section-line" style="margin: 0 auto 1.5rem auto;"></div>
-            </div>
-        </div>
-        <div class="marquee-wrapper">
-            <div class="marquee-track" aria-hidden="true">
-                <!-- FIRST COPY -->
-                <span class="marquee-item">Altium Designer</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">Xilinx Vivado</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">GNU Radio</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">MATLAB</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">ESP-IDF</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">AWS IoT Core</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">Docker</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">PostgreSQL</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">SciPy/NumPy</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">Verilog/VHDL</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">KiCad</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">FreeRTOS</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">Wireshark</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">FreeRTOS</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">KiCad</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">Verilog/VHDL</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">SciPy/NumPy</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">PostgreSQL</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">Docker</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">AWS IoT Core</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">ESP-IDF</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">MATLAB</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">GNU Radio</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">Xilinx Vivado</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">Altium Designer</span><span class="marquee-dot">•</span>
-
-                <!-- SECOND COPY (for seamless looping) -->
-                <span class="marquee-item">Altium Designer</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">Xilinx Vivado</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">GNU Radio</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">MATLAB</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">ESP-IDF</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">AWS IoT Core</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">Docker</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">PostgreSQL</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">SciPy/NumPy</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">Verilog/VHDL</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">KiCad</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">FreeRTOS</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">Wireshark</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">FreeRTOS</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">KiCad</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">Verilog/VHDL</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">SciPy/NumPy</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">PostgreSQL</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">Docker</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">AWS IoT Core</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">ESP-IDF</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">MATLAB</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">GNU Radio</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">Xilinx Vivado</span><span class="marquee-dot">•</span>
-                <span class="marquee-item">Altium Designer</span><span class="marquee-dot">•</span>
-            </div>
         </div>
     </section>
 
@@ -185,7 +118,7 @@
         </div>
     </section>
 
-    <!-- EVENTS SECTION -->
+    <!-- EVENTS & ACTIVITIES SECTION -->
     <section class="section bg-alt" id="events">
         <div class="container">
             <div class="section-header reveal-up">
@@ -209,6 +142,130 @@
                     </div>
                     <div class="event-status"><a href="events.html">Register</a></div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TECHNOLOGIES WE WORK WITH – Two-Row Flowing Marquee -->
+    <section class="section tech-marquee-section" id="technologies">
+        <div class="container">
+            <div class="section-header reveal-up">
+                <h2 class="section-title tech-section-title">Technologies We Work With</h2>
+                <div class="section-line" style="margin: 0 auto 1.5rem auto;"></div>
+            </div>
+        </div>
+
+        <!-- Row 1: Flows right → left -->
+        <div class="marquee-wrapper">
+            <div class="marquee-track marquee-track-1" aria-hidden="true">
+                <span class="tech-pill">Altium Designer</span>
+                <span class="tech-pill">Xilinx Vivado</span>
+                <span class="tech-pill">GNU Radio</span>
+                <span class="tech-pill">MATLAB</span>
+                <span class="tech-pill">ESP-IDF</span>
+                <span class="tech-pill">AWS IoT Core</span>
+                <span class="tech-pill">Docker</span>
+                <span class="tech-pill">PostgreSQL</span>
+                <span class="tech-pill">SciPy/NumPy</span>
+                <span class="tech-pill">Verilog/VHDL</span>
+                <span class="tech-pill">KiCad</span>
+                <span class="tech-pill">FreeRTOS</span>
+                <span class="tech-pill">Wireshark</span>
+                <span class="tech-pill">FreeRTOS</span>
+                <span class="tech-pill">KiCad</span>
+                <span class="tech-pill">Verilog/VHDL</span>
+                <span class="tech-pill">SciPy/NumPy</span>
+                <span class="tech-pill">PostgreSQL</span>
+                <span class="tech-pill">Docker</span>
+                <span class="tech-pill">AWS IoT Core</span>
+                <span class="tech-pill">ESP-IDF</span>
+                <span class="tech-pill">MATLAB</span>
+                <span class="tech-pill">GNU Radio</span>
+                <span class="tech-pill">Xilinx Vivado</span>
+                <span class="tech-pill">Altium Designer</span>
+                <!-- Second copy for seamless loop -->
+                <span class="tech-pill">Altium Designer</span>
+                <span class="tech-pill">Xilinx Vivado</span>
+                <span class="tech-pill">GNU Radio</span>
+                <span class="tech-pill">MATLAB</span>
+                <span class="tech-pill">ESP-IDF</span>
+                <span class="tech-pill">AWS IoT Core</span>
+                <span class="tech-pill">Docker</span>
+                <span class="tech-pill">PostgreSQL</span>
+                <span class="tech-pill">SciPy/NumPy</span>
+                <span class="tech-pill">Verilog/VHDL</span>
+                <span class="tech-pill">KiCad</span>
+                <span class="tech-pill">FreeRTOS</span>
+                <span class="tech-pill">Wireshark</span>
+                <span class="tech-pill">FreeRTOS</span>
+                <span class="tech-pill">KiCad</span>
+                <span class="tech-pill">Verilog/VHDL</span>
+                <span class="tech-pill">SciPy/NumPy</span>
+                <span class="tech-pill">PostgreSQL</span>
+                <span class="tech-pill">Docker</span>
+                <span class="tech-pill">AWS IoT Core</span>
+                <span class="tech-pill">ESP-IDF</span>
+                <span class="tech-pill">MATLAB</span>
+                <span class="tech-pill">GNU Radio</span>
+                <span class="tech-pill">Xilinx Vivado</span>
+                <span class="tech-pill">Altium Designer</span>
+            </div>
+        </div>
+
+        <!-- Row 2: Flows left → right (opposite direction) -->
+        <div class="marquee-wrapper">
+            <div class="marquee-track marquee-track-2" aria-hidden="true">
+                <span class="tech-pill">Altium Designer</span>
+                <span class="tech-pill">Xilinx Vivado</span>
+                <span class="tech-pill">GNU Radio</span>
+                <span class="tech-pill">MATLAB</span>
+                <span class="tech-pill">ESP-IDF</span>
+                <span class="tech-pill">AWS IoT Core</span>
+                <span class="tech-pill">Docker</span>
+                <span class="tech-pill">PostgreSQL</span>
+                <span class="tech-pill">SciPy/NumPy</span>
+                <span class="tech-pill">Verilog/VHDL</span>
+                <span class="tech-pill">KiCad</span>
+                <span class="tech-pill">FreeRTOS</span>
+                <span class="tech-pill">Wireshark</span>
+                <span class="tech-pill">FreeRTOS</span>
+                <span class="tech-pill">KiCad</span>
+                <span class="tech-pill">Verilog/VHDL</span>
+                <span class="tech-pill">SciPy/NumPy</span>
+                <span class="tech-pill">PostgreSQL</span>
+                <span class="tech-pill">Docker</span>
+                <span class="tech-pill">AWS IoT Core</span>
+                <span class="tech-pill">ESP-IDF</span>
+                <span class="tech-pill">MATLAB</span>
+                <span class="tech-pill">GNU Radio</span>
+                <span class="tech-pill">Xilinx Vivado</span>
+                <span class="tech-pill">Altium Designer</span>
+                <!-- Second copy for seamless loop -->
+                <span class="tech-pill">Altium Designer</span>
+                <span class="tech-pill">Xilinx Vivado</span>
+                <span class="tech-pill">GNU Radio</span>
+                <span class="tech-pill">MATLAB</span>
+                <span class="tech-pill">ESP-IDF</span>
+                <span class="tech-pill">AWS IoT Core</span>
+                <span class="tech-pill">Docker</span>
+                <span class="tech-pill">PostgreSQL</span>
+                <span class="tech-pill">SciPy/NumPy</span>
+                <span class="tech-pill">Verilog/VHDL</span>
+                <span class="tech-pill">KiCad</span>
+                <span class="tech-pill">FreeRTOS</span>
+                <span class="tech-pill">Wireshark</span>
+                <span class="tech-pill">FreeRTOS</span>
+                <span class="tech-pill">KiCad</span>
+                <span class="tech-pill">Verilog/VHDL</span>
+                <span class="tech-pill">SciPy/NumPy</span>
+                <span class="tech-pill">PostgreSQL</span>
+                <span class="tech-pill">Docker</span>
+                <span class="tech-pill">AWS IoT Core</span>
+                <span class="tech-pill">ESP-IDF</span>
+                <span class="tech-pill">MATLAB</span>
+                <span class="tech-pill">GNU Radio</span>
+                <span class="tech-pill">Xilinx Vivado</span>
+                <span class="tech-pill">Altium Designer</span>
             </div>
         </div>
     </section>
