@@ -26,7 +26,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 5rem; /* Increased to prevent overlap between circuit lines and IEEE text */
+    gap: 5rem;
     padding: 20px;
 }
 
@@ -164,7 +164,7 @@
 /* ===== RESPONSIVE TWEAKS ===== */
 @media (max-width: 480px) {
     .chip-assembly { transform: scale(0.8); }
-    .preloader-container { gap: 3.5rem; } /* Slightly smaller gap on mobile */
+    .preloader-container { gap: 3.5rem; }
     .preloader-text { font-size: 1.8rem; letter-spacing: 0.2em; }
 }
 @media (max-height: 600px) {
