@@ -42,7 +42,7 @@
         </div>
     </div>
 
-    <!-- NAVBAR -->
+    <!-- NAVBAR – with Team link added -->
     <header class="navbar" id="navbar">
         <div class="nav-container">
             <a href="index.html" class="brand">
@@ -79,7 +79,7 @@
         </div>
     </header>
 
-    <!-- HERO (unchanged) -->
+    <!-- HERO – working, natural height, no scroll indicator -->
     <section class="hero" id="home">
         <div class="tech-lines-container" id="hero-tech-lines"></div>
         <div class="hero-content">
@@ -96,13 +96,228 @@
         </div>
     </section>
 
-    <!-- ABOUT, EVENTS, TECHNOLOGIES, SNAKE, GALLERY, FOOTER ... (unchanged) -->
-    <!-- The rest of index.html remains exactly as before, only the navbar changed -->
-    <!-- For brevity, I'm including the full file in the final answer, but in this snippet I'll indicate the unchanged parts -->
+    <!-- ABOUT SECTION -->
+    <section class="section" id="about">
+        <div class="container grid-2-col">
+            <div class="about-text reveal-left">
+                <div class="section-line"></div>
+                <h2 class="section-title">About IEEE-RGIT</h2>
+                <p class="text-muted">The IEEE Student Branch at Rajiv Gandhi Institute of Technology (RGIT) serves as a dynamic hub for engineering enthusiasts. We foster technical competence, professional networking, and ethical innovation across multiple domains.</p>
+                <p class="text-muted">With a specialized focus on <strong>VLSI and Embedded Systems</strong>, our community provides students with rigorous practical exposure, bridging core academic curriculum with real-world industry demands.</p>
+            </div>
+            <div class="about-card reveal-right">
+                <div class="card-glass">
+                    <div class="tech-decorative-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    </div>
+                    <h3>Core Objectives</h3>
+                    <ul class="objective-list">
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Promoting technical excellence in hardware & software.</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Hosting research seminars and bootcamps.</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Mentoring teams for technical showcases.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- ... (all sections between hero and footer are identical to previous version) ... -->
+    <!-- EVENTS & ACTIVITIES -->
+    <section class="section bg-alt" id="events">
+        <div class="container">
+            <div class="section-header reveal-up">
+                <h2 class="section-title">Events & Activities</h2>
+                <p class="section-subtitle">Technical seminars, coding challenges, and annual symposia.</p>
+            </div>
+            <div class="event-list stagger-container">
+                <div class="event-card stagger-item">
+                    <div class="event-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>
+                    <div class="event-info">
+                        <h3>VLSI & Embedded Systems Bootcamp</h3>
+                        <p class="text-muted">RGIT Seminar Hall • Active Semesters</p>
+                    </div>
+                    <div class="event-status">Ongoing</div>
+                </div>
+                <div class="event-card stagger-item">
+                    <div class="event-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg></div>
+                    <div class="event-info">
+                        <h3>Annual Technical Paper Presentation</h3>
+                        <p class="text-muted">Main Auditorium • Upcoming</p>
+                    </div>
+                    <div class="event-status"><a href="events.html">Register</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- FOOTER (unchanged) -->
+    <!-- TECHNOLOGIES WE WORK WITH (Marquee) -->
+    <section class="section tech-marquee-section" id="technologies">
+        <div class="container">
+            <div class="section-header reveal-up">
+                <h2 class="section-title tech-section-title">Technologies We Work With</h2>
+                <div class="section-line" style="margin: 0 auto 1.5rem auto;"></div>
+            </div>
+        </div>
+
+        <div class="marquee-wrapper">
+            <div class="marquee-track marquee-track-1" aria-hidden="true">
+                <span class="tech-pill">Altium Designer</span>
+                <span class="tech-pill">Xilinx Vivado</span>
+                <span class="tech-pill">GNU Radio</span>
+                <span class="tech-pill">MATLAB</span>
+                <span class="tech-pill">ESP-IDF</span>
+                <span class="tech-pill">AWS IoT Core</span>
+                <span class="tech-pill">Docker</span>
+                <span class="tech-pill">PostgreSQL</span>
+                <span class="tech-pill">SciPy/NumPy</span>
+                <span class="tech-pill">Verilog/VHDL</span>
+                <span class="tech-pill">KiCad</span>
+                <span class="tech-pill">FreeRTOS</span>
+                <span class="tech-pill">Wireshark</span>
+                <span class="tech-pill">FreeRTOS</span>
+                <span class="tech-pill">KiCad</span>
+                <span class="tech-pill">Verilog/VHDL</span>
+                <span class="tech-pill">SciPy/NumPy</span>
+                <span class="tech-pill">PostgreSQL</span>
+                <span class="tech-pill">Docker</span>
+                <span class="tech-pill">AWS IoT Core</span>
+                <span class="tech-pill">ESP-IDF</span>
+                <span class="tech-pill">MATLAB</span>
+                <span class="tech-pill">GNU Radio</span>
+                <span class="tech-pill">Xilinx Vivado</span>
+                <span class="tech-pill">Altium Designer</span>
+                <span class="tech-pill">Altium Designer</span>
+                <span class="tech-pill">Xilinx Vivado</span>
+                <span class="tech-pill">GNU Radio</span>
+                <span class="tech-pill">MATLAB</span>
+                <span class="tech-pill">ESP-IDF</span>
+                <span class="tech-pill">AWS IoT Core</span>
+                <span class="tech-pill">Docker</span>
+                <span class="tech-pill">PostgreSQL</span>
+                <span class="tech-pill">SciPy/NumPy</span>
+                <span class="tech-pill">Verilog/VHDL</span>
+                <span class="tech-pill">KiCad</span>
+                <span class="tech-pill">FreeRTOS</span>
+                <span class="tech-pill">Wireshark</span>
+                <span class="tech-pill">FreeRTOS</span>
+                <span class="tech-pill">KiCad</span>
+                <span class="tech-pill">Verilog/VHDL</span>
+                <span class="tech-pill">SciPy/NumPy</span>
+                <span class="tech-pill">PostgreSQL</span>
+                <span class="tech-pill">Docker</span>
+                <span class="tech-pill">AWS IoT Core</span>
+                <span class="tech-pill">ESP-IDF</span>
+                <span class="tech-pill">MATLAB</span>
+                <span class="tech-pill">GNU Radio</span>
+                <span class="tech-pill">Xilinx Vivado</span>
+                <span class="tech-pill">Altium Designer</span>
+            </div>
+        </div>
+
+        <div class="marquee-wrapper">
+            <div class="marquee-track marquee-track-2" aria-hidden="true">
+                <span class="tech-pill">Altium Designer</span>
+                <span class="tech-pill">Xilinx Vivado</span>
+                <span class="tech-pill">GNU Radio</span>
+                <span class="tech-pill">MATLAB</span>
+                <span class="tech-pill">ESP-IDF</span>
+                <span class="tech-pill">AWS IoT Core</span>
+                <span class="tech-pill">Docker</span>
+                <span class="tech-pill">PostgreSQL</span>
+                <span class="tech-pill">SciPy/NumPy</span>
+                <span class="tech-pill">Verilog/VHDL</span>
+                <span class="tech-pill">KiCad</span>
+                <span class="tech-pill">FreeRTOS</span>
+                <span class="tech-pill">Wireshark</span>
+                <span class="tech-pill">FreeRTOS</span>
+                <span class="tech-pill">KiCad</span>
+                <span class="tech-pill">Verilog/VHDL</span>
+                <span class="tech-pill">SciPy/NumPy</span>
+                <span class="tech-pill">PostgreSQL</span>
+                <span class="tech-pill">Docker</span>
+                <span class="tech-pill">AWS IoT Core</span>
+                <span class="tech-pill">ESP-IDF</span>
+                <span class="tech-pill">MATLAB</span>
+                <span class="tech-pill">GNU Radio</span>
+                <span class="tech-pill">Xilinx Vivado</span>
+                <span class="tech-pill">Altium Designer</span>
+                <span class="tech-pill">Altium Designer</span>
+                <span class="tech-pill">Xilinx Vivado</span>
+                <span class="tech-pill">GNU Radio</span>
+                <span class="tech-pill">MATLAB</span>
+                <span class="tech-pill">ESP-IDF</span>
+                <span class="tech-pill">AWS IoT Core</span>
+                <span class="tech-pill">Docker</span>
+                <span class="tech-pill">PostgreSQL</span>
+                <span class="tech-pill">SciPy/NumPy</span>
+                <span class="tech-pill">Verilog/VHDL</span>
+                <span class="tech-pill">KiCad</span>
+                <span class="tech-pill">FreeRTOS</span>
+                <span class="tech-pill">Wireshark</span>
+                <span class="tech-pill">FreeRTOS</span>
+                <span class="tech-pill">KiCad</span>
+                <span class="tech-pill">Verilog/VHDL</span>
+                <span class="tech-pill">SciPy/NumPy</span>
+                <span class="tech-pill">PostgreSQL</span>
+                <span class="tech-pill">Docker</span>
+                <span class="tech-pill">AWS IoT Core</span>
+                <span class="tech-pill">ESP-IDF</span>
+                <span class="tech-pill">MATLAB</span>
+                <span class="tech-pill">GNU Radio</span>
+                <span class="tech-pill">Xilinx Vivado</span>
+                <span class="tech-pill">Altium Designer</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- SNAKE GAME SECTION -->
+    <section class="section snake-section" id="snake-game">
+        <div class="container">
+            <div class="section-header reveal-up">
+                <h2 class="section-title">Play Snake</h2>
+                <p class="section-subtitle">Take a quick break and challenge yourself to a game of Snake.</p>
+            </div>
+            <div class="game-launch-wrapper reveal-up">
+                <button id="launchSnakeBtn" class="btn btn-primary launch-btn">
+                    Play Now
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALLERY SECTION -->
+    <section class="section" id="gallery">
+        <div class="container">
+            <div class="section-header reveal-up">
+                <h2 class="section-title">Gallery</h2>
+                <p class="section-subtitle">Snapshots from our workshops, technical sessions, and campus events.</p>
+            </div>
+            <div class="gallery-grid stagger-container" id="gallery-grid">
+                </div>
+        </div>
+    </section>
+
+    <!-- LIGHTBOX -->
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <div class="lightbox-content">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <p id="lightbox-caption">Placeholder Image</p>
+        </div>
+    </div>
+
+    <!-- SNAKE GAME MODAL -->
+    <div id="snakeModal" class="snake-modal-overlay">
+        <div class="snake-modal-backdrop"></div>
+        <div class="snake-modal-window">
+            <button class="snake-modal-close" id="closeSnakeModal" aria-label="Close game">×</button>
+            <div class="snake-modal-body">
+                <iframe id="snakeIframe" src="games/snake.html" title="Snake Game"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER – with Team link added to Quick Links -->
     <footer class="footer">
         <div class="container footer-grid">
             <div class="footer-col">
@@ -148,6 +363,7 @@
 
     <script src="js/animation.js"></script>
     <script src="js/main.js"></script>
+
     <script>
         (function() {
             const modal = document.getElementById('snakeModal');
