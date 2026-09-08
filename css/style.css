@@ -268,7 +268,7 @@ html.dark .navbar.scrolled {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 80px 0 60px 0;
+    padding: 110px 0 0 0; /* increased top spacing for badge, removed bottom padding */
     position: relative;
     overflow: hidden;
 }
@@ -317,15 +317,6 @@ html.dark .navbar.scrolled {
 .hero-content.hero-ready .hero-cta {
     opacity: 1;
     transform: translateY(0);
-}
-
-.scroll-indicator {
-    opacity: 0;
-    transition: opacity 1s ease;
-    transition-delay: 0.8s;
-}
-.hero-content.hero-ready ~ .scroll-indicator {
-    opacity: 0.5;
 }
 
 .badge {
@@ -417,37 +408,6 @@ html.dark .btn-primary {
 }
 .btn-outline:active {
     transform: scale(0.97);
-}
-
-.scroll-indicator {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    opacity: 0.5;
-}
-.mouse {
-    width: 24px;
-    height: 36px;
-    border: 2px solid var(--text-muted);
-    border-radius: 12px;
-    position: relative;
-}
-.mouse::before {
-    content: '';
-    position: absolute;
-    width: 4px;
-    height: 6px;
-    background: var(--text-muted);
-    left: 50%;
-    transform: translateX(-50%);
-    top: 6px;
-    border-radius: 2px;
-    animation: scroll 1.5s infinite;
-}
-@keyframes scroll {
-    0% { transform: translate(-50%, 0); opacity: 1; }
-    100% { transform: translate(-50%, 15px); opacity: 0; }
 }
 
 /* ==================================================
@@ -1068,7 +1028,14 @@ html.dark .footer { background-color: #020617; }
 .text-center { text-align: center; }
 
 /* ==================================================
-   15. RESPONSIVE OVERRIDES
+   15. TARGETED HOMEPAGE ABOUT SECTION PADDING
+================================================== */
+#about {
+    padding-top: 16px; /* approximately 12pt gap after Hero CTA */
+}
+
+/* ==================================================
+   16. RESPONSIVE OVERRIDES
 ================================================== */
 @media (max-width: 1024px) {
     .grid-3-col { grid-template-columns: repeat(2, 1fr); }
@@ -1116,6 +1083,14 @@ html.dark .footer { background-color: #020617; }
     .launch-btn {
         font-size: 1rem;
         padding: 14px 28px;
+    }
+
+    /* Mobile hero: increase top padding to keep badge spaced */
+    .hero {
+        padding-top: 120px; /* extra spacing on mobile */
+    }
+    #about {
+        padding-top: 16px; /* keep the same 16px gap on mobile */
     }
 }
 
