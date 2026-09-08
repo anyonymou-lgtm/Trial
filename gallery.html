@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - IEEE-RGIT Student Branch</title>
+    <meta name="description" content="Gallery of IEEE-RGIT Student Branch events, workshops, and activities.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animation.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <script src="js/theme.js"></script>
+
+    <style>
+        .page-header {
+            padding: 120px 0 60px 0;
+            text-align: center;
+            background: linear-gradient(180deg, var(--bg-alt) 0%, var(--bg-main) 100%);
+            border-bottom: 1px solid var(--border);
+        }
+        .gallery-grid-full {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .gallery-grid-full .gallery-item {
+            aspect-ratio: 4/3;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            background: var(--surface-hover);
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .gallery-grid-full .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+        .gallery-grid-full .gallery-item:hover {
+            transform: scale(1.02);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+        .gallery-grid-full .gallery-item:hover img {
+            transform: scale(1.04);
+        }
+        @media (max-width: 768px) {
+            .gallery-grid-full {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 1rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .gallery-grid-full {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR – with Gallery active -->
+    <header class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="brand">
+                <div class="brand-icon">
+                    <img src="assets/Recruitment Poster.png" alt="IEEE-RGIT Logo">
+                </div>
+            </a>
+
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="events.html" class="nav-link">Events</a>
+                <a href="gallery.html" class="nav-link" style="color: var(--primary); font-weight: 700;">Gallery</a>
+                <a href="team.html" class="nav-link">Team</a>
+            </nav>
+
+            <div class="nav-actions">
+                <button id="theme-toggle" class="icon-btn" aria-label="Toggle Dark Mode">
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                    <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+                </button>
+                <button id="mobile-menu-btn" class="icon-btn mobile-only" aria-label="Menu">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+                </button>
+            </div>
+        </div>
+        
+        <div class="mobile-menu" id="mobile-menu">
+            <a href="index.html" class="mobile-link">Home</a>
+            <a href="about.html" class="mobile-link">About</a>
+            <a href="events.html" class="mobile-link">Events</a>
+            <a href="gallery.html" class="mobile-link" style="color: var(--primary);">Gallery</a>
+            <a href="team.html" class="mobile-link">Team</a>
+        </div>
+    </header>
+
+    <!-- PAGE HEADER -->
+    <section class="page-header relative overflow-hidden">
+        <div class="tech-lines-container" id="gallery-tech-lines"></div>
+        <div class="container reveal-up">
+            <h1 class="hero-title" style="font-size: 3rem; margin-bottom: 0.5rem;">Our <span class="highlight">Gallery</span></h1>
+            <p class="hero-subtitle" style="margin-bottom: 0;">Explore moments from our workshops, events, and campus activities.</p>
+        </div>
+    </section>
+
+    <!-- GALLERY GRID -->
+    <section class="section">
+        <div class="container">
+            <div class="gallery-grid-full stagger-container" id="gallery-grid-full">
+                <!-- Images will be injected by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- LIGHTBOX -->
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <div class="lightbox-content">
+            <img id="lightbox-image" src="" alt="Gallery Image" style="max-width: 100%; max-height: 70vh; border-radius: 8px;">
+            <p id="lightbox-caption" style="margin-top: 1rem;"></p>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <div class="footer-brand">
+                    <div class="brand-icon"><img src="assets/Recruitment Poster.png" alt="IEEE-RGIT Logo" style="filter: brightness(0) invert(1); height: 32px;"></div>
+                    <span class="brand-title">IEEE-RGIT</span>
+                </div>
+                <p class="footer-desc">Rajiv Gandhi Institute of Technology Student Branch dedicated to fostering technical innovation and engineering excellence.</p>
+                <div class="footer-highlight">IEEE-RGIT Student Run Program for VLSI and Embedded Systems</div>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-title">Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="events.html">Events</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="team.html">Team</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-title">Connect With Us</h4>
+                <div class="social-icons">
+                    <a href="#" class="social-icon" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
+                    <a href="https://www.instagram.com/ieeergit/" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></a>
+                    <a href="#" class="social-icon" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+                    <a href="#" class="social-icon" aria-label="Twitter"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-title">Location</h4>
+                <div class="location">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    <span>RGIT, Versova, Andheri West – 400 053</span>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; <span id="year"></span> IEEE-RGIT Student Branch. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/animation.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        // Gallery images for the dedicated page
+        const galleryImages = [
+            'assets/gallery/p1.jpg',
+            'assets/gallery/p2.jpg',
+            'assets/gallery/p3.jpg',
+            'assets/gallery/p4.jpg',
+            'assets/gallery/p5.jpg',
+            'assets/gallery/p6.jpg'
+        ];
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const container = document.getElementById('gallery-grid-full');
+            if (!container) return;
+
+            galleryImages.forEach((src, index) => {
+                const item = document.createElement('div');
+                item.classList.add('gallery-item', 'stagger-item');
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = 'Gallery Image ' + (index + 1);
+                img.loading = 'lazy';
+                item.appendChild(img);
+
+                // Lightbox click handler
+                item.addEventListener('click', function() {
+                    const lightbox = document.getElementById('lightbox');
+                    const lightboxImg = document.getElementById('lightbox-image');
+                    const lightboxCaption = document.getElementById('lightbox-caption');
+                    lightboxImg.src = src;
+                    lightboxCaption.textContent = 'Gallery Image ' + (index + 1);
+                    lightbox.classList.add('active');
+                });
+
+                container.appendChild(item);
+            });
+
+            // Close lightbox
+            const lightbox = document.getElementById('lightbox');
+            const closeBtn = document.querySelector('.lightbox-close');
+            if (closeBtn && lightbox) {
+                closeBtn.addEventListener('click', function() {
+                    lightbox.classList.remove('active');
+                });
+                lightbox.addEventListener('click', function(e) {
+                    if (e.target === lightbox) {
+                        lightbox.classList.remove('active');
+                    }
+                });
+            }
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && lightbox && lightbox.classList.contains('active')) {
+                    lightbox.classList.remove('active');
+                }
+            });
+        });
+    </script>
+    <script>
+        // Tech lines for the gallery header
+        document.addEventListener("DOMContentLoaded", function() {
+            const container = document.getElementById('gallery-tech-lines');
+            if (!container) return;
+            let numLines = window.innerWidth < 768 ? 5 : 12;
+            for (let i = 0; i < numLines; i++) {
+                const isHorizontal = Math.random() > 0.5;
+                const line = document.createElement('div');
+                line.classList.add('circuit-line');
+                line.style.top = Math.random() * 100 + '%';
+                line.style.left = Math.random() * 100 + '%';
+                if (isHorizontal) {
+                    line.style.width = Math.random() * 150 + 50 + 'px';
+                    line.style.height = '1px';
+                } else {
+                    line.style.width = '1px';
+                    line.style.height = Math.random() * 150 + 50 + 'px';
+                }
+                container.appendChild(line);
+                if (Math.random() > 0.6) {
+                    const dot = document.createElement('div');
+                    dot.classList.add('circuit-dot');
+                    dot.style.top = line.style.top;
+                    dot.style.left = line.style.left;
+                    dot.style.transform = 'translate(-1.5px, -1.5px)';
+                    container.appendChild(dot);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
