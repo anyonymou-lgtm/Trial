@@ -20,7 +20,7 @@
 </head>
 <body>
 
-    <!-- NAVBAR – with Team link -->
+    <!-- NAVBAR – restored with Team link added -->
     <header class="navbar" id="navbar">
         <div class="nav-container">
             <a href="index.html" class="brand">
@@ -57,7 +57,7 @@
         </div>
     </header>
 
-    <!-- Page content unchanged -->
+    <!-- Page Header (unchanged) -->
     <section class="page-header relative overflow-hidden">
         <div class="tech-lines-container" id="about-tech-lines"></div>
         <div class="container reveal-up">
@@ -66,9 +66,60 @@
         </div>
     </section>
 
-    <!-- ... rest of about.html remains exactly the same ... -->
+    <!-- About Core Section (unchanged) -->
+    <section class="section" id="about-core">
+        <div class="container grid-2-col">
+            <div class="about-text reveal-left">
+                <div class="section-line"></div>
+                <h2 class="section-title">Who We Are</h2>
+                <p class="text-muted">The IEEE Student Branch at Rajiv Gandhi Institute of Technology (RGIT) serves as a dynamic hub for engineering enthusiasts. We foster technical competence, professional networking, and ethical innovation across multiple domains.</p>
+                <p class="text-muted">With a specialized focus on <strong>VLSI and Embedded Systems</strong>, our community provides students with rigorous practical exposure, bridging core academic curriculum with real-world industry demands.</p>
+            </div>
+            <div class="about-card reveal-right">
+                <div class="card-glass">
+                    <div class="tech-decorative-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    </div>
+                    <h3>Core Objectives</h3>
+                    <ul class="objective-list">
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Promoting technical excellence in hardware & software.</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Hosting research seminars and bootcamps.</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Mentoring teams for technical showcases.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- FOOTER (unchanged, but Quick Links updated with Team) -->
+    <!-- What We Do Section (unchanged) -->
+    <section class="section bg-alt" id="what-we-do">
+        <div class="tech-lines-container" id="wwd-tech-lines"></div>
+        <div class="container">
+            <div class="section-header reveal-up">
+                <h2 class="section-title">What We Do</h2>
+                <p class="section-subtitle">Engaging activities designed to build real engineering capability.</p>
+            </div>
+            <div class="grid-3-col stagger-container">
+                <div class="card hover-lift stagger-item">
+                    <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
+                    <h3>VLSI & Embedded Systems</h3>
+                    <p class="text-muted">Hands-on training on FPGA boards, microcontroller programming, and circuit simulation.</p>
+                </div>
+                <div class="card hover-lift stagger-item">
+                    <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg></div>
+                    <h3>Technical Workshops</h3>
+                    <p class="text-muted">Regular coding labs covering C++, Python, system architecture, and modern toolchains.</p>
+                </div>
+                <div class="card hover-lift stagger-item">
+                    <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+                    <h3>Innovation Projects</h3>
+                    <p class="text-muted">Collaborative student projects solving real-world challenges through automation and IoT.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER – restored with Team link added -->
     <footer class="footer">
         <div class="container footer-grid">
             <div class="footer-col">
@@ -79,6 +130,7 @@
                 <p class="footer-desc">Rajiv Gandhi Institute of Technology Student Branch dedicated to fostering technical innovation and engineering excellence.</p>
                 <div class="footer-highlight">IEEE-RGIT Student Run Program for VLSI and Embedded Systems</div>
             </div>
+            
             <div class="footer-col">
                 <h4 class="footer-title">Quick Links</h4>
                 <ul class="footer-links">
@@ -88,8 +140,24 @@
                     <li><a href="team.html">Team</a></li>
                 </ul>
             </div>
-            <!-- social icons and location unchanged -->
-            ...
+            
+            <div class="footer-col">
+                <h4 class="footer-title">Connect With Us</h4>
+                <div class="social-icons">
+                    <a href="#" class="social-icon" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
+                    <a href="https://www.instagram.com/ieeergit/" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></a>
+                    <a href="#" class="social-icon" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+                    <a href="#" class="social-icon" aria-label="Twitter"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+                </div>
+            </div>
+            
+            <div class="footer-col">
+                <h4 class="footer-title">Location</h4>
+                <div class="location">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    <span>RGIT, Versova, Andheri West – 400 053</span>
+                </div>
+            </div>
         </div>
         <div class="footer-bottom">
             <div class="container">
@@ -100,6 +168,37 @@
 
     <script src="js/animation.js"></script>
     <script src="js/main.js"></script>
-    <!-- tech lines script unchanged -->
+
+    <!-- Tech lines script (unchanged) -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const container = document.getElementById('about-tech-lines');
+            if (!container) return;
+            let numLines = window.innerWidth < 768 ? 5 : 12;
+            for (let i = 0; i < numLines; i++) {
+                const isHorizontal = Math.random() > 0.5;
+                const line = document.createElement('div');
+                line.classList.add('circuit-line');
+                line.style.top = `${Math.random() * 100}%`;
+                line.style.left = `${Math.random() * 100}%`;
+                if (isHorizontal) {
+                    line.style.width = `${Math.random() * 150 + 50}px`;
+                    line.style.height = '1px';
+                } else {
+                    line.style.width = '1px';
+                    line.style.height = `${Math.random() * 150 + 50}px`;
+                }
+                container.appendChild(line);
+                if (Math.random() > 0.6) {
+                    const dot = document.createElement('div');
+                    dot.classList.add('circuit-dot');
+                    dot.style.top = line.style.top;
+                    dot.style.left = line.style.left;
+                    dot.style.transform = 'translate(-1.5px, -1.5px)'; 
+                    container.appendChild(dot);
+                }
+            }
+        });
+    </script>
 </body>
 </html>
