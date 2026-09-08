@@ -260,7 +260,7 @@ html.dark .navbar.scrolled {
 }
 
 /* ==================================================
-   5. HERO SECTION
+   5. HERO SECTION — FIXED: natural height, no 100vh
 ================================================== */
 .hero {
     min-height: auto;
@@ -713,7 +713,7 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
 }
 
 /* ==================================================
-   8. SNAKE GAME SECTION (UPDATED: launch button)
+   8. SNAKE GAME SECTION
 ================================================== */
 .snake-section {
     padding: 80px 0 60px 0;
@@ -751,7 +751,6 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
     display: flex;
 }
 
-/* Backdrop – dims the background, prevents clicks */
 .snake-modal-backdrop {
     position: absolute;
     inset: 0;
@@ -760,7 +759,6 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
     cursor: default;
 }
 
-/* The modal window – centered, 70% of viewport on desktop */
 .snake-modal-window {
     position: relative;
     width: 70vw;
@@ -777,7 +775,6 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
     border: 1px solid var(--border);
 }
 
-/* Close button – top-right */
 .snake-modal-close {
     position: absolute;
     top: 10px;
@@ -800,7 +797,6 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
     transform: scale(1.1);
 }
 
-/* Modal body – fills the window, contains the iframe */
 .snake-modal-body {
     flex: 1;
     padding: 12px;
@@ -818,7 +814,6 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
     background: var(--bg-main);
 }
 
-/* Responsive: on mobile, use larger width, reduce height */
 @media (max-width: 768px) {
     .snake-modal-window {
         width: 92vw;
