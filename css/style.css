@@ -161,6 +161,13 @@ ul {
     object-fit: contain;
 }
 
+/* --- NEW: Light-mode logo color (blue) --- */
+html:not(.dark) .brand-icon img {
+    filter: brightness(0) saturate(100%) invert(0%) sepia(100%) saturate(10000%) hue-rotate(205deg);
+    /* This turns the white PNG into a blue matching the IEEE primary color.
+       Adjust hue-rotate value if a slightly different blue is desired. */
+}
+
 .brand-title {
     font-weight: 800;
     font-size: 1.1rem;
@@ -268,7 +275,7 @@ html.dark .navbar.scrolled {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 110px 0 0 0; /* increased top spacing for badge, removed bottom padding */
+    padding: 110px 0 0 0;
     position: relative;
     overflow: hidden;
 }
@@ -1031,7 +1038,7 @@ html.dark .footer { background-color: #020617; }
    15. TARGETED HOMEPAGE ABOUT SECTION PADDING
 ================================================== */
 #about {
-    padding-top: 16px; /* approximately 12pt gap after Hero CTA */
+    padding-top: 16px;
 }
 
 /* ==================================================
@@ -1087,10 +1094,10 @@ html.dark .footer { background-color: #020617; }
 
     /* Mobile hero: increase top padding to keep badge spaced */
     .hero {
-        padding-top: 120px; /* extra spacing on mobile */
+        padding-top: 120px;
     }
     #about {
-        padding-top: 16px; /* keep the same 16px gap on mobile */
+        padding-top: 16px;
     }
 }
 
