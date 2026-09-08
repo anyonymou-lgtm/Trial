@@ -270,7 +270,7 @@
         </div>
     </section>
 
-    <!-- SNAKE GAME SECTION (UPDATED: now shows a "Play Now" button) -->
+    <!-- SNAKE GAME SECTION -->
     <section class="section snake-section" id="snake-game">
         <div class="container">
             <div class="section-header reveal-up">
@@ -374,9 +374,6 @@
             function openModal() {
                 modal.classList.add('active');
                 body.style.overflow = 'hidden';
-                // Wait for iframe to load, then start the game
-                // But the iframe might already be loaded, so send message immediately.
-                // We'll use a small delay to ensure the iframe is ready.
                 setTimeout(() => {
                     iframe.contentWindow.postMessage('startGame', '*');
                 }, 100);
@@ -385,24 +382,18 @@
             function closeModal() {
                 modal.classList.remove('active');
                 body.style.overflow = '';
-                // Tell the iframe to stop the game
                 iframe.contentWindow.postMessage('stopGame', '*');
             }
 
-            // Launch button
             launchBtn.addEventListener('click', openModal);
-
-            // Close button
             closeBtn.addEventListener('click', closeModal);
 
-            // Escape key
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && modal.classList.contains('active')) {
                     closeModal();
                 }
             });
 
-            // Listen for messages from iframe
             window.addEventListener('message', (e) => {
                 if (e.data === 'openSnakeModal') {
                     openModal();
