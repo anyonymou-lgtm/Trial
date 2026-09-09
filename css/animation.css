@@ -1,6 +1,8 @@
 /* ==================================================
-   PRELOADER STYLES & KEYFRAMES
+   PRELOADER STYLES & KEYFRAMES (Improved)
 ================================================== */
+
+/* Preloader overlay – fades out, not blocking interactions */
 .preloader-overlay {
     position: fixed;
     inset: 0;
@@ -11,9 +13,10 @@
     justify-content: center;
     opacity: 1;
     visibility: visible;
-    transition: opacity 0.6s ease 0.2s, visibility 0.6s ease 0.2s;
+    transition: opacity 0.8s ease 0.2s, visibility 0.8s ease 0.2s;
     will-change: opacity, visibility;
     min-height: 100vh;
+    overflow: hidden;
 }
 
 .preloader-overlay.fade-out {
@@ -26,11 +29,50 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 5rem;
+    gap: 3.5rem;
     padding: 20px;
+    position: relative;
+    z-index: 2;
 }
 
-/* ===== EXISTING CHIP ASSEMBLY (100% UNCHANGED) ===== */
+/* ---------- Background subtle circuit/particles ---------- */
+.preloader-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.preloader-bg .dot {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(56, 189, 248, 0.12);
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(56, 189, 248, 0.08);
+    animation: float-particle 8s infinite ease-in-out;
+}
+
+.preloader-bg .line-bg {
+    position: absolute;
+    background: rgba(56, 189, 248, 0.04);
+    border-radius: 2px;
+    animation: drift-line 12s infinite alternate ease-in-out;
+}
+
+@keyframes float-particle {
+    0%   { transform: translate(0, 0) scale(0.8); opacity: 0.2; }
+    50%  { transform: translate(20px, -30px) scale(1.2); opacity: 0.5; }
+    100% { transform: translate(-10px, 20px) scale(0.9); opacity: 0.2; }
+}
+
+@keyframes drift-line {
+    0%   { transform: translate(0, 0) rotate(0deg); opacity: 0.1; }
+    100% { transform: translate(30px, -20px) rotate(5deg); opacity: 0.25; }
+}
+
+/* ---------- Microcontroller chip assembly ---------- */
 .chip-assembly {
     position: relative;
     width: 90px;
@@ -40,6 +82,86 @@
     justify-content: center;
 }
 
+/* Incoming circuit traces – now grow rather than slide */
+.incoming-lines {
+    position: absolute;
+    display: flex;
+    gap: 12px;
+}
+.incoming-lines span {
+    background: linear-gradient(90deg, transparent, #38bdf8, transparent);
+    box-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
+    border-radius: 2px;
+    transform-origin: center;
+    will-change: transform;
+}
+
+/* Top lines: horizontal, grow from center */
+.top-lines {
+    flex-direction: row;
+    top: -50px;
+}
+.top-lines span {
+    width: 3px;
+    height: 30px;
+    transform: scaleY(0);
+    animation: lineGrowY 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+.top-lines span:nth-child(1) { animation-delay: 0.15s; }
+.top-lines span:nth-child(2) { animation-delay: 0.35s; }
+
+/* Bottom lines */
+.bottom-lines {
+    flex-direction: row;
+    bottom: -50px;
+}
+.bottom-lines span {
+    width: 3px;
+    height: 30px;
+    transform: scaleY(0);
+    animation: lineGrowY 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+.bottom-lines span:nth-child(1) { animation-delay: 0.25s; }
+.bottom-lines span:nth-child(2) { animation-delay: 0.45s; }
+
+/* Left lines: vertical, grow from center */
+.left-lines {
+    flex-direction: column;
+    left: -50px;
+}
+.left-lines span {
+    width: 30px;
+    height: 3px;
+    transform: scaleX(0);
+    animation: lineGrowX 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+.left-lines span:nth-child(1) { animation-delay: 0.4s; }
+.left-lines span:nth-child(2) { animation-delay: 0.6s; }
+
+/* Right lines */
+.right-lines {
+    flex-direction: column;
+    right: -50px;
+}
+.right-lines span {
+    width: 30px;
+    height: 3px;
+    transform: scaleX(0);
+    animation: lineGrowX 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+.right-lines span:nth-child(1) { animation-delay: 0.5s; }
+.right-lines span:nth-child(2) { animation-delay: 0.7s; }
+
+@keyframes lineGrowX {
+    0% { transform: scaleX(0); opacity: 0; }
+    100% { transform: scaleX(1); opacity: 1; }
+}
+@keyframes lineGrowY {
+    0% { transform: scaleY(0); opacity: 0; }
+    100% { transform: scaleY(1); opacity: 1; }
+}
+
+/* Chip body – assemble with slight rotation and scale */
 .chip-body {
     position: absolute;
     width: 60px;
@@ -47,37 +169,38 @@
     background: #1e293b;
     border: 2px solid #38bdf8;
     border-radius: 12px;
-    box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
     display: flex;
     align-items: center;
     justify-content: center;
     transform: scale(0) rotate(-45deg);
     opacity: 0;
     animation: assembleChip 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    animation-delay: 1.0s;
+    animation-delay: 0.85s;
 }
 
-.chip-core {
-    width: 24px;
-    height: 24px;
-    background: rgba(56, 189, 248, 0.15);
-    border: 1px solid #38bdf8;
-    border-radius: 6px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+@keyframes assembleChip {
+    0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+    60% { transform: scale(1.08) rotate(3deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
 }
 
-.core-pulse {
-    width: 8px;
-    height: 8px;
-    background: #38bdf8;
-    border-radius: 50%;
-    box-shadow: 0 0 10px #38bdf8;
-    animation: coreGlow 1.2s infinite ease-in-out;
+/* After assembly, gentle scale-up and glow */
+.chip-body.complete {
+    animation: chipScaleUp 0.5s ease forwards 0.3s, chipGlow 2s ease-in-out infinite 0.8s;
 }
 
+@keyframes chipScaleUp {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.06); }
+}
+
+@keyframes chipGlow {
+    0%, 100% { box-shadow: 0 0 15px rgba(56, 189, 248, 0.15); }
+    50% { box-shadow: 0 0 30px rgba(56, 189, 248, 0.3); }
+}
+
+/* Chip pins – stay unchanged, just appear with body */
 .chip-pins {
     position: absolute;
     display: flex;
@@ -85,7 +208,8 @@
 }
 .chip-pins span {
     background: #38bdf8;
-    box-shadow: 0 0 6px rgba(56, 189, 248, 0.6);
+    box-shadow: 0 0 6px rgba(56, 189, 248, 0.5);
+    border-radius: 1px;
 }
 .pin-top, .pin-bottom { width: 30px; height: 4px; left: 13px; }
 .pin-top { top: -6px; }
@@ -97,25 +221,39 @@
 .pin-left span, .pin-right span { width: 4px; height: 6px; }
 .pin-right { right: -6px; }
 
-.incoming-lines {
-    position: absolute;
+/* Core pulse – starts after chip assembly */
+.chip-core {
+    width: 24px;
+    height: 24px;
+    background: rgba(56, 189, 248, 0.12);
+    border: 1px solid #38bdf8;
+    border-radius: 6px;
+    position: relative;
     display: flex;
-    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    animation: coreAppear 0.4s ease forwards 1.2s;
 }
-.incoming-lines span {
-    background: linear-gradient(90deg, transparent, #38bdf8, transparent);
-    box-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
+@keyframes coreAppear {
+    0% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
 }
-.top-lines { flex-direction: row; top: -50px; animation: slideDown 0.9s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-.top-lines span { width: 3px; height: 30px; }
-.bottom-lines { flex-direction: row; bottom: -50px; animation: slideUp 0.9s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-.bottom-lines span { width: 3px; height: 30px; }
-.left-lines { flex-direction: column; left: -50px; animation: slideRight 0.9s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-.left-lines span { width: 30px; height: 3px; }
-.right-lines { flex-direction: column; right: -50px; animation: slideLeft 0.9s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-.right-lines span { width: 30px; height: 3px; }
 
-/* ===== IEEE TEXT ===== */
+.core-pulse {
+    width: 8px;
+    height: 8px;
+    background: #38bdf8;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #38bdf8;
+    animation: coreGlow 1.5s infinite ease-in-out 1.4s;
+}
+@keyframes coreGlow {
+    0%, 100% { transform: scale(0.9); opacity: 0.6; box-shadow: 0 0 5px #38bdf8; }
+    50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 18px #38bdf8; }
+}
+
+/* ---------- IEEE text ---------- */
 .preloader-text {
     font-size: 2.2rem;
     font-weight: 800;
@@ -123,52 +261,80 @@
     letter-spacing: 0.3em;
     text-transform: uppercase;
     opacity: 0;
-    transform: translateY(12px);
-    animation: textFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transform: translateY(12px) scale(0.95);
+    animation: textFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     animation-delay: 1.8s;
-    text-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+    text-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
     line-height: 1.2;
 }
 
-/* ===== EXISTING KEYFRAMES (unchanged) ===== */
-@keyframes slideDown {
-    0% { transform: translateY(-70px); opacity: 0; }
-    100% { transform: translateY(0); opacity: 1; }
-}
-@keyframes slideUp {
-    0% { transform: translateY(70px); opacity: 0; }
-    100% { transform: translateY(0); opacity: 1; }
-}
-@keyframes slideRight {
-    0% { transform: translateX(-70px); opacity: 0; }
-    100% { transform: translateX(0); opacity: 1; }
-}
-@keyframes slideLeft {
-    0% { transform: translateX(70px); opacity: 0; }
-    100% { transform: translateX(0); opacity: 1; }
-}
-@keyframes assembleChip {
-    0% { transform: scale(0) rotate(-45deg); opacity: 0; }
-    70% { transform: scale(1.08) rotate(3deg); opacity: 1; }
-    100% { transform: scale(1) rotate(0deg); opacity: 1; }
-}
-@keyframes coreGlow {
-    0%, 100% { transform: scale(0.9); opacity: 0.6; box-shadow: 0 0 5px #38bdf8; }
-    50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 18px #38bdf8; }
-}
 @keyframes textFadeIn {
-    0% { opacity: 0; transform: translateY(12px); letter-spacing: 0.1em; }
-    100% { opacity: 1; transform: translateY(0); letter-spacing: 0.3em; }
+    0% { opacity: 0; transform: translateY(12px) scale(0.95); letter-spacing: 0.1em; }
+    100% { opacity: 1; transform: translateY(0) scale(1); letter-spacing: 0.3em; }
 }
 
-/* ===== RESPONSIVE TWEAKS ===== */
+/* ---------- Responsive ---------- */
 @media (max-width: 480px) {
     .chip-assembly { transform: scale(0.8); }
-    .preloader-container { gap: 3.5rem; }
+    .preloader-container { gap: 2.5rem; }
     .preloader-text { font-size: 1.8rem; letter-spacing: 0.2em; }
 }
 @media (max-height: 600px) {
     .chip-assembly { transform: scale(0.7); }
-    .preloader-container { gap: 2.5rem; }
+    .preloader-container { gap: 1.8rem; }
     .preloader-text { font-size: 1.5rem; }
+}
+
+/* Reduced motion – skip decorative animations */
+@media (prefers-reduced-motion: reduce) {
+    .preloader-bg .dot,
+    .preloader-bg .line-bg {
+        animation: none !important;
+        display: none;
+    }
+    .incoming-lines span {
+        animation: none !important;
+        transform: scale(1) !important;
+        opacity: 1 !important;
+    }
+    .chip-body {
+        animation: none !important;
+        transform: scale(1) rotate(0deg) !important;
+        opacity: 1 !important;
+    }
+    .chip-body.complete {
+        animation: none !important;
+        transform: scale(1) !important;
+        box-shadow: 0 0 15px rgba(56, 189, 248, 0.15);
+    }
+    .chip-core {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: scale(1) !important;
+    }
+    .core-pulse {
+        animation: none !important;
+        transform: scale(1) !important;
+        opacity: 1 !important;
+    }
+    .preloader-text {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: translateY(0) scale(1) !important;
+        letter-spacing: 0.3em !important;
+    }
+    .preloader-overlay {
+        transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+}
+
+/* ---------- Hero scale reveal (added to animation.css) ---------- */
+.hero-content.hero-scale {
+    transform: scale(0.97) translateY(12px);
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hero-content.hero-scale.hero-ready {
+    transform: scale(1) translateY(0);
+    opacity: 1;
 }
