@@ -18,14 +18,30 @@
 </head>
 <body>
 
-    <!-- PRELOADER — Three-Dot Orbit → IEEE-RGIT Logo -->
-    <div id="preloader" class="preloader-overlay" aria-hidden="false">
-        <div class="preloader-stage">
-            <div class="preloader-glow"></div>
-            <div class="preloader-dot dot-1"></div>
-            <div class="preloader-dot dot-2"></div>
-            <div class="preloader-dot dot-3"></div>
-            <img src="assets/Recruitment Poster.png" alt="IEEE-RGIT" class="preloader-logo">
+    <!-- ============================================================
+         PRELOADER — Particles physically draw the IEEE-RGIT atom
+         ============================================================ -->
+    <div id="preloader" class="preloader-overlay" role="status" aria-label="Loading">
+        <div class="preloader-content">
+            <div class="preloader-stage">
+                <svg class="preloader-svg"
+                     viewBox="-110 -110 220 220"
+                     xmlns="http://www.w3.org/2000/svg"
+                     aria-hidden="true">
+                    <path id="preloader-trail-0" class="orbit-trail" d="" />
+                    <path id="preloader-trail-1" class="orbit-trail" d="" />
+                    <path id="preloader-trail-2" class="orbit-trail" d="" />
+
+                    <circle id="preloader-dot-0" class="preloader-dot" r="4" cx="0" cy="0" />
+                    <circle id="preloader-dot-1" class="preloader-dot" r="4" cx="0" cy="0" />
+                    <circle id="preloader-dot-2" class="preloader-dot" r="4" cx="0" cy="0" />
+                </svg>
+            </div>
+
+            <div class="preloader-text">
+                <div class="preloader-brand">IEEE RGIT</div>
+                <div class="preloader-tagline">LEARN. EVOLVE.</div>
+            </div>
         </div>
     </div>
 
