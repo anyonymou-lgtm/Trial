@@ -16,7 +16,7 @@
     --tech-line: rgba(0, 98, 155, 0.1);
     --glass-bg: rgba(255, 255, 255, 0.85);
 
-    /* Liquid Glass: Navbar (light) — also used by the footer */
+    /* Liquid Glass: Navbar (light) — also reused by the footer */
     --glass-nav-bg: rgba(255, 255, 255, 0.68);
     --glass-nav-border: rgba(226, 232, 240, 0.8);
     --glass-nav-highlight: rgba(255, 255, 255, 0.95);
@@ -50,19 +50,16 @@ html.dark {
     --tech-line: rgba(56, 189, 248, 0.1);
     --glass-bg: rgba(11, 17, 32, 0.85);
 
-    /* Liquid Glass: Navbar (dark) — also used by the footer */
     --glass-nav-bg: rgba(15, 23, 42, 0.62);
     --glass-nav-border: rgba(51, 65, 85, 0.7);
     --glass-nav-highlight: rgba(255, 255, 255, 0.08);
     --glass-nav-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
 
-    /* Liquid Glass: Secondary Button (dark) */
     --glass-btn-bg: rgba(30, 41, 59, 0.55);
     --glass-btn-bg-hover: rgba(30, 41, 59, 0.82);
     --glass-btn-border: rgba(56, 189, 248, 0.3);
     --glass-btn-highlight: rgba(255, 255, 255, 0.1);
 
-    /* Liquid Glass: Primary Button (dark) */
     --glass-primary-bg: rgba(56, 189, 248, 0.85);
     --glass-primary-bg-hover: rgba(56, 189, 248, 0.96);
     --glass-primary-border: rgba(56, 189, 248, 0.95);
@@ -152,7 +149,7 @@ ul {
 .highlight { color: var(--primary); }
 
 /* ==================================================
-   4. NAVBAR (unchanged — reference implementation)
+   4. NAVBAR (Liquid Glass — unchanged reference)
 ================================================== */
 .navbar {
     position: fixed;
@@ -766,9 +763,9 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
 
 /* ==================================================
    10. FOOTER — LIQUID GLASS PANEL
-   Matches the navbar's design language:
-   same --glass-nav-* variables, same blur+saturation,
-   same border/highlight/shadow treatment.
+   Matches the navbar's design language via the same
+   --glass-nav-* variables, blur, border, highlight,
+   and shadow treatment. Floating rounded container.
 ================================================== */
 
 .footer {
@@ -779,7 +776,7 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
     border-radius: 28px;
     overflow: hidden;
 
-    /* Same surface as the navbar */
+    /* Same glass surface as the navbar */
     background: var(--glass-nav-bg);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -932,7 +929,6 @@ html.dark .footer-highlight {
     text-align: center;
     color: var(--text-muted);
     font-size: 0.8rem;
-    /* very subtle inner highlight underneath the divider */
     background: rgba(255, 255, 255, 0.02);
 }
 html.dark .footer-bottom {
@@ -1086,7 +1082,7 @@ html.dark .footer-bottom {
     .nav-link::before { display: none; }
     .nav-link:hover { background: var(--surface-hover); border-radius: 8px; }
 
-    /* Footer fallback: solid surface */
+    /* Footer fallback: solid surface if backdrop-filter unsupported */
     .footer {
         background: var(--surface);
         border-color: var(--border);
@@ -1104,4 +1100,651 @@ html.dark .footer-bottom {
     }
     .marquee-track-1, .marquee-track-2 { animation: none !important; flex-wrap: wrap; justify-content: center; }
     .reveal-up, .reveal-left, .reveal-right, .stagger-item { opacity: 1 !important; transform: none !important; }
+}
+
+/* ==================================================
+   18. EVENTS PAGE — SCOPED STYLES
+   All selectors are prefixed with .events-page or use
+   event-specific class names so they cannot leak into
+   other pages. This is the RESTORED version.
+================================================== */
+
+/* ---------- Events page hero ---------- */
+.events-page .events-hero {
+    padding: 130px 0 50px 0;
+    text-align: center;
+    background: linear-gradient(180deg, var(--bg-alt) 0%, var(--bg-main) 100%);
+    border-bottom: 1px solid var(--border);
+}
+
+.events-page .events-eyebrow {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--primary);
+    background: rgba(0, 98, 155, 0.08);
+    border: 1px solid rgba(0, 98, 155, 0.15);
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 1rem;
+}
+html.dark .events-page .events-eyebrow {
+    background: rgba(56, 189, 248, 0.1);
+    border-color: rgba(56, 189, 248, 0.2);
+}
+
+.events-page .events-hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 0.75rem;
+}
+
+.events-page .events-hero-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 640px;
+    margin: 0 auto;
+    line-height: 1.65;
+}
+
+/* ---------- Events intro ---------- */
+.events-page .events-intro {
+    padding: 50px 0 20px 0;
+    text-align: center;
+}
+
+.events-page .events-intro .eyebrow {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 0.75rem;
+}
+
+.events-page .events-intro h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+}
+
+.events-page .events-intro p {
+    color: var(--text-muted);
+    max-width: 680px;
+    margin: 0 auto;
+    line-height: 1.7;
+    font-size: 1rem;
+}
+
+/* ---------- Event blocks ---------- */
+.events-page .event-block {
+    padding: 40px 0;
+}
+.events-page .event-block-alt {
+    background: var(--bg-alt);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+
+/* ---------- Event card ---------- */
+.events-page .event-card-full {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 2.25rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.events-page .event-card-full::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--primary);
+    opacity: 0.55;
+}
+.events-page .event-card-full:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+    border-color: var(--primary);
+}
+html.dark .events-page .event-card-full:hover {
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+.events-page .event-card-header {
+    margin-bottom: 1.75rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.events-page .event-date-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--primary);
+    background: rgba(0, 98, 155, 0.08);
+    border: 1px solid rgba(0, 98, 155, 0.15);
+    padding: 6px 12px;
+    border-radius: 100px;
+    margin-bottom: 0.9rem;
+}
+html.dark .events-page .event-date-badge {
+    background: rgba(56, 189, 248, 0.1);
+    border-color: rgba(56, 189, 248, 0.2);
+}
+.events-page .event-date-badge svg { width: 14px; height: 14px; }
+
+.events-page .event-card-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--text-main);
+    margin-bottom: 0.4rem;
+}
+
+.events-page .event-card-location {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    font-weight: 500;
+}
+.events-page .event-card-location svg {
+    width: 16px;
+    height: 16px;
+    color: var(--primary);
+    flex-shrink: 0;
+}
+
+/* ---------- Event meta grid ---------- */
+.events-page .event-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.85rem;
+    margin-top: 1.4rem;
+}
+.events-page .event-meta-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 0.85rem 1rem;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+.events-page .event-meta-icon {
+    width: 30px;
+    height: 30px;
+    background: rgba(0, 98, 155, 0.1);
+    color: var(--primary);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+html.dark .events-page .event-meta-icon { background: rgba(56, 189, 248, 0.1); }
+.events-page .event-meta-icon svg { width: 15px; height: 15px; }
+.events-page .event-meta-text { min-width: 0; }
+.events-page .event-meta-label {
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+}
+.events-page .event-meta-value {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-main);
+    line-height: 1.45;
+    word-wrap: break-word;
+}
+
+/* ---------- Event card body ---------- */
+.events-page .event-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+}
+.events-page .event-section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    letter-spacing: -0.01em;
+}
+.events-page .event-section-title::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--primary);
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.events-page .event-summary {
+    color: var(--text-muted);
+    line-height: 1.75;
+    font-size: 0.98rem;
+}
+
+/* ---------- Explore grid ---------- */
+.events-page .explore-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin-top: 0.75rem;
+}
+.events-page .explore-item {
+    padding: 1.15rem;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    transition: border-color 0.25s ease, transform 0.25s ease;
+}
+.events-page .explore-item:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+.events-page .explore-num {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.35rem;
+}
+.events-page .explore-item h4 {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.45rem;
+    line-height: 1.3;
+}
+.events-page .explore-item p {
+    font-size: 0.88rem;
+    line-height: 1.65;
+    color: var(--text-muted);
+}
+
+/* ---------- Timeline ---------- */
+.events-page .event-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    margin-top: 0.4rem;
+}
+.events-page .timeline-item {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 1rem;
+    padding: 0.9rem 1rem;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    align-items: start;
+}
+.events-page .timeline-time {
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: 0.03em;
+    padding-top: 2px;
+}
+.events-page .timeline-content h4 {
+    font-size: 0.94rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.3rem;
+}
+.events-page .timeline-content p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+.events-page .timeline-content ul {
+    margin-top: 0.45rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+.events-page .timeline-content ul li {
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+    padding-left: 1rem;
+    position: relative;
+}
+.events-page .timeline-content ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--primary);
+    opacity: 0.7;
+}
+
+/* ---------- Accomplishments ---------- */
+.events-page .accomplishments {
+    background: rgba(0, 98, 155, 0.04);
+    border: 1px solid rgba(0, 98, 155, 0.15);
+    border-radius: 14px;
+    padding: 1.5rem;
+}
+html.dark .events-page .accomplishments {
+    background: rgba(56, 189, 248, 0.05);
+    border-color: rgba(56, 189, 248, 0.18);
+}
+.events-page .accomplishments .event-section-title { margin-bottom: 0.85rem; }
+.events-page .accomplishments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+.events-page .accomplishments-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+.events-page .accomplishments-list li svg {
+    width: 17px;
+    height: 17px;
+    color: var(--primary);
+    flex-shrink: 0;
+    margin-top: 3px;
+}
+
+/* ---------- Flagship (TechForge'26) ---------- */
+.events-page .event-flagship {
+    padding: 50px 0 70px 0;
+}
+.events-page .flagship-card {
+    position: relative;
+    background: var(--surface);
+    border: 2px solid var(--primary);
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0, 98, 155, 0.1);
+}
+html.dark .events-page .flagship-card {
+    box-shadow: 0 12px 40px rgba(56, 189, 248, 0.1);
+}
+
+.events-page .flagship-badge {
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    z-index: 5;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    box-shadow: 0 4px 14px rgba(0, 98, 155, 0.3);
+}
+html.dark .events-page .flagship-badge { color: #0b1120; }
+.events-page .flagship-badge svg { width: 13px; height: 13px; }
+
+.events-page .flagship-header {
+    padding: 2.75rem 2.25rem 2.25rem 2.25rem;
+    background: rgba(0, 98, 155, 0.06);
+    border-bottom: 1px solid var(--border);
+}
+html.dark .events-page .flagship-header { background: rgba(56, 189, 248, 0.06); }
+
+.events-page .flagship-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 0.7rem;
+}
+.events-page .flagship-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--text-main);
+    margin-bottom: 0.75rem;
+}
+.events-page .flagship-tagline {
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 720px;
+    margin-bottom: 1.5rem;
+}
+.events-page .flagship-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.85rem;
+}
+.events-page .flagship-meta .event-meta-item { background: var(--surface); }
+
+.events-page .flagship-body {
+    padding: 2.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.25rem;
+}
+.events-page .flagship-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+.events-page .flagship-section-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: -0.01em;
+    padding-bottom: 0.65rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.events-page .flagship-section-title::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--primary);
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.events-page .flagship-section p {
+    font-size: 0.96rem;
+    line-height: 1.75;
+    color: var(--text-muted);
+}
+.events-page .flagship-section .bullet-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+.events-page .flagship-section .bullet-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.93rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+}
+.events-page .flagship-section .bullet-list li svg {
+    width: 16px;
+    height: 16px;
+    color: var(--primary);
+    flex-shrink: 0;
+    margin-top: 4px;
+}
+
+/* ---------- Team grid inside flagship ---------- */
+.events-page .team-grid-flagship {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 0.9rem;
+    margin-top: 0.5rem;
+}
+.events-page .team-block-flagship {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.05rem;
+}
+.events-page .team-block-flagship h4 {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+.events-page .team-block-flagship ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.28rem;
+}
+.events-page .team-block-flagship li {
+    font-size: 0.88rem;
+    color: var(--text-main);
+    line-height: 1.5;
+    font-weight: 500;
+}
+.events-page .team-block-flagship li small {
+    display: block;
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+/* ---------- Tables ---------- */
+.events-page .table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    margin-top: 0.4rem;
+    -webkit-overflow-scrolling: touch;
+}
+.events-page .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 560px;
+    background: var(--surface);
+    font-size: 0.88rem;
+}
+.events-page .data-table thead th {
+    background: var(--bg-alt);
+    color: var(--text-main);
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-align: left;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+}
+.events-page .data-table tbody td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-main);
+    vertical-align: top;
+    line-height: 1.5;
+}
+.events-page .data-table tbody tr:last-child td { border-bottom: none; }
+.events-page .data-table tbody tr:hover { background: var(--bg-alt); }
+.events-page .data-table tbody td:first-child {
+    font-weight: 700;
+    color: var(--primary);
+    white-space: nowrap;
+}
+.events-page .results-table tbody td:nth-child(2) {
+    font-weight: 700;
+    color: var(--text-main);
+}
+.events-page .results-table tbody td:last-child {
+    font-weight: 800;
+    color: var(--primary);
+    white-space: nowrap;
+}
+
+/* ---------- Stat row ---------- */
+.events-page .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 0.7rem;
+    margin-top: 0.4rem;
+}
+.events-page .stat-box {
+    padding: 0.95rem;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-align: center;
+}
+.events-page .stat-box .stat-value {
+    font-size: 1.55rem;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.3rem;
+}
+.events-page .stat-box .stat-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+/* ---------- Flagship accomplishments ---------- */
+.events-page .flagship-accomplishments {
+    background: rgba(0, 98, 155, 0.05);
+    border: 1px solid rgba(0, 98, 155, 0.15);
+    border-radius: 14px;
+    padding: 1.75rem;
+}
+html.dark .events-page .flagship-accomplishments {
+    background: rgba(56, 189, 248, 0.05);
+    border-color: rgba(56, 189, 248, 0.18);
+}
+.events-page .flagship-accomplishments .flagship-section-title {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0.85rem;
 }
