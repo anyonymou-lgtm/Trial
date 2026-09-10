@@ -42,7 +42,7 @@
         gap: 1rem;
     }
 
-    /* ---------- Footer: tighter margins, single column ---------- */
+    /* ---------- Footer (glass) mobile ---------- */
     .footer {
         margin: 32px 16px 16px;
         padding: 40px 0 0;
@@ -144,7 +144,7 @@
 }
 
 /* ==================================================
-   RESPONSIVE — EVENTS PAGE (kept intact)
+   RESPONSIVE — EVENTS PAGE (restored, intact)
 ================================================== */
 
 /* ---------- Tablet & below ---------- */
