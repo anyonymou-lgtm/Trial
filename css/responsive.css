@@ -1,3 +1,7 @@
+/* ==================================================
+   RESPONSIVE — BASE LAYOUT
+================================================== */
+
 /* Tablet (max-width: 1024px) */
 @media (max-width: 1024px) {
     .grid-3-col {
@@ -91,5 +95,111 @@
     }
     .mobile-menu {
         display: none !important;
+    }
+}
+
+/* ==================================================
+   RESPONSIVE — EVENTS PAGE
+================================================== */
+
+/* ---------- Tablet & below ---------- */
+@media (max-width: 900px) {
+    .flagship-title {
+        font-size: 2.2rem;
+    }
+    .flagship-header {
+        padding: 2.5rem 1.75rem 2rem 1.75rem;
+    }
+    .flagship-body {
+        padding: 1.75rem;
+    }
+    .flagship-badge {
+        top: 16px;
+        right: 16px;
+        font-size: 0.65rem;
+        padding: 6px 12px;
+    }
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 640px) {
+    .event-block {
+        padding: 32px 0;
+    }
+    .event-card-full {
+        padding: 1.5rem;
+        border-radius: 16px;
+    }
+    .event-card-title {
+        font-size: 1.45rem;
+    }
+    .event-meta-grid {
+        grid-template-columns: 1fr;
+    }
+    .explore-grid {
+        grid-template-columns: 1fr;
+    }
+    .timeline-item {
+        grid-template-columns: 1fr;
+        gap: 0.35rem;
+    }
+    .timeline-time {
+        padding-top: 0;
+    }
+    .accomplishments {
+        padding: 1.25rem;
+    }
+
+    .flagship-card {
+        border-radius: 18px;
+    }
+    .flagship-header {
+        padding: 4rem 1.25rem 1.5rem 1.25rem;
+    }
+    .flagship-title {
+        font-size: 1.75rem;
+    }
+    .flagship-tagline {
+        font-size: 0.95rem;
+    }
+    .flagship-badge {
+        top: 12px;
+        right: 12px;
+        font-size: 0.6rem;
+        padding: 5px 10px;
+        letter-spacing: 0.08em;
+    }
+    .flagship-body {
+        padding: 1.25rem;
+        gap: 1.75rem;
+    }
+    .flagship-section-title {
+        font-size: 1.15rem;
+    }
+    .stat-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .stat-box .stat-value {
+        font-size: 1.35rem;
+    }
+    .flagship-accomplishments {
+        padding: 1.25rem;
+    }
+}
+
+/* ==================================================
+   REDUCED MOTION — Events page
+================================================== */
+@media (prefers-reduced-motion: reduce) {
+    .flagship-badge {
+        animation: none !important;
+    }
+    .event-card-full,
+    .explore-item {
+        transition: none !important;
+    }
+    .event-card-full:hover,
+    .explore-item:hover {
+        transform: none;
     }
 }
