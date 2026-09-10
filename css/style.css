@@ -1591,4 +1591,63 @@ html.dark .events-page .flagship-header { background: rgba(56, 189, 248, 0.06); 
 .events-page .data-table tbody tr:last-child td { border-bottom: none; }
 .events-page .data-table tbody tr:hover { background: var(--bg-alt); }
 .events-page .data-table tbody td:first-child {
-    font
+    font-weight: 700;
+    color: var(--primary);
+    white-space: nowrap;
+}
+.events-page .results-table tbody td:nth-child(2) {
+    font-weight: 700;
+    color: var(--text-main);
+}
+.events-page .results-table tbody td:last-child {
+    font-weight: 800;
+    color: var(--primary);
+    white-space: nowrap;
+}
+
+/* ---------- Stat row ---------- */
+.events-page .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 0.7rem;
+    margin-top: 0.4rem;
+}
+.events-page .stat-box {
+    padding: 0.95rem;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-align: center;
+}
+.events-page .stat-box .stat-value {
+    font-size: 1.55rem;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.3rem;
+}
+.events-page .stat-box .stat-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+/* ---------- Flagship accomplishments ---------- */
+.events-page .flagship-accomplishments {
+    background: rgba(0, 98, 155, 0.05);
+    border: 1px solid rgba(0, 98, 155, 0.15);
+    border-radius: 14px;
+    padding: 1.75rem;
+}
+html.dark .events-page .flagship-accomplishments {
+    background: rgba(56, 189, 248, 0.05);
+    border-color: rgba(56, 189, 248, 0.18);
+}
+.events-page .flagship-accomplishments .flagship-section-title {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0.85rem;
+}
