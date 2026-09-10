@@ -1,8 +1,18 @@
 /* ==================================================
-   PRELOADER — Base circle → three particles → IEEE-RGIT atom
-   --------------------------------------------------
-   Single source of truth: orbitPoint(i, theta, scale)
-   is used for BOTH the dot AND the trail points.
+   PRELOADER — Circle stays; three particles emerge
+   inward from behind/around the circle and draw the
+   IEEE-RGIT atom trails.
+
+   ONE source of truth: orbitPoint(i, theta, scale)
+   supplies BOTH the dot position AND the trail point.
+
+   Direction is INWARD:
+     • Dots start OUTSIDE the circle at ~1.5x scale.
+     • They travel inward along a curved path.
+     • They END at their respective final positions
+       (which is where the previous version started them).
+     • Trails are the exact history of the dots' path.
+
    No animateMotion. No nested <g rotate>. No dash tricks.
    ================================================== */
 (function () {
@@ -47,31 +57,33 @@
     /* -------------------------------------------------
        If critical elements are missing, reveal and bail
     ------------------------------------------------- */
-    if (!baseCircle ||
-        !trailEls.every(Boolean) ||
-        !dotEls.every(Boolean)) {
+    if (!baseCircle || !trailEls.every(Boolean) || !dotEls.every(Boolean)) {
         revealSite();
         return;
     }
 
     /* -------------------------------------------------
        GEOMETRY — matches the official IEEE-RGIT atom
-       Three ellipses: aspect ratio ≈ 3:1, rotated by
-       0°, 60°, 120° around a shared center.
-       viewBox is -110 -110 220 220 → the atom fits.
+       Three ellipses ~3:1 aspect, rotated 0° / 60° / 120°.
+       viewBox -110..110 keeps everything inside.
     ------------------------------------------------- */
-    const RX = 80;
-    const RY = 28;
+    const RX = 78;
+    const RY = 26;
     const ROTATIONS = [0, Math.PI / 3, 2 * Math.PI / 3];
 
-    /* Each particle starts at a specific angle on its
-       ellipse. These starting thetas keep the three dots
-       visually separated throughout the animation. */
-    const START_THETAS = [
-        Math.PI / 2,           // Dot 0 (rot 0)   → (0, 28)
-        3 * Math.PI / 2,       // Dot 1 (rot 60)  → (24.25, -14)
-        Math.PI / 2            // Dot 2 (rot 120) → (-24.25, -14)
+    /* FINAL positions — where each dot ENDS.
+       These are exactly where the previous version
+       STARTED the dots. Do not change. */
+    const FINAL_THETAS = [
+        Math.PI / 2,          // Dot 0: ellipse rot 0°    → (0, 26)
+        3 * Math.PI / 2,      // Dot 1: ellipse rot 60°   → (22.5, -13)
+        Math.PI / 2           // Dot 2: ellipse rot 120°  → (-22.5, -13)
     ];
+
+    /* Emergence start: dots begin at a larger scale and
+       slightly ahead in theta so their path curves. */
+    const EMERGENCE_THETA_OFFSET = Math.PI / 6;   // 30° ahead
+    const EMERGENCE_SCALE = 1.55;                 // ~1.55x the final ellipse
 
     /* -------------------------------------------------
        THE orbit function — used by dots AND trails
@@ -80,11 +92,11 @@
         const rot = ROTATIONS[orbitIndex];
         const lx = RX * scale * Math.cos(theta);
         const ly = RY * scale * Math.sin(theta);
-        const cosR = Math.cos(rot);
-        const sinR = Math.sin(rot);
+        const c = Math.cos(rot);
+        const s = Math.sin(rot);
         return {
-            x: lx * cosR - ly * sinR,
-            y: lx * sinR + ly * cosR
+            x: lx * c - ly * s,
+            y: lx * s + ly * c
         };
     }
 
@@ -103,58 +115,61 @@
     /* -------------------------------------------------
        Easing
     ------------------------------------------------- */
-    function easeOutCubic(t) {
-        return 1 - Math.pow(1 - t, 3);
-    }
+    function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
     function easeInOutCubic(t) {
-        return t < 0.5
-            ? 4 * t * t * t
-            : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
     }
-    function clamp(v, lo, hi) {
-        return v < lo ? lo : v > hi ? hi : v;
-    }
+    function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
 
     /* -------------------------------------------------
-       Reduced motion: static final atom
+       Reduced motion: skip animation, show finished atom
     ------------------------------------------------- */
     const prefersReducedMotion =
         window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (prefersReducedMotion) {
-        // Draw the three complete ellipses immediately
+        // Draw full ellipses
         const STEPS = 90;
         for (let i = 0; i < 3; i++) {
             const pts = [];
             for (let k = 0; k <= STEPS; k++) {
-                const theta = START_THETAS[i] + (k / STEPS) * Math.PI * 2;
+                const theta = FINAL_THETAS[i] + (k / STEPS) * Math.PI * 2;
                 pts.push(orbitPoint(i, theta, 1));
             }
             trailEls[i].setAttribute('d', buildTrailPath(pts));
         }
-        // Base circle and dots hidden
-        baseCircle.style.opacity = '0';
+        baseCircle.style.opacity = '1';
+        baseCircle.setAttribute('transform', 'scale(1)');
         dotEls.forEach(function (d) { d.style.opacity = '0'; });
-        // Text visible
         if (brandEl) brandEl.classList.add('visible');
         if (taglineEl) taglineEl.classList.add('visible');
-        // Fade out shortly
         setTimeout(revealSite, 900);
         return;
     }
 
     /* -------------------------------------------------
-       Timeline (ms). Total ≈ 3.65 s.
+       Timeline (ms). Total ~3.75s
+       ------------------------------------------------
+        0   – 250  : blank
+        250 – 650  : circle fades in (stays visible)
+        600 – 850  : dots fade in (at outer start positions)
+        850 – 1250 : emergence — dots curve inward
+        1250– 2550 : orbit — dots draw their trails
+        2550– 2750 : dots settle / fade slightly
+        2550       : IEEE RGIT fades in
+        2750       : LEARN. EVOLVE. fades in
+        3200       : preloader fade-out begins
+        3750       : done
     ------------------------------------------------- */
     const T = {
-        circleIn:    [350, 850],    // base circle fade / scale in
-        dotsIn:      [750, 1050],   // particles fade in
-        orbit:       [1050, 2400],  // particles orbit and draw trails
-        circleOut:   [1650, 2100],  // base circle fades out
-        dotsOut:     [2400, 2650],  // particles fade out
-        brandIn:     2550,          // "IEEE RGIT" visible
-        taglineIn:   2750,          // "LEARN. EVOLVE." visible
-        fadeStart:   3200           // preloader begins fade-out
+        circleIn:  [250, 650],
+        dotIn:     [600, 850],
+        emerge:    [850, 1250],
+        orbit:     [1250, 2550],
+        dotSettle: [2550, 2750],
+        brandIn:   2550,
+        taglineIn: 2750,
+        fadeStart: 3200
     };
 
     /* -------------------------------------------------
@@ -163,10 +178,14 @@
     const trailPoints = [[], [], []];
     const TRAIL_MAX = 400;    // safety cap
 
-    /* Pre-position dots at their starting points so they
-       don't "flash" at (0,0) before the first frame. */
+    /* Pre-position dots at their outer start positions so
+       there's no flash at (0,0) before the first frame. */
     for (let i = 0; i < 3; i++) {
-        const start = orbitPoint(i, START_THETAS[i], 1);
+        const start = orbitPoint(
+            i,
+            FINAL_THETAS[i] + EMERGENCE_THETA_OFFSET,
+            EMERGENCE_SCALE
+        );
         dotEls[i].setAttribute('cx', start.x.toFixed(2));
         dotEls[i].setAttribute('cy', start.y.toFixed(2));
     }
@@ -175,79 +194,103 @@
        Frame loop
     ------------------------------------------------- */
     let startTime = null;
+    let orbitClosed = [false, false, false];
 
     function frame(now) {
         if (startTime === null) startTime = now;
         const elapsed = now - startTime;
 
-        /* ---------- Base circle ---------- */
-        const cInT  = clamp((elapsed - T.circleIn[0]) /
-                            (T.circleIn[1] - T.circleIn[0]), 0, 1);
-        const cOutT = clamp((elapsed - T.circleOut[0]) /
-                            (T.circleOut[1] - T.circleOut[0]), 0, 1);
-        const circleOpacity = easeOutCubic(cInT) * (1 - cOutT);
-        const circleScale   = 0.85 + 0.15 * easeOutCubic(cInT);
+        /* ---------- Base circle: fade in, stay in ---------- */
+        const cIn = clamp((elapsed - T.circleIn[0]) /
+                          (T.circleIn[1] - T.circleIn[0]), 0, 1);
+        const circleOpacity = easeOutCubic(cIn);
+        const circleScale = 0.85 + 0.15 * easeOutCubic(cIn);
         baseCircle.style.opacity = circleOpacity.toFixed(3);
-        baseCircle.setAttribute('transform', 'scale(' + circleScale.toFixed(3) + ')');
+        baseCircle.setAttribute('transform',
+            'scale(' + circleScale.toFixed(3) + ')');
 
-        /* ---------- Dots fade in / out ---------- */
-        const dInT  = clamp((elapsed - T.dotsIn[0]) /
-                            (T.dotsIn[1] - T.dotsIn[0]), 0, 1);
-        const dOutT = clamp((elapsed - T.dotsOut[0]) /
-                            (T.dotsOut[1] - T.dotsOut[0]), 0, 1);
-        const dotOpacity = easeOutCubic(dInT) * (1 - dOutT);
+        /* ---------- Dots: fade-in / settle ---------- */
+        const dIn = clamp((elapsed - T.dotIn[0]) /
+                          (T.dotIn[1] - T.dotIn[0]), 0, 1);
+        const settle = clamp((elapsed - T.dotSettle[0]) /
+                             (T.dotSettle[1] - T.dotSettle[0]), 0, 1);
+        const dotOpacity = easeOutCubic(dIn) * (1 - 0.55 * settle);
 
-        /* ---------- Orbit phase ---------- */
-        if (elapsed >= T.orbit[0]) {
-            const orbitT = clamp((elapsed - T.orbit[0]) /
-                                 (T.orbit[1] - T.orbit[0]), 0, 1);
+        /* ---------- Motion: emergence → orbit ---------- */
+        for (let i = 0; i < 3; i++) {
+            let pt;
 
-            // Angular progress: ease in-out over one full revolution
-            const eased = easeInOutCubic(orbitT);
+            if (elapsed < T.emerge[0]) {
+                /* Before emergence: hold at outer start position */
+                pt = orbitPoint(
+                    i,
+                    FINAL_THETAS[i] + EMERGENCE_THETA_OFFSET,
+                    EMERGENCE_SCALE
+                );
+            } else if (elapsed < T.emerge[1]) {
+                /* Emergence: curve inward from outer to final */
+                const et = (elapsed - T.emerge[0]) /
+                           (T.emerge[1] - T.emerge[0]);
+                const e = easeInOutCubic(et);
 
-            // Radial scale: subtle "settle" — from 1.05 → 1.0 during first 40%
-            const scaleT = clamp(orbitT / 0.4, 0, 1);
-            const scale = 1.05 - 0.05 * easeOutCubic(scaleT);
+                const theta = FINAL_THETAS[i] +
+                              EMERGENCE_THETA_OFFSET * (1 - e);
+                const scale = EMERGENCE_SCALE +
+                              (1 - EMERGENCE_SCALE) * e;
+                pt = orbitPoint(i, theta, scale);
+            } else if (elapsed < T.orbit[1]) {
+                /* Orbit: travel around the ellipse, drawing trail */
+                const ot = (elapsed - T.orbit[0]) /
+                           (T.orbit[1] - T.orbit[0]);
+                const e = easeInOutCubic(ot);
+                const theta = FINAL_THETAS[i] + e * Math.PI * 2;
+                pt = orbitPoint(i, theta, 1);
 
-            for (let i = 0; i < 3; i++) {
-                // SAME function for dot AND trail
-                const theta = START_THETAS[i] + eased * Math.PI * 2;
-                const pt = orbitPoint(i, theta, scale);
+                if (trailPoints[i].length >= TRAIL_MAX) {
+                    trailPoints[i].shift();
+                }
+                trailPoints[i].push({ x: pt.x, y: pt.y });
+                trailEls[i].setAttribute(
+                    'd',
+                    buildTrailPath(trailPoints[i])
+                );
+            } else {
+                /* Orbit done: hold at final position */
+                pt = orbitPoint(i, FINAL_THETAS[i], 1);
 
-                // Move the dot
-                dotEls[i].setAttribute('cx', pt.x.toFixed(2));
-                dotEls[i].setAttribute('cy', pt.y.toFixed(2));
-                dotEls[i].style.opacity = dotOpacity.toFixed(3);
-
-                // Append the same point to the trail (only while drawing)
-                if (orbitT < 1) {
-                    if (trailPoints[i].length >= TRAIL_MAX) {
-                        trailPoints[i].shift();
-                    }
-                    trailPoints[i].push({ x: pt.x, y: pt.y });
-                    trailEls[i].setAttribute('d', buildTrailPath(trailPoints[i]));
+                /* Close the trail exactly once */
+                if (!orbitClosed[i]) {
+                    trailPoints[i].push({
+                        x: pt.x,
+                        y: pt.y
+                    });
+                    trailEls[i].setAttribute(
+                        'd',
+                        buildTrailPath(trailPoints[i])
+                    );
+                    orbitClosed[i] = true;
                 }
             }
-        } else {
-            // Not yet orbiting — keep dots at their starting positions,
-            // apply fade-in opacity.
-            for (let i = 0; i < 3; i++) {
-                dotEls[i].style.opacity = dotOpacity.toFixed(3);
-            }
+
+            dotEls[i].setAttribute('cx', pt.x.toFixed(2));
+            dotEls[i].setAttribute('cy', pt.y.toFixed(2));
+            dotEls[i].style.opacity = dotOpacity.toFixed(3);
         }
 
-        /* ---------- Text ---------- */
-        if (elapsed >= T.brandIn && brandEl) {
+        /* ---------- Text reveals ---------- */
+        if (elapsed >= T.brandIn && brandEl &&
+            !brandEl.classList.contains('visible')) {
             brandEl.classList.add('visible');
         }
-        if (elapsed >= T.taglineIn && taglineEl) {
+        if (elapsed >= T.taglineIn && taglineEl &&
+            !taglineEl.classList.contains('visible')) {
             taglineEl.classList.add('visible');
         }
 
-        /* ---------- Fade out and stop ---------- */
+        /* ---------- Fade-out and stop ---------- */
         if (elapsed >= T.fadeStart) {
             revealSite();
-            return;   // do not request another frame
+            return;   // stop the rAF loop
         }
 
         requestAnimationFrame(frame);
