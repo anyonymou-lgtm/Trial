@@ -1,26 +1,20 @@
 /* ==================================================
-   PRELOADER — Particles draw the IEEE-RGIT atom
+   PRELOADER — Base circle → three particles → IEEE-RGIT atom
    --------------------------------------------------
-   Single source of truth: `orbitPoint(i, theta, scale)`
-   is used for BOTH the moving dot AND the trail points.
-   The trail is literally the array of points the dot
-   has visited — so they can never desync.
-
-   No animateMotion.
-   No nested rotating <g> groups.
-   No dasharray/dashoffset trickery.
-   No arc commands.
-   One SVG coordinate system (viewBox: -110 -110 220 220).
+   Single source of truth: orbitPoint(i, theta, scale)
+   is used for BOTH the dot AND the trail points.
+   No animateMotion. No nested <g rotate>. No dash tricks.
    ================================================== */
 (function () {
     'use strict';
 
     /* -------------------------------------------------
-       Guard: only run on the page that has a preloader
+       Guard: only run where a preloader exists
     ------------------------------------------------- */
     const overlay = document.getElementById('preloader');
     if (!overlay) return;
 
+    const baseCircle = document.getElementById('preloader-base-circle');
     const trailEls = [
         document.getElementById('preloader-trail-0'),
         document.getElementById('preloader-trail-1'),
@@ -36,71 +30,51 @@
     const heroContent = document.querySelector('.hero-content');
 
     /* -------------------------------------------------
-       Idempotent reveal — can be called only once
+       Idempotent reveal
     ------------------------------------------------- */
     let revealed = false;
     function revealSite() {
         if (revealed) return;
         revealed = true;
-
         overlay.classList.add('fade-out');
-
-        // Reveal the existing Hero via its existing ready state
         if (heroContent) heroContent.classList.add('hero-ready');
-
-        // After the CSS transition finishes, remove the overlay entirely
         setTimeout(function () {
             overlay.style.display = 'none';
             overlay.setAttribute('aria-hidden', 'true');
-        }, 500);
+        }, 550);
     }
 
     /* -------------------------------------------------
-       If required elements are missing, just reveal
+       If critical elements are missing, reveal and bail
     ------------------------------------------------- */
-    if (!trailEls.every(Boolean) || !dotEls.every(Boolean)) {
+    if (!baseCircle ||
+        !trailEls.every(Boolean) ||
+        !dotEls.every(Boolean)) {
         revealSite();
         return;
     }
 
     /* -------------------------------------------------
-       Geometry — ONE source of truth
-       The IEEE-RGIT logo has three ellipses rotated
-       at roughly 0°, 60°, 120°. Aspect ratio ~2.9:1.
+       GEOMETRY — matches the official IEEE-RGIT atom
+       Three ellipses: aspect ratio ≈ 3:1, rotated by
+       0°, 60°, 120° around a shared center.
+       viewBox is -110 -110 220 220 → the atom fits.
     ------------------------------------------------- */
-    const RX = 88;
-    const RY = 30;
+    const RX = 80;
+    const RY = 28;
     const ROTATIONS = [0, Math.PI / 3, 2 * Math.PI / 3];
 
-    /* Entry positions for the three particles (off-screen) */
-    const ENTRY_POSITIONS = [
-        { x: -260, y: -190 },
-        { x:  260, y: -160 },
-        { x:    0, y:  260 }
+    /* Each particle starts at a specific angle on its
+       ellipse. These starting thetas keep the three dots
+       visually separated throughout the animation. */
+    const START_THETAS = [
+        Math.PI / 2,           // Dot 0 (rot 0)   → (0, 28)
+        3 * Math.PI / 2,       // Dot 1 (rot 60)  → (24.25, -14)
+        Math.PI / 2            // Dot 2 (rot 120) → (-24.25, -14)
     ];
 
     /* -------------------------------------------------
-       Timing (ms)
-    ------------------------------------------------- */
-    const ENTRY_END   = 500;
-    const ORBIT_END   = 2000;   // orbit phase length = 1500ms
-    const REVEAL_AT   = 3100;   // when the fade-out begins
-    const FADE_HOLD   = 500;    // matches the CSS transition on .fade-out
-
-    /* -------------------------------------------------
-       Easing
-    ------------------------------------------------- */
-    function easeOutCubic(t) {
-        return 1 - Math.pow(1 - t, 3);
-    }
-    function easeInOutCubic(t) {
-        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    }
-
-    /* -------------------------------------------------
        THE orbit function — used by dots AND trails
-       Returns the exact { x, y } for a given orbit
-       index, angular position theta, and radial scale.
     ------------------------------------------------- */
     function orbitPoint(orbitIndex, theta, scale) {
         const rot = ROTATIONS[orbitIndex];
@@ -127,146 +101,162 @@
     }
 
     /* -------------------------------------------------
-       Reduced motion: show completed atom immediately
+       Easing
+    ------------------------------------------------- */
+    function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+    }
+    function easeInOutCubic(t) {
+        return t < 0.5
+            ? 4 * t * t * t
+            : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+    function clamp(v, lo, hi) {
+        return v < lo ? lo : v > hi ? hi : v;
+    }
+
+    /* -------------------------------------------------
+       Reduced motion: static final atom
     ------------------------------------------------- */
     const prefersReducedMotion =
         window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (prefersReducedMotion) {
-        // Draw the three complete ellipses
-        const STEPS = 80;
+        // Draw the three complete ellipses immediately
+        const STEPS = 90;
         for (let i = 0; i < 3; i++) {
             const pts = [];
             for (let k = 0; k <= STEPS; k++) {
-                pts.push(orbitPoint(i, (k / STEPS) * Math.PI * 2, 1));
+                const theta = START_THETAS[i] + (k / STEPS) * Math.PI * 2;
+                pts.push(orbitPoint(i, theta, 1));
             }
             trailEls[i].setAttribute('d', buildTrailPath(pts));
         }
-        // Hide dots
+        // Base circle and dots hidden
+        baseCircle.style.opacity = '0';
         dotEls.forEach(function (d) { d.style.opacity = '0'; });
-        // Show text
+        // Text visible
         if (brandEl) brandEl.classList.add('visible');
         if (taglineEl) taglineEl.classList.add('visible');
-        // Reveal the site after a short pause
+        // Fade out shortly
         setTimeout(revealSite, 900);
         return;
     }
 
     /* -------------------------------------------------
-       Set initial dot positions off-screen
+       Timeline (ms). Total ≈ 3.65 s.
     ------------------------------------------------- */
-    for (let i = 0; i < 3; i++) {
-        dotEls[i].setAttribute('cx', ENTRY_POSITIONS[i].x);
-        dotEls[i].setAttribute('cy', ENTRY_POSITIONS[i].y);
-    }
+    const T = {
+        circleIn:    [350, 850],    // base circle fade / scale in
+        dotsIn:      [750, 1050],   // particles fade in
+        orbit:       [1050, 2400],  // particles orbit and draw trails
+        circleOut:   [1650, 2100],  // base circle fades out
+        dotsOut:     [2400, 2650],  // particles fade out
+        brandIn:     2550,          // "IEEE RGIT" visible
+        taglineIn:   2750,          // "LEARN. EVOLVE." visible
+        fadeStart:   3200           // preloader begins fade-out
+    };
 
     /* -------------------------------------------------
        Animation state
-       trailPoints[i] holds every point the i-th dot has
-       ever occupied. The trail is literally this array.
     ------------------------------------------------- */
     const trailPoints = [[], [], []];
-    const TRAIL_MAX = 400;   // safety cap (60fps * 1.5s ≈ 90 points needed)
+    const TRAIL_MAX = 400;    // safety cap
+
+    /* Pre-position dots at their starting points so they
+       don't "flash" at (0,0) before the first frame. */
+    for (let i = 0; i < 3; i++) {
+        const start = orbitPoint(i, START_THETAS[i], 1);
+        dotEls[i].setAttribute('cx', start.x.toFixed(2));
+        dotEls[i].setAttribute('cy', start.y.toFixed(2));
+    }
 
     /* -------------------------------------------------
        Frame loop
     ------------------------------------------------- */
     let startTime = null;
-    let orbitStartTime = null;
-    let phase = 'entrance';
 
     function frame(now) {
         if (startTime === null) startTime = now;
+        const elapsed = now - startTime;
 
-        /* ============ PHASE 1: ENTRANCE ============ */
-        if (phase === 'entrance') {
-            const t = Math.min(now - startTime, ENTRY_END);
-            const p = easeOutCubic(t / ENTRY_END);
+        /* ---------- Base circle ---------- */
+        const cInT  = clamp((elapsed - T.circleIn[0]) /
+                            (T.circleIn[1] - T.circleIn[0]), 0, 1);
+        const cOutT = clamp((elapsed - T.circleOut[0]) /
+                            (T.circleOut[1] - T.circleOut[0]), 0, 1);
+        const circleOpacity = easeOutCubic(cInT) * (1 - cOutT);
+        const circleScale   = 0.85 + 0.15 * easeOutCubic(cInT);
+        baseCircle.style.opacity = circleOpacity.toFixed(3);
+        baseCircle.setAttribute('transform', 'scale(' + circleScale.toFixed(3) + ')');
 
-            for (let i = 0; i < 3; i++) {
-                const from = ENTRY_POSITIONS[i];
-                const x = from.x * (1 - p);
-                const y = from.y * (1 - p);
-                dotEls[i].setAttribute('cx', x.toFixed(2));
-                dotEls[i].setAttribute('cy', y.toFixed(2));
-            }
+        /* ---------- Dots fade in / out ---------- */
+        const dInT  = clamp((elapsed - T.dotsIn[0]) /
+                            (T.dotsIn[1] - T.dotsIn[0]), 0, 1);
+        const dOutT = clamp((elapsed - T.dotsOut[0]) /
+                            (T.dotsOut[1] - T.dotsOut[0]), 0, 1);
+        const dotOpacity = easeOutCubic(dInT) * (1 - dOutT);
 
-            if (t >= ENTRY_END) {
-                phase = 'orbit';
-                orbitStartTime = now;
-            }
-            requestAnimationFrame(frame);
-            return;
-        }
+        /* ---------- Orbit phase ---------- */
+        if (elapsed >= T.orbit[0]) {
+            const orbitT = clamp((elapsed - T.orbit[0]) /
+                                 (T.orbit[1] - T.orbit[0]), 0, 1);
 
-        /* ============ PHASE 2: ORBIT / DRAW ============ */
-        if (phase === 'orbit') {
-            const elapsed = now - orbitStartTime;
-            const t = Math.min(elapsed / (ORBIT_END - ENTRY_END), 1);
+            // Angular progress: ease in-out over one full revolution
+            const eased = easeInOutCubic(orbitT);
 
-            // Ease the angular progress a bit for a smooth start
-            const eased = easeInOutCubic(t);
-            const theta = eased * Math.PI * 2;
-
-            // Scale ramps 0 → 1 quickly at the start of the orbit
-            const scale = Math.min(t / 0.15, 1);
+            // Radial scale: subtle "settle" — from 1.05 → 1.0 during first 40%
+            const scaleT = clamp(orbitT / 0.4, 0, 1);
+            const scale = 1.05 - 0.05 * easeOutCubic(scaleT);
 
             for (let i = 0; i < 3; i++) {
-                // THE single function that drives both dot AND trail
+                // SAME function for dot AND trail
+                const theta = START_THETAS[i] + eased * Math.PI * 2;
                 const pt = orbitPoint(i, theta, scale);
 
                 // Move the dot
                 dotEls[i].setAttribute('cx', pt.x.toFixed(2));
                 dotEls[i].setAttribute('cy', pt.y.toFixed(2));
+                dotEls[i].style.opacity = dotOpacity.toFixed(3);
 
-                // Append the exact same point to the trail
-                if (trailPoints[i].length < TRAIL_MAX) {
+                // Append the same point to the trail (only while drawing)
+                if (orbitT < 1) {
+                    if (trailPoints[i].length >= TRAIL_MAX) {
+                        trailPoints[i].shift();
+                    }
                     trailPoints[i].push({ x: pt.x, y: pt.y });
-                } else {
-                    // Replace oldest with newest to keep drawing
-                    trailPoints[i].shift();
-                    trailPoints[i].push({ x: pt.x, y: pt.y });
+                    trailEls[i].setAttribute('d', buildTrailPath(trailPoints[i]));
                 }
-
-                // Rebuild the trail path from the collected points
-                trailEls[i].setAttribute('d', buildTrailPath(trailPoints[i]));
             }
-
-            if (t >= 1) {
-                phase = 'done';
-                // Do not request another frame
-                return;
+        } else {
+            // Not yet orbiting — keep dots at their starting positions,
+            // apply fade-in opacity.
+            for (let i = 0; i < 3; i++) {
+                dotEls[i].style.opacity = dotOpacity.toFixed(3);
             }
-            requestAnimationFrame(frame);
-            return;
         }
+
+        /* ---------- Text ---------- */
+        if (elapsed >= T.brandIn && brandEl) {
+            brandEl.classList.add('visible');
+        }
+        if (elapsed >= T.taglineIn && taglineEl) {
+            taglineEl.classList.add('visible');
+        }
+
+        /* ---------- Fade out and stop ---------- */
+        if (elapsed >= T.fadeStart) {
+            revealSite();
+            return;   // do not request another frame
+        }
+
+        requestAnimationFrame(frame);
     }
 
     /* -------------------------------------------------
-       Kick off the animation
+       Kick off
     ------------------------------------------------- */
     requestAnimationFrame(frame);
-
-    /* -------------------------------------------------
-       Scheduled reveals (independent of the frame loop)
-       Timeline:
-         0     – 500   : dots enter
-         500   – 2000  : dots orbit and draw trails
-         2000  – 2400  : dots fade out (CSS transition)
-         2000  – 2500  : "IEEE RGIT" fades in
-         2200  – 2700  : "LEARN. EVOLVE." fades in
-         3100  – 3600  : whole preloader fades away
-    ------------------------------------------------- */
-    setTimeout(function () {
-        dotEls.forEach(function (d) { d.style.opacity = '0'; });
-        if (brandEl) brandEl.classList.add('visible');
-    }, 2000);
-
-    setTimeout(function () {
-        if (taglineEl) taglineEl.classList.add('visible');
-    }, 2200);
-
-    setTimeout(revealSite, 3100);
 
     /* -------------------------------------------------
        Safety net — never leave the page hidden
