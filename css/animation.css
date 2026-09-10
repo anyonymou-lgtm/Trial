@@ -1,132 +1,269 @@
 /* ==================================================
-   PRELOADER — Three-Dot Orbit → IEEE-RGIT Atom Logo
+   PRELOADER — Three-Dot Orbit → IEEE-RGIT Logo
 ================================================== */
 
 /* ---------- Overlay ---------- */
 .preloader-overlay {
     position: fixed;
     inset: 0;
+    background: #0a0f1c;
     z-index: 9999;
-    background: #0b1120;
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 1;
-    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    visibility: visible;
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity, visibility;
+    min-height: 100vh;
     overflow: hidden;
 }
 
 .preloader-overlay.fade-out {
     opacity: 0;
-    pointer-events: none;
     visibility: hidden;
-    transition:
-        opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-        visibility 0s 0.5s;
+    pointer-events: none;
 }
 
-/* ---------- Content layout ---------- */
-.preloader-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 36px;
-    padding: 20px;
-}
-
-/* ---------- Atom stage ---------- */
+/* ---------- Stage (holds the entire composition) ---------- */
 .preloader-stage {
     position: relative;
-    width: 220px;
-    height: 220px;
-    flex-shrink: 0;
-}
-
-.preloader-svg {
-    display: block;
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-}
-
-/* ---------- Orbital trails ---------- */
-.orbit-path {
-    fill: none;
-    stroke: rgba(255, 255, 255, 0.55);
-    stroke-width: 1.1;
-    stroke-linecap: round;
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.55));
-    animation: draw-orbit 1.2s linear 0.55s forwards;
-}
-
-@keyframes draw-orbit {
-    to { stroke-dashoffset: 0; }
-}
-
-/* ---------- Dots ---------- */
-.preloader-dot {
-    fill: #ffffff;
-    filter:
-        drop-shadow(0 0 5px rgba(255, 255, 255, 0.9))
-        drop-shadow(0 0 12px rgba(56, 189, 248, 0.5));
-    opacity: 0;
-    animation: dot-fade-in 0.5s ease 0.1s forwards;
-}
-
-@keyframes dot-fade-in {
-    to { opacity: 1; }
-}
-
-/* ---------- Text ---------- */
-.preloader-text {
+    width: 280px;
+    height: 280px;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 10px;
-    text-align: center;
+    justify-content: center;
 }
 
-.preloader-brand {
-    font-family: 'Inter', system-ui, sans-serif;
-    font-size: 1.4rem;
-    font-weight: 700;
-    letter-spacing: 0.35em;
-    color: #ffffff;
-    padding-left: 0.35em;
+/* ---------- Subtle radial glow behind the logo ---------- */
+.preloader-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 240px;
+    height: 240px;
+    margin: -120px 0 0 -120px;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        rgba(56, 189, 248, 0.18) 0%,
+        rgba(56, 189, 248, 0.06) 40%,
+        transparent 70%
+    );
     opacity: 0;
-    transform: translateY(6px);
-    text-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
-    animation: text-fade-up 0.5s cubic-bezier(0.4, 0, 0.2, 1) 2.0s forwards;
+    transform: scale(0.7);
+    animation: preloaderGlowGrow 2.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    z-index: 0;
+    pointer-events: none;
+    will-change: opacity, transform;
 }
 
-.preloader-tagline {
-    font-family: 'Inter', system-ui, sans-serif;
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.45em;
-    color: rgba(255, 255, 255, 0.55);
-    padding-left: 0.45em;
+@keyframes preloaderGlowGrow {
+    0%   { opacity: 0;   transform: scale(0.7); }
+    40%  { opacity: 0.5; transform: scale(0.95); }
+    70%  { opacity: 0.9; transform: scale(1.05); }
+    100% { opacity: 0.85; transform: scale(1); }
+}
+
+/* ---------- Three glowing dots ---------- */
+.preloader-dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    margin: -5px 0 0 -5px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow:
+        0 0 8px rgba(255, 255, 255, 0.95),
+        0 0 16px rgba(56, 189, 248, 0.55),
+        0 0 26px rgba(56, 189, 248, 0.25);
     opacity: 0;
-    transform: translateY(4px);
-    animation: text-fade-up 0.5s cubic-bezier(0.4, 0, 0.2, 1) 2.3s forwards;
+    z-index: 1;
+    will-change: transform, opacity;
 }
 
-@keyframes text-fade-up {
-    to { opacity: 1; transform: translateY(0); }
+.dot-1 { animation: dot-1-journey 2.9s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+.dot-2 { animation: dot-2-journey 2.9s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+.dot-3 { animation: dot-3-journey 2.9s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+/* ---------- Dot 1: enters from above, orbits from top (0°) ---------- */
+@keyframes dot-1-journey {
+    0% {
+        opacity: 0;
+        transform: translate(0, -280px) scale(0.4);
+        animation-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
+    }
+    5% {
+        opacity: 0;
+        transform: translate(0, -280px) scale(0.4);
+        animation-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
+    }
+    24% {
+        opacity: 1;
+        transform: translate(0, -50px) scale(1);
+        animation-timing-function: linear;
+    }
+    32% {
+        transform: translate(50px, 0) scale(1);
+        animation-timing-function: linear;
+    }
+    41% {
+        transform: translate(0, 50px) scale(1);
+        animation-timing-function: linear;
+    }
+    50% {
+        transform: translate(-50px, 0) scale(1);
+        animation-timing-function: linear;
+    }
+    58% {
+        opacity: 1;
+        transform: translate(0, -50px) scale(1);
+        animation-timing-function: ease-out;
+    }
+    66% {
+        opacity: 1;
+        transform: translate(0, -50px) scale(1);
+        animation-timing-function: ease-in;
+    }
+    85% {
+        opacity: 0;
+        transform: translate(0, -50px) scale(0.6);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(0, -50px) scale(0.6);
+    }
+}
+
+/* ---------- Dot 2: enters from bottom-right, orbits from 120° ---------- */
+@keyframes dot-2-journey {
+    0% {
+        opacity: 0;
+        transform: translate(220px, 220px) scale(0.4);
+        animation-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
+    }
+    5% {
+        opacity: 0;
+        transform: translate(220px, 220px) scale(0.4);
+        animation-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
+    }
+    24% {
+        opacity: 1;
+        transform: translate(43px, 25px) scale(1);
+        animation-timing-function: linear;
+    }
+    32% {
+        transform: translate(-25px, 43px) scale(1);
+        animation-timing-function: linear;
+    }
+    41% {
+        transform: translate(-43px, -25px) scale(1);
+        animation-timing-function: linear;
+    }
+    50% {
+        transform: translate(25px, -43px) scale(1);
+        animation-timing-function: linear;
+    }
+    58% {
+        opacity: 1;
+        transform: translate(43px, 25px) scale(1);
+        animation-timing-function: ease-out;
+    }
+    66% {
+        opacity: 1;
+        transform: translate(43px, 25px) scale(1);
+        animation-timing-function: ease-in;
+    }
+    85% {
+        opacity: 0;
+        transform: translate(43px, 25px) scale(0.6);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(43px, 25px) scale(0.6);
+    }
+}
+
+/* ---------- Dot 3: enters from bottom-left, orbits from 240° ---------- */
+@keyframes dot-3-journey {
+    0% {
+        opacity: 0;
+        transform: translate(-220px, 220px) scale(0.4);
+        animation-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
+    }
+    5% {
+        opacity: 0;
+        transform: translate(-220px, 220px) scale(0.4);
+        animation-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
+    }
+    24% {
+        opacity: 1;
+        transform: translate(-43px, 25px) scale(1);
+        animation-timing-function: linear;
+    }
+    32% {
+        transform: translate(-25px, -43px) scale(1);
+        animation-timing-function: linear;
+    }
+    41% {
+        transform: translate(43px, -25px) scale(1);
+        animation-timing-function: linear;
+    }
+    50% {
+        transform: translate(25px, 43px) scale(1);
+        animation-timing-function: linear;
+    }
+    58% {
+        opacity: 1;
+        transform: translate(-43px, 25px) scale(1);
+        animation-timing-function: ease-out;
+    }
+    66% {
+        opacity: 1;
+        transform: translate(-43px, 25px) scale(1);
+        animation-timing-function: ease-in;
+    }
+    85% {
+        opacity: 0;
+        transform: translate(-43px, 25px) scale(0.6);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-43px, 25px) scale(0.6);
+    }
+}
+
+/* ---------- Official IEEE-RGIT logo ---------- */
+.preloader-logo {
+    position: relative;
+    z-index: 2;
+    max-width: 220px;
+    max-height: 140px;
+    width: auto;
+    height: auto;
+    opacity: 0;
+    transform: scale(0.85);
+    filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.15));
+    animation: preloaderLogoReveal 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 1.9s;
+    will-change: opacity, transform;
+}
+
+@keyframes preloaderLogoReveal {
+    0% {
+        opacity: 0;
+        transform: scale(0.85);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 /* ---------- Hero reveal (subtle scale + fade) ---------- */
-.hero-content {
-    opacity: 0;
-    transform: translateY(10px) scale(0.98);
-    transition:
-        opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-        transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
 .hero-content.hero-ready {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -134,40 +271,43 @@
 
 /* ---------- Responsive ---------- */
 @media (max-width: 480px) {
-    .preloader-content {
-        transform: scale(0.85);
+    .preloader-stage {
+        transform: scale(0.8);
     }
-    .preloader-brand {
-        font-size: 1.2rem;
-    }
-    .preloader-tagline {
-        font-size: 0.6rem;
+    .preloader-logo {
+        max-width: 180px;
+        max-height: 120px;
     }
 }
 
-@media (max-height: 560px) {
-    .preloader-content {
+@media (max-height: 600px) {
+    .preloader-stage {
         transform: scale(0.75);
     }
 }
 
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
-    .orbit-path {
-        stroke-dashoffset: 0 !important;
+    .preloader-glow,
+    .preloader-dot,
+    .preloader-logo {
         animation: none !important;
     }
     .preloader-dot {
         opacity: 1 !important;
-        animation: none !important;
     }
-    .preloader-brand,
-    .preloader-tagline {
+    .dot-1 { transform: translate(0, -50px) !important; }
+    .dot-2 { transform: translate(43px, 25px) !important; }
+    .dot-3 { transform: translate(-43px, 25px) !important; }
+    .preloader-glow {
+        opacity: 0.6 !important;
+        transform: scale(1) !important;
+    }
+    .preloader-logo {
         opacity: 1 !important;
-        transform: translateY(0) !important;
-        animation: none !important;
+        transform: scale(1) !important;
     }
-    .hero-content {
-        transition: opacity 0.3s ease, transform 0.3s ease;
+    .preloader-overlay {
+        transition: opacity 0.3s ease, visibility 0.3s ease;
     }
 }
