@@ -15,6 +15,24 @@
     --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
     --tech-line: rgba(0, 98, 155, 0.1);
     --glass-bg: rgba(255, 255, 255, 0.85);
+
+    /* ── Liquid Glass: Navbar (light) ── */
+    --glass-nav-bg: rgba(255, 255, 255, 0.68);
+    --glass-nav-border: rgba(226, 232, 240, 0.8);
+    --glass-nav-highlight: rgba(255, 255, 255, 0.95);
+    --glass-nav-shadow: 0 4px 24px rgba(15, 23, 42, 0.06);
+
+    /* ── Liquid Glass: Secondary Button (light) ── */
+    --glass-btn-bg: rgba(255, 255, 255, 0.55);
+    --glass-btn-bg-hover: rgba(255, 255, 255, 0.82);
+    --glass-btn-border: rgba(203, 213, 225, 0.8);
+    --glass-btn-highlight: rgba(255, 255, 255, 0.95);
+
+    /* ── Liquid Glass: Primary Button (light) ── */
+    --glass-primary-bg: rgba(0, 98, 155, 0.85);
+    --glass-primary-bg-hover: rgba(0, 98, 155, 0.96);
+    --glass-primary-border: rgba(0, 98, 155, 0.95);
+    --glass-primary-highlight: rgba(255, 255, 255, 0.3);
 }
 
 html.dark {
@@ -31,6 +49,24 @@ html.dark {
     --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.5);
     --tech-line: rgba(56, 189, 248, 0.1);
     --glass-bg: rgba(11, 17, 32, 0.85);
+
+    /* ── Liquid Glass: Navbar (dark) ── */
+    --glass-nav-bg: rgba(15, 23, 42, 0.62);
+    --glass-nav-border: rgba(51, 65, 85, 0.7);
+    --glass-nav-highlight: rgba(255, 255, 255, 0.08);
+    --glass-nav-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+
+    /* ── Liquid Glass: Secondary Button (dark) ── */
+    --glass-btn-bg: rgba(30, 41, 59, 0.55);
+    --glass-btn-bg-hover: rgba(30, 41, 59, 0.82);
+    --glass-btn-border: rgba(56, 189, 248, 0.3);
+    --glass-btn-highlight: rgba(255, 255, 255, 0.1);
+
+    /* ── Liquid Glass: Primary Button (dark) ── */
+    --glass-primary-bg: rgba(56, 189, 248, 0.85);
+    --glass-primary-bg-hover: rgba(56, 189, 248, 0.96);
+    --glass-primary-border: rgba(56, 189, 248, 0.95);
+    --glass-primary-highlight: rgba(255, 255, 255, 0.35);
 }
 
 /* ==================================================
@@ -114,17 +150,21 @@ ul {
 }
 
 /* ==================================================
-   4. NAVBAR
+   4. NAVBAR  (Premium Liquid Glass)
 ================================================== */
 .navbar {
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 100;
-    background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    transition: all 0.3s ease;
+    background: var(--glass-nav-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid var(--glass-nav-border);
+    box-shadow:
+        var(--glass-nav-shadow),
+        inset 0 1px 0 var(--glass-nav-highlight);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .nav-container {
@@ -161,11 +201,9 @@ ul {
     object-fit: contain;
 }
 
-/* --- NEW: Light-mode logo color (blue) --- */
+/* Light-mode logo: blue tint (unchanged) */
 html:not(.dark) .brand-icon img {
     filter: brightness(0) saturate(100%) invert(0%) sepia(100%) saturate(10000%) hue-rotate(205deg);
-    /* This turns the white PNG into a blue matching the IEEE primary color.
-       Adjust hue-rotate value if a slightly different blue is desired. */
 }
 
 .brand-title {
@@ -179,18 +217,46 @@ html:not(.dark) .brand-icon img {
     gap: 2rem;
 }
 
+/* --- Nav link with subtle liquid-glass hover pill --- */
 .nav-link {
     font-size: 0.9rem;
     font-weight: 500;
     color: var(--text-muted);
-    transition: color 0.2s ease;
+    transition: color 0.25s ease;
     position: relative;
+}
+
+/* Hover pill (painted behind the text) */
+.nav-link::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    right: -12px;
+    bottom: -6px;
+    left: -12px;
+    border-radius: 10px;
+    background: var(--glass-btn-bg);
+    border: 1px solid var(--glass-btn-border);
+    box-shadow:
+        inset 0 1px 0 var(--glass-btn-highlight),
+        0 2px 8px rgba(15, 23, 42, 0.04);
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    pointer-events: none;
+    z-index: -1;
 }
 
 .nav-link:hover {
     color: var(--primary);
 }
 
+.nav-link:hover::before {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Active underline (unchanged) */
 .nav-link::after {
     content: '';
     position: absolute;
@@ -200,6 +266,7 @@ html:not(.dark) .brand-icon img {
     height: 2px;
     background: var(--primary);
     transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 1;
 }
 .nav-link:hover::after,
 .nav-link:focus::after {
@@ -241,10 +308,14 @@ html.dark .moon-icon { display: none; }
 html:not(.dark) .sun-icon { display: none; }
 html:not(.dark) .moon-icon { display: block; }
 
+/* --- Mobile menu with liquid glass --- */
 .mobile-menu {
     display: none;
-    background: var(--bg-main);
-    border-bottom: 1px solid var(--border);
+    background: var(--glass-nav-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid var(--glass-nav-border);
+    box-shadow: var(--glass-nav-shadow);
     padding: 1rem 5%;
 }
 .mobile-menu.active {
@@ -254,20 +325,26 @@ html:not(.dark) .moon-icon { display: block; }
 .mobile-link {
     padding: 1rem 0;
     font-weight: 500;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--glass-nav-border);
 }
 .mobile-link:last-child { border: none; }
 
+/* Scrolled state (kept for compatibility) */
 .navbar.scrolled {
-    background: var(--glass-bg);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    box-shadow:
+        var(--glass-nav-shadow),
+        0 4px 20px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 var(--glass-nav-highlight);
 }
 html.dark .navbar.scrolled {
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    box-shadow:
+        var(--glass-nav-shadow),
+        0 4px 20px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 var(--glass-nav-highlight);
 }
 
 /* ==================================================
-   5. HERO SECTION — FIXED: natural height, no 100vh
+   5. HERO SECTION (unchanged)
 ================================================== */
 .hero {
     min-height: auto;
@@ -362,6 +439,9 @@ html.dark .badge { background: rgba(56, 189, 248, 0.15); }
     justify-content: center;
 }
 
+/* ==================================================
+   6. BUTTONS  (Premium Liquid Glass)
+================================================== */
 .btn {
     padding: 12px 28px;
     border-radius: 8px;
@@ -379,46 +459,74 @@ html.dark .badge { background: rgba(56, 189, 248, 0.15); }
 .btn svg { width: 18px; transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
 .btn:hover svg { transform: translateX(4px); }
 
+/* --- Primary Button (liquid-glass IEEE blue) --- */
 .btn-primary {
-    background: var(--primary);
+    background: var(--glass-primary-bg);
     color: #fff;
-    border: 1px solid var(--primary);
-    box-shadow: 0 4px 14px rgba(0, 98, 155, 0.3);
-    background-size: 200% 100%;
-    background-position: 0% 0%;
-    transition: background-position 0.5s ease, transform 0.25s, box-shadow 0.3s;
+    border: 1px solid var(--glass-primary-border);
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    box-shadow:
+        0 4px 14px rgba(0, 98, 155, 0.25),
+        inset 0 1px 0 var(--glass-primary-highlight);
+    transition: background 0.3s ease, transform 0.25s ease, box-shadow 0.3s ease;
 }
 html.dark .btn-primary {
     color: #0b1120;
-    box-shadow: 0 4px 14px rgba(56, 189, 248, 0.2);
+    box-shadow:
+        0 4px 14px rgba(56, 189, 248, 0.2),
+        inset 0 1px 0 var(--glass-primary-highlight);
 }
 
 .btn-primary:hover {
-    background-position: 100% 0%;
+    background: var(--glass-primary-bg-hover);
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0,98,155,0.25);
+    box-shadow:
+        0 8px 25px rgba(0, 98, 155, 0.3),
+        inset 0 1px 0 var(--glass-primary-highlight);
 }
-.btn-primary:active {
-    transform: scale(0.97);
+html.dark .btn-primary:hover {
+    box-shadow:
+        0 8px 25px rgba(56, 189, 248, 0.3),
+        inset 0 1px 0 var(--glass-primary-highlight);
 }
 
+.btn-primary:active {
+    transform: scale(0.97) translateY(0);
+    box-shadow:
+        0 2px 8px rgba(0, 98, 155, 0.2),
+        inset 0 1px 0 var(--glass-primary-highlight);
+}
+
+/* --- Outline / Secondary Button (liquid-glass) --- */
 .btn-outline {
-    background: transparent;
+    background: var(--glass-btn-bg);
     color: var(--text-main);
-    border: 1px solid var(--border);
-    transition: background 0.3s, transform 0.25s, border-color 0.3s;
+    border: 1px solid var(--glass-btn-border);
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    box-shadow:
+        0 2px 8px rgba(15, 23, 42, 0.04),
+        inset 0 1px 0 var(--glass-btn-highlight);
+    transition: background 0.3s ease, transform 0.25s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 .btn-outline:hover {
-    background: var(--surface-hover);
+    background: var(--glass-btn-bg-hover);
     border-color: var(--primary);
     transform: translateY(-2px);
+    box-shadow:
+        0 6px 18px rgba(15, 23, 42, 0.08),
+        inset 0 1px 0 var(--glass-btn-highlight);
 }
 .btn-outline:active {
-    transform: scale(0.97);
+    transform: scale(0.97) translateY(0);
+    box-shadow:
+        0 1px 4px rgba(15, 23, 42, 0.06),
+        inset 0 1px 0 var(--glass-btn-highlight);
 }
 
 /* ==================================================
-   6. GRIDS & CARDS
+   7. GRIDS & CARDS (unchanged)
 ================================================== */
 .grid-2-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
 .grid-3-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
@@ -574,7 +682,7 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
 .gallery-item:hover { transform: scale(1.03); border-color: var(--primary); color: var(--primary); }
 
 /* ==================================================
-   7. TECHNOLOGIES MARQUEE
+   8. TECHNOLOGIES MARQUEE (unchanged)
 ================================================== */
 .tech-marquee-section {
     padding: 60px 0 40px 0;
@@ -680,7 +788,7 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
 }
 
 /* ==================================================
-   8. SNAKE GAME SECTION
+   9. SNAKE GAME SECTION (unchanged)
 ================================================== */
 .snake-section {
     padding: 80px 0 60px 0;
@@ -703,7 +811,7 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
 }
 
 /* ==================================================
-   9. SNAKE MODAL
+   10. SNAKE MODAL (unchanged)
 ================================================== */
 .snake-modal-overlay {
     display: none;
@@ -798,7 +906,7 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
 }
 
 /* ==================================================
-   10. FOOTER
+   11. FOOTER (unchanged)
 ================================================== */
 .footer {
     background-color: #0f172a;
@@ -895,7 +1003,7 @@ html.dark .footer { background-color: #020617; }
 }
 
 /* ==================================================
-   11. REVEAL ANIMATIONS
+   12. REVEAL ANIMATIONS (unchanged)
 ================================================== */
 .reveal-up {
     opacity: 0;
@@ -934,7 +1042,7 @@ html.dark .footer { background-color: #020617; }
 .stagger-item:nth-child(6) { transition-delay: 0.52s; }
 
 /* ==================================================
-   12. TECH LINES
+   13. TECH LINES (unchanged)
 ================================================== */
 .tech-lines-container {
     position: absolute;
@@ -967,7 +1075,7 @@ html.dark .footer { background-color: #020617; }
 }
 
 /* ==================================================
-   13. LIGHTBOX
+   14. LIGHTBOX (unchanged)
 ================================================== */
 .lightbox {
     display: none;
@@ -1019,7 +1127,7 @@ html.dark .footer { background-color: #020617; }
 }
 
 /* ==================================================
-   14. UTILITY CLASSES
+   15. UTILITY CLASSES (unchanged)
 ================================================== */
 .mt-1 { margin-top: 0.5rem; }
 .mt-2 { margin-top: 1rem; }
@@ -1035,14 +1143,14 @@ html.dark .footer { background-color: #020617; }
 .text-center { text-align: center; }
 
 /* ==================================================
-   15. TARGETED HOMEPAGE ABOUT SECTION PADDING
+   16. TARGETED HOMEPAGE ABOUT SECTION PADDING (unchanged)
 ================================================== */
 #about {
     padding-top: 16px;
 }
 
 /* ==================================================
-   16. RESPONSIVE OVERRIDES
+   17. RESPONSIVE OVERRIDES (unchanged)
 ================================================== */
 @media (max-width: 1024px) {
     .grid-3-col { grid-template-columns: repeat(2, 1fr); }
@@ -1104,4 +1212,63 @@ html.dark .footer { background-color: #020617; }
 @media (min-width: 769px) {
     .mobile-only { display: none !important; }
     .mobile-menu { display: none !important; }
+}
+
+/* ==================================================
+   18. BROWSER FALLBACK — backdrop-filter unsupported
+================================================== */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .navbar {
+        background: var(--bg-main);
+        box-shadow:
+            0 4px 24px rgba(15, 23, 42, 0.08),
+            0 1px 0 var(--border);
+    }
+    html.dark .navbar {
+        background: var(--bg-main);
+        box-shadow:
+            0 4px 24px rgba(0, 0, 0, 0.4),
+            0 1px 0 var(--border);
+    }
+    .mobile-menu {
+        background: var(--bg-main);
+    }
+    .btn-primary {
+        background: var(--primary);
+        color: #fff;
+        box-shadow: 0 4px 14px rgba(0, 98, 155, 0.25);
+    }
+    html.dark .btn-primary {
+        background: var(--primary);
+        color: #0b1120;
+        box-shadow: 0 4px 14px rgba(56, 189, 248, 0.2);
+    }
+    .btn-outline {
+        background: var(--surface);
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+    }
+    /* Hide the glass pill on hover in fallback (keeps things clean) */
+    .nav-link::before {
+        display: none;
+    }
+    .nav-link:hover {
+        background: var(--surface-hover);
+        border-radius: 8px;
+    }
+}
+
+/* ==================================================
+   19. REDUCED MOTION — glass effect stays but motion stops
+================================================== */
+@media (prefers-reduced-motion: reduce) {
+    .nav-link::before,
+    .btn,
+    .btn-primary,
+    .btn-outline {
+        transition: none !important;
+    }
+    .btn-primary:hover,
+    .btn-outline:hover {
+        transform: none;
+    }
 }
