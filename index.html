@@ -19,7 +19,7 @@
 <body>
 
     <!-- ============================================================
-         PRELOADER — Base circle → three particles → IEEE-RGIT atom
+         PRELOADER — Circle stays, dots emerge inward, trails form atom
          ============================================================ -->
     <div id="preloader" class="preloader-overlay" role="status" aria-label="Loading">
         <div class="preloader-content">
@@ -30,17 +30,17 @@
                      xmlns="http://www.w3.org/2000/svg"
                      aria-hidden="true">
 
-                    <!-- Base circle: the "seed" from which the atom grows -->
-                    <circle id="preloader-base-circle"
-                            class="preloader-base-circle"
-                            cx="0" cy="0" r="55" />
-
-                    <!-- Three orbital trails (drawn frame-by-frame from dot paths) -->
+                    <!-- Trails (drawn frame-by-frame from dot positions) -->
                     <path class="orbit-trail" id="preloader-trail-0" d="" />
                     <path class="orbit-trail" id="preloader-trail-1" d="" />
                     <path class="orbit-trail" id="preloader-trail-2" d="" />
 
-                    <!-- Three particles -->
+                    <!-- Base circle: the visual anchor that stays visible -->
+                    <circle id="preloader-base-circle"
+                            class="preloader-base-circle"
+                            cx="0" cy="0" r="42" />
+
+                    <!-- Particles (drawn on top of the circle) -->
                     <circle class="preloader-dot" id="preloader-dot-0" r="4" cx="0" cy="0" />
                     <circle class="preloader-dot" id="preloader-dot-1" r="4" cx="0" cy="0" />
                     <circle class="preloader-dot" id="preloader-dot-2" r="4" cx="0" cy="0" />
