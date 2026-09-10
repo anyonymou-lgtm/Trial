@@ -19,22 +19,31 @@
 <body>
 
     <!-- ============================================================
-         PRELOADER — Particles physically draw the IEEE-RGIT atom
+         PRELOADER — Base circle → three particles → IEEE-RGIT atom
          ============================================================ -->
     <div id="preloader" class="preloader-overlay" role="status" aria-label="Loading">
         <div class="preloader-content">
+
             <div class="preloader-stage">
                 <svg class="preloader-svg"
                      viewBox="-110 -110 220 220"
                      xmlns="http://www.w3.org/2000/svg"
                      aria-hidden="true">
-                    <path id="preloader-trail-0" class="orbit-trail" d="" />
-                    <path id="preloader-trail-1" class="orbit-trail" d="" />
-                    <path id="preloader-trail-2" class="orbit-trail" d="" />
 
-                    <circle id="preloader-dot-0" class="preloader-dot" r="4" cx="0" cy="0" />
-                    <circle id="preloader-dot-1" class="preloader-dot" r="4" cx="0" cy="0" />
-                    <circle id="preloader-dot-2" class="preloader-dot" r="4" cx="0" cy="0" />
+                    <!-- Base circle: the "seed" from which the atom grows -->
+                    <circle id="preloader-base-circle"
+                            class="preloader-base-circle"
+                            cx="0" cy="0" r="55" />
+
+                    <!-- Three orbital trails (drawn frame-by-frame from dot paths) -->
+                    <path class="orbit-trail" id="preloader-trail-0" d="" />
+                    <path class="orbit-trail" id="preloader-trail-1" d="" />
+                    <path class="orbit-trail" id="preloader-trail-2" d="" />
+
+                    <!-- Three particles -->
+                    <circle class="preloader-dot" id="preloader-dot-0" r="4" cx="0" cy="0" />
+                    <circle class="preloader-dot" id="preloader-dot-1" r="4" cx="0" cy="0" />
+                    <circle class="preloader-dot" id="preloader-dot-2" r="4" cx="0" cy="0" />
                 </svg>
             </div>
 
@@ -42,6 +51,7 @@
                 <div class="preloader-brand">IEEE RGIT</div>
                 <div class="preloader-tagline">LEARN. EVOLVE.</div>
             </div>
+
         </div>
     </div>
 
