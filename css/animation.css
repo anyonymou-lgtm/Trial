@@ -1,6 +1,6 @@
 /* ==================================================
-   PRELOADER — Base circle → Three particles → Atom
-   All selectors are scoped under .preloader-* / .orbit-*
+   PRELOADER — Circle stays, particles emerge inward,
+   trails draw the IEEE-RGIT atom. All selectors scoped.
    ================================================== */
 
 /* ---------- Overlay ---------- */
@@ -46,27 +46,25 @@
     width: 100%;
     height: 100%;
     overflow: visible;
-    /* Single drop-shadow filter applied once to the whole SVG */
     filter:
         drop-shadow(0 0 3px rgba(255, 255, 255, 0.35))
         drop-shadow(0 0 10px rgba(56, 189, 248, 0.18));
 }
 
-/* ---------- Base circle (the "seed") ---------- */
+/* ---------- Base circle (persistent visual anchor) ---------- */
 .preloader-base-circle {
     fill: none;
-    stroke: rgba(255, 255, 255, 0.72);
-    stroke-width: 1.6;
-    /* Start invisible; JS drives opacity + transform */
-    opacity: 0;
+    stroke: rgba(255, 255, 255, 0.65);
+    stroke-width: 1.8;
+    opacity: 0;                  /* JS drives fade-in */
     transform-origin: 0 0;
     transform-box: view-box;
 }
 
-/* ---------- Orbital trails (drawn by JS) ---------- */
+/* ---------- Orbital trails ---------- */
 .orbit-trail {
     fill: none;
-    stroke: rgba(255, 255, 255, 0.85);
+    stroke: rgba(255, 255, 255, 0.9);
     stroke-width: 2;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -75,9 +73,8 @@
 /* ---------- Particles ---------- */
 .preloader-dot {
     fill: #ffffff;
-    opacity: 0;
-    /* Only opacity is transitioned via CSS — position is JS-driven */
-    transition: opacity 0.35s ease;
+    opacity: 0;                  /* JS drives fade-in */
+    transition: opacity 0.3s ease;
 }
 
 /* ---------- Text ---------- */
