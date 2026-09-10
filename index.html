@@ -18,31 +18,18 @@
 </head>
 <body>
 
-    <!-- PRELOADER (added background container via JS) -->
-    <div id="preloader" class="preloader-overlay">
-        <div class="preloader-container">
-            <div class="chip-assembly">
-                <div class="incoming-lines top-lines"><span></span><span></span></div>
-                <div class="incoming-lines bottom-lines"><span></span><span></span></div>
-                <div class="incoming-lines left-lines"><span></span><span></span></div>
-                <div class="incoming-lines right-lines"><span></span><span></span></div>
-                
-                <div class="chip-body">
-                    <div class="chip-pins pin-top"><span></span><span></span></div>
-                    <div class="chip-pins pin-bottom"><span></span><span></span></div>
-                    <div class="chip-pins pin-left"><span></span><span></span></div>
-                    <div class="chip-pins pin-right"><span></span><span></span></div>
-                    <div class="chip-core">
-                        <div class="core-pulse"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="preloader-text">IEEE</div>
+    <!-- PRELOADER — Three-Dot Orbit → IEEE-RGIT Logo -->
+    <div id="preloader" class="preloader-overlay" aria-hidden="false">
+        <div class="preloader-stage">
+            <div class="preloader-glow"></div>
+            <div class="preloader-dot dot-1"></div>
+            <div class="preloader-dot dot-2"></div>
+            <div class="preloader-dot dot-3"></div>
+            <img src="assets/Recruitment Poster.png" alt="IEEE-RGIT" class="preloader-logo">
         </div>
     </div>
 
-    <!-- NAVBAR (unchanged) -->
+    <!-- NAVBAR -->
     <header class="navbar" id="navbar">
         <div class="nav-container">
             <a href="index.html" class="brand">
@@ -79,10 +66,10 @@
         </div>
     </header>
 
-    <!-- HERO – added class "hero-scale" -->
+    <!-- HERO -->
     <section class="hero" id="home">
         <div class="tech-lines-container" id="hero-tech-lines"></div>
-        <div class="hero-content hero-scale">
+        <div class="hero-content">
             <div class="badge">RAJIV GANDHI INSTITUTE OF TECHNOLOGY</div>
             <h1 class="hero-title">Shaping the Future of Engineering with <span class="highlight">IEEE-RGIT</span></h1>
             <p class="hero-subtitle">Empowering student innovators through collaborative research, hands-on technical workshops, VLSI design, embedded systems, and cutting-edge engineering projects.</p>
@@ -96,7 +83,7 @@
         </div>
     </section>
 
-    <!-- ABOUT SECTION (unchanged) -->
+    <!-- ABOUT SECTION -->
     <section class="section" id="about">
         <div class="container grid-2-col">
             <div class="about-text reveal-left">
@@ -121,7 +108,7 @@
         </div>
     </section>
 
-    <!-- EVENTS & ACTIVITIES (unchanged) -->
+    <!-- EVENTS & ACTIVITIES -->
     <section class="section bg-alt" id="events">
         <div class="container">
             <div class="section-header reveal-up">
@@ -149,7 +136,7 @@
         </div>
     </section>
 
-    <!-- TECHNOLOGIES WE WORK WITH (unchanged) -->
+    <!-- TECHNOLOGIES WE WORK WITH -->
     <section class="section tech-marquee-section" id="technologies">
         <div class="container">
             <div class="section-header reveal-up">
@@ -269,7 +256,7 @@
         </div>
     </section>
 
-    <!-- SNAKE GAME SECTION (unchanged) -->
+    <!-- SNAKE GAME SECTION -->
     <section class="section snake-section" id="snake-game">
         <div class="container">
             <div class="section-header reveal-up">
@@ -285,7 +272,7 @@
         </div>
     </section>
 
-    <!-- GALLERY SECTION (unchanged) -->
+    <!-- GALLERY SECTION -->
     <section class="section" id="gallery">
         <div class="container">
             <div class="section-header reveal-up">
@@ -293,12 +280,12 @@
                 <p class="section-subtitle">Snapshots from our workshops, technical sessions, and campus events.</p>
             </div>
             <div class="gallery-grid stagger-container" id="gallery-grid">
-                <!-- Images injected by JS -->
+                <!-- Images will be injected by JavaScript -->
             </div>
         </div>
     </section>
 
-    <!-- LIGHTBOX (unchanged) -->
+    <!-- LIGHTBOX -->
     <div id="lightbox" class="lightbox">
         <span class="lightbox-close">&times;</span>
         <div class="lightbox-content">
@@ -307,7 +294,7 @@
         </div>
     </div>
 
-    <!-- SNAKE GAME MODAL (unchanged) -->
+    <!-- SNAKE GAME MODAL -->
     <div id="snakeModal" class="snake-modal-overlay">
         <div class="snake-modal-backdrop"></div>
         <div class="snake-modal-window">
@@ -318,7 +305,7 @@
         </div>
     </div>
 
-    <!-- FOOTER (unchanged) -->
+    <!-- FOOTER -->
     <footer class="footer">
         <div class="container footer-grid">
             <div class="footer-col">
