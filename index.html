@@ -18,14 +18,46 @@
 </head>
 <body>
 
-    <!-- PRELOADER — Three-Dot Orbit → IEEE-RGIT Logo -->
-    <div id="preloader" class="preloader-overlay" aria-hidden="false">
-        <div class="preloader-stage">
-            <div class="preloader-glow"></div>
-            <div class="preloader-dot dot-1"></div>
-            <div class="preloader-dot dot-2"></div>
-            <div class="preloader-dot dot-3"></div>
-            <img src="assets/Recruitment Poster.png" alt="IEEE-RGIT" class="preloader-logo">
+    <!-- ============================================================
+         PRELOADER — Three-Dot Orbit → IEEE-RGIT Atom Logo
+         ============================================================ -->
+    <div id="preloader" class="preloader-overlay" role="status" aria-label="Loading">
+        <div class="preloader-content">
+            <div class="preloader-stage">
+                <svg class="preloader-svg" viewBox="-110 -110 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <!-- Three orbital trails (drawn via stroke-dashoffset in CSS) -->
+                    <path class="orbit-path" pathLength="1" d="M 90,0 A 90,28 0 1,1 -90,0 A 90,28 0 1,1 90,0 Z" />
+                    <path class="orbit-path" pathLength="1" d="M 90,0 A 90,28 0 1,1 -90,0 A 90,28 0 1,1 90,0 Z" transform="rotate(60)" />
+                    <path class="orbit-path" pathLength="1" d="M 90,0 A 90,28 0 1,1 -90,0 A 90,28 0 1,1 90,0 Z" transform="rotate(120)" />
+
+                    <!-- Dot 1 (orbit at 0°) -->
+                    <circle class="preloader-dot" r="5" cx="90" cy="0">
+                        <animateMotion dur="1.2s" begin="0.55s" fill="freeze"
+                            path="M 90,0 A 90,28 0 1,1 -90,0 A 90,28 0 1,1 90,0 Z" />
+                    </circle>
+
+                    <!-- Dot 2 (orbit at 60°) -->
+                    <g transform="rotate(60)">
+                        <circle class="preloader-dot" r="5" cx="90" cy="0">
+                            <animateMotion dur="1.2s" begin="0.55s" fill="freeze"
+                                path="M 90,0 A 90,28 0 1,1 -90,0 A 90,28 0 1,1 90,0 Z" />
+                        </circle>
+                    </g>
+
+                    <!-- Dot 3 (orbit at 120°) -->
+                    <g transform="rotate(120)">
+                        <circle class="preloader-dot" r="5" cx="90" cy="0">
+                            <animateMotion dur="1.2s" begin="0.55s" fill="freeze"
+                                path="M 90,0 A 90,28 0 1,1 -90,0 A 90,28 0 1,1 90,0 Z" />
+                        </circle>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="preloader-text">
+                <div class="preloader-brand">IEEE RGIT</div>
+                <div class="preloader-tagline">LEARN. EVOLVE.</div>
+            </div>
         </div>
     </div>
 
