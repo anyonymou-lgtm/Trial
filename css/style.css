@@ -22,7 +22,7 @@
     --glass-nav-highlight: rgba(255, 255, 255, 0.95);
     --glass-nav-shadow: 0 4px 24px rgba(15, 23, 42, 0.06);
 
-    /* Liquid Glass: Secondary Button (light) */
+    /* Liquid Glass: Secondary Button (light) — also used by marquee pills */
     --glass-btn-bg: rgba(255, 255, 255, 0.55);
     --glass-btn-bg-hover: rgba(255, 255, 255, 0.82);
     --glass-btn-border: rgba(203, 213, 225, 0.8);
@@ -623,7 +623,7 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
 .gallery-item:hover { transform: scale(1.03); border-color: var(--primary); color: var(--primary); }
 
 /* ==================================================
-   8. TECHNOLOGIES MARQUEE
+   8. TECHNOLOGIES MARQUEE (with Liquid Glass pills)
 ================================================== */
 .tech-marquee-section {
     padding: 60px 0 40px 0;
@@ -673,22 +673,39 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
     100% { transform: translateX(0); }
 }
 
+/* ---------- Individual technology pill (Liquid Glass) ----------
+   Reuses the same --glass-btn-* variables as the navbar, buttons,
+   and footer so it feels like part of the same design system. */
 .tech-pill {
     font-size: 0.95rem;
     font-weight: 500;
     color: var(--text-main);
-    background: var(--surface-hover);
-    border: 1px solid var(--border);
+    background: var(--glass-btn-bg);
+    border: 1px solid var(--glass-btn-border);
     border-radius: 100px;
     padding: 0.6rem 1.6rem;
     display: inline-block;
     white-space: nowrap;
     user-select: none;
-    transition: border-color 0.3s ease;
     letter-spacing: -0.01em;
     flex-shrink: 0;
+
+    /* Liquid glass treatment */
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    box-shadow:
+        inset 0 1px 0 var(--glass-btn-highlight),
+        0 2px 8px rgba(15, 23, 42, 0.04);
+
+    transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
-.tech-pill:hover { border-color: var(--primary); }
+.tech-pill:hover {
+    background: var(--glass-btn-bg-hover);
+    border-color: var(--primary);
+    box-shadow:
+        inset 0 1px 0 var(--glass-btn-highlight),
+        0 4px 12px rgba(15, 23, 42, 0.08);
+}
 
 /* ==================================================
    9. SNAKE GAME
@@ -763,20 +780,15 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
 
 /* ==================================================
    10. FOOTER — LIQUID GLASS PANEL
-   Matches the navbar's design language via the same
-   --glass-nav-* variables, blur, border, highlight,
-   and shadow treatment. Floating rounded container.
 ================================================== */
 
 .footer {
-    /* Floating glass container */
     position: relative;
     margin: 48px 24px 24px;
     padding: 60px 0 0;
     border-radius: 28px;
     overflow: hidden;
 
-    /* Same glass surface as the navbar */
     background: var(--glass-nav-bg);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -788,7 +800,6 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
     color: var(--text-main);
 }
 
-/* ---------- Grid ---------- */
 .footer-grid {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1.5fr;
@@ -796,11 +807,8 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
     margin-bottom: 3rem;
 }
 
-.footer-col {
-    min-width: 0;
-}
+.footer-col { min-width: 0; }
 
-/* ---------- Brand ---------- */
 .footer-brand {
     display: flex;
     align-items: center;
@@ -818,10 +826,8 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
     width: auto;
     display: block;
     object-fit: contain;
-    /* Default (dark mode): white logo */
     filter: brightness(0) invert(1);
 }
-/* Light mode: tint logo to IEEE blue, same technique as the navbar */
 html:not(.dark) .footer-brand .brand-icon img {
     filter: brightness(0) saturate(100%) invert(0%) sepia(100%) saturate(10000%) hue-rotate(205deg) !important;
 }
@@ -854,7 +860,6 @@ html.dark .footer-highlight {
     border-color: rgba(56, 189, 248, 0.2);
 }
 
-/* ---------- Column headings ---------- */
 .footer-title {
     font-size: 1rem;
     margin-bottom: 1.4rem;
@@ -863,7 +868,6 @@ html.dark .footer-highlight {
     letter-spacing: -0.01em;
 }
 
-/* ---------- Links ---------- */
 .footer-links li { margin-bottom: 0.75rem; }
 .footer-links a {
     color: var(--text-muted);
@@ -876,7 +880,6 @@ html.dark .footer-highlight {
     padding-left: 4px;
 }
 
-/* ---------- Social icons (glass pills) ---------- */
 .social-icons {
     display: flex;
     gap: 10px;
@@ -905,7 +908,6 @@ html.dark .footer-highlight {
     transform: translateY(-2px);
 }
 
-/* ---------- Location ---------- */
 .location {
     display: flex;
     align-items: flex-start;
@@ -922,7 +924,6 @@ html.dark .footer-highlight {
     margin-top: 1px;
 }
 
-/* ---------- Copyright bar ---------- */
 .footer-bottom {
     border-top: 1px solid var(--glass-nav-border);
     padding: 1.5rem 0;
@@ -1087,6 +1088,15 @@ html.dark .footer-bottom {
         background: var(--surface);
         border-color: var(--border);
     }
+
+    /* Marquee pills fallback: solid surface */
+    .tech-pill {
+        background: var(--surface);
+        border-color: var(--border);
+    }
+    .tech-pill:hover {
+        background: var(--surface-hover);
+    }
 }
 
 /* ==================================================
@@ -1103,10 +1113,7 @@ html.dark .footer-bottom {
 }
 
 /* ==================================================
-   18. EVENTS PAGE — SCOPED STYLES
-   All selectors are prefixed with .events-page or use
-   event-specific class names so they cannot leak into
-   other pages. This is the RESTORED version.
+   18. EVENTS PAGE — SCOPED STYLES (restored, intact)
 ================================================== */
 
 /* ---------- Events page hero ---------- */
