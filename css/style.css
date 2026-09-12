@@ -34,7 +34,13 @@
     --glass-primary-border: rgba(0, 98, 155, 0.95);
     --glass-primary-highlight: rgba(255, 255, 255, 0.3);
 
-    /* Marquee pill (light) — solid-ish glass without backdrop-filter */
+    /* Liquid Metal: CTA fallback gradient (light, shows only if WebGL unavailable) */
+    --metal-fallback: linear-gradient(180deg, #2b2e35 0%, #17191d 55%, #0f1013 100%);
+    --metal-fallback-hover: linear-gradient(180deg, #34383f 0%, #1b1e22 55%, #121316 100%);
+    --metal-fallback-border: rgba(255, 255, 255, 0.22);
+    --metal-fallback-highlight: rgba(255, 255, 255, 0.5);
+
+    /* Marquee pill (light) */
     --glass-pill-bg: rgba(255, 255, 255, 0.88);
     --glass-pill-bg-hover: rgba(255, 255, 255, 0.98);
     --glass-pill-border: rgba(203, 213, 225, 0.85);
@@ -70,6 +76,11 @@ html.dark {
     --glass-primary-bg-hover: rgba(56, 189, 248, 0.96);
     --glass-primary-border: rgba(56, 189, 248, 0.95);
     --glass-primary-highlight: rgba(255, 255, 255, 0.35);
+
+    --metal-fallback: linear-gradient(180deg, #23262c 0%, #131418 55%, #0b0c0f 100%);
+    --metal-fallback-hover: linear-gradient(180deg, #2c3038 0%, #16181d 55%, #0e0f12 100%);
+    --metal-fallback-border: rgba(255, 255, 255, 0.24);
+    --metal-fallback-highlight: rgba(255, 255, 255, 0.55);
 
     --glass-pill-bg: rgba(30, 41, 59, 0.88);
     --glass-pill-bg-hover: rgba(30, 41, 59, 0.98);
@@ -333,6 +344,9 @@ html:not(.dark) .moon-icon { display: block; }
 
 /* ==================================================
    5. HERO
+   Note: bottom padding increased so the CTA group has clear
+   breathing room and doesn't collide with the next section's
+   boundary line / divider.
 ================================================== */
 .hero {
     min-height: auto;
@@ -340,7 +354,7 @@ html:not(.dark) .moon-icon { display: block; }
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 110px 0 0 0;
+    padding: 110px 0 3.5rem 0;   /* was: 110px 0 0 0 — added bottom spacing */
     position: relative;
     overflow: hidden;
 }
@@ -419,10 +433,15 @@ html.dark .badge { background: rgba(56, 189, 248, 0.15); }
     margin-bottom: 2.5rem;
 }
 
+/* CTA group — holds the two liquid-metal buttons.
+   The explicit top padding guarantees the section boundary above
+   never sits flush against the buttons. */
 .hero-cta {
     display: flex;
-    gap: 1rem;
+    gap: 1.25rem;
     justify-content: center;
+    align-items: center;
+    padding-top: 0.5rem;
 }
 
 /* ==================================================
@@ -502,38 +521,34 @@ html.dark .btn-primary:hover {
 }
 
 /* ==================================================
-   6b. HERO CTA — LAYERED LIQUID GLASS BUTTONS
+   6b. HERO CTA — LIQUID-METAL BUTTONS
    ---------------------------------------------------
-   Recreates the reference glass-button component as
-   plain HTML/CSS. Structure:
+   Layered structure (mirrors the reference component):
 
-       .glass-cta-wrap    → positioning context (isolation)
-       .glass-cta         → translucent glass surface
-       .glass-cta-text    → content layer kept above reflections
-       .glass-cta-shadow  → soft colored depth layer behind the surface
+       .glass-cta-wrap      → positioning + isolation
+       .glass-cta           → the metal surface (canvas host + CSS fallback)
+         .glass-cta-canvas  → WebGL shader output
+         .glass-cta-text    → crisp text layer above the shader
+       .glass-cta-shadow    → soft colored depth layer behind the surface
 
-   Reuses the navbar/footer glass vocabulary (blur + saturate,
-   inset top highlight, subtle border, soft neutral depth).
-   Adds a small, tight, low-alpha edge glow that reads as light
-   catching the glass — not a neon halo.
+   Primary visual source: WebGL shader (silver/blue/red chromatic
+   reflections, animated liquid flow). CSS supplies a fallback
+   static metal gradient that only shows if WebGL is unavailable.
 ================================================== */
 
-/* ---------- Wrapper: anchors the sibling shadow layer ---------- */
+/* ---------- Wrapper ---------- */
 .hero-cta .glass-cta-wrap {
     position: relative;
     isolation: isolate;
     display: inline-flex;
-    /* Allow the wrap itself to shrink on narrow screens */
     min-width: 0;
 }
 
-/* ---------- Depth layer behind the glass surface ----------
-   A blurred colored shape sitting just below the button.
-   This is the reference component's separate shadow layer. */
+/* ---------- Depth layer behind the button ---------- */
 .hero-cta .glass-cta-shadow {
     position: absolute;
-    left: 6px;
-    right: 6px;
+    left: 8px;
+    right: 8px;
     bottom: -10px;
     height: 55%;
     border-radius: 999px;
@@ -543,44 +558,40 @@ html.dark .btn-primary:hover {
     filter: blur(14px);
     transition: opacity 0.35s ease, filter 0.35s ease, transform 0.35s ease;
 }
-
-/* Primary CTA — soft blue-tinted depth */
 .hero-cta .glass-cta-wrap-primary .glass-cta-shadow {
     background: radial-gradient(
         ellipse at center,
-        rgba(0, 98, 155, 0.55) 0%,
-        rgba(0, 98, 155, 0.22) 45%,
-        rgba(0, 98, 155, 0) 100%
+        rgba(0, 20, 40, 0.65) 0%,
+        rgba(0, 20, 40, 0.25) 45%,
+        rgba(0, 20, 40, 0) 100%
     );
 }
 html.dark .hero-cta .glass-cta-wrap-primary .glass-cta-shadow {
     background: radial-gradient(
         ellipse at center,
-        rgba(56, 189, 248, 0.45) 0%,
-        rgba(56, 189, 248, 0.18) 45%,
-        rgba(56, 189, 248, 0) 100%
+        rgba(30, 90, 150, 0.5) 0%,
+        rgba(30, 90, 150, 0.2) 45%,
+        rgba(30, 90, 150, 0) 100%
     );
 }
-
-/* Outline CTA — neutral, understated depth */
 .hero-cta .glass-cta-wrap-outline .glass-cta-shadow {
     background: radial-gradient(
         ellipse at center,
-        rgba(15, 23, 42, 0.28) 0%,
-        rgba(15, 23, 42, 0.1) 45%,
+        rgba(15, 23, 42, 0.5) 0%,
+        rgba(15, 23, 42, 0.18) 45%,
         rgba(15, 23, 42, 0) 100%
     );
 }
 html.dark .hero-cta .glass-cta-wrap-outline .glass-cta-shadow {
     background: radial-gradient(
         ellipse at center,
-        rgba(0, 0, 0, 0.55) 0%,
-        rgba(0, 0, 0, 0.2) 45%,
+        rgba(0, 0, 0, 0.6) 0%,
+        rgba(0, 0, 0, 0.22) 45%,
         rgba(0, 0, 0, 0) 100%
     );
 }
 
-/* ---------- The glass surface itself ---------- */
+/* ---------- Metal button surface ---------- */
 .hero-cta .glass-cta {
     position: relative;
     z-index: 1;
@@ -598,40 +609,39 @@ html.dark .hero-cta .glass-cta-wrap-outline .glass-cta-shadow {
     max-width: 100%;
     min-width: 0;
 
-    /* Layered translucent glass surface:
-       soft top-edge reflection over the base tint */
-    background:
-        linear-gradient(
-            180deg,
-            rgba(255, 255, 255, 0.28) 0%,
-            rgba(255, 255, 255, 0.06) 40%,
-            rgba(255, 255, 255, 0) 60%
-        ),
-        var(--glass-cta-bg);
+    /* CSS fallback metal surface — hidden behind the canvas when WebGL works */
+    background: var(--metal-fallback);
+    border: 1px solid var(--metal-fallback-border);
+    color: #ffffff;
 
-    border: 1px solid var(--glass-cta-border);
-
-    /* Core glass effect */
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-
-    /* Inset top highlight + subtle inner bottom shade +
-       neutral depth + tight luminous edge */
     box-shadow:
-        inset 0 1px 0 var(--glass-cta-highlight),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.08),
-        inset 0 0 12px rgba(255, 255, 255, 0.08),
-        0 4px 14px rgba(15, 23, 42, 0.14),
-        0 0 22px var(--glass-cta-glow);
+        inset 0 1px 0 var(--metal-fallback-highlight),
+        inset 0 -2px 6px rgba(0, 0, 0, 0.5),
+        0 8px 20px rgba(0, 0, 0, 0.35),
+        0 2px 6px rgba(0, 0, 0, 0.25);
 
     transition:
-        background 0.35s ease,
-        border-color 0.35s ease,
+        transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
         box-shadow 0.35s ease,
-        transform 0.25s ease;
+        border-color 0.35s ease;
 }
 
-/* Reflective highlight layer — light catching the top of the glass */
+/* WebGL canvas overlays the CSS fallback perfectly */
+.hero-cta .glass-cta-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    display: block;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* If WebGL is unavailable, JS toggles .no-webgl and hides the canvas,
+   leaving the CSS fallback metal gradient visible. */
+
+/* Reflective top highlight (thin, subtle) — sits above the canvas */
 .hero-cta .glass-cta::before {
     content: '';
     position: absolute;
@@ -639,38 +649,42 @@ html.dark .hero-cta .glass-cta-wrap-outline .glass-cta-shadow {
     border-radius: inherit;
     background: linear-gradient(
         180deg,
-        rgba(255, 255, 255, 0.4) 0%,
-        rgba(255, 255, 255, 0.1) 28%,
+        rgba(255, 255, 255, 0.28) 0%,
+        rgba(255, 255, 255, 0.06) 30%,
         rgba(255, 255, 255, 0) 55%
     );
     pointer-events: none;
-    z-index: 0;
-    opacity: 0.9;
+    z-index: 2;
+    opacity: 0.85;
     transition: opacity 0.35s ease;
 }
 
-/* Subtle bottom inner glow — depth inside the glass */
+/* Inner bottom shade — depth inside the metal */
 .hero-cta .glass-cta::after {
     content: '';
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    box-shadow: inset 0 -10px 18px -10px rgba(0, 98, 155, 0.3);
+    box-shadow:
+        inset 0 -8px 16px -10px rgba(0, 0, 0, 0.7),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.04);
     pointer-events: none;
-    z-index: 0;
-}
-html.dark .hero-cta .glass-cta::after {
-    box-shadow: inset 0 -10px 18px -10px rgba(56, 189, 248, 0.35);
+    z-index: 2;
 }
 
-/* ---------- Content layer above all reflections ---------- */
+/* ---------- Text layer, always crisp above everything ---------- */
 .hero-cta .glass-cta-text {
     position: relative;
-    z-index: 2;
+    z-index: 3;
     display: inline-flex;
     align-items: center;
     gap: 8px;
     white-space: nowrap;
+    color: #ffffff;
+    text-shadow:
+        0 1px 1px rgba(0, 0, 0, 0.55),
+        0 0 12px rgba(0, 0, 0, 0.35);
+    letter-spacing: 0.01em;
 }
 
 .hero-cta .glass-cta-text svg {
@@ -683,103 +697,100 @@ html.dark .hero-cta .glass-cta::after {
     transform: translateX(4px);
 }
 
-/* ---------- Primary variant (Explore Events) ----------
-   Slightly stronger glass tint + brighter border + more
-   luminous edge, but still fully translucent. */
+/* ---------- Primary variant (Explore Events) ---------- */
 .hero-cta .glass-cta-primary {
-    --glass-cta-bg: rgba(0, 98, 155, 0.42);
-    --glass-cta-border: rgba(255, 255, 255, 0.55);
-    --glass-cta-highlight: rgba(255, 255, 255, 0.6);
-    --glass-cta-glow: rgba(0, 98, 155, 0.32);
-    color: #ffffff;
-}
-html.dark .hero-cta .glass-cta-primary {
-    --glass-cta-bg: rgba(56, 189, 248, 0.22);
-    --glass-cta-border: rgba(125, 211, 252, 0.5);
-    --glass-cta-highlight: rgba(255, 255, 255, 0.42);
-    --glass-cta-glow: rgba(56, 189, 248, 0.38);
-    color: #ffffff;
+    --metal-fallback-border: rgba(255, 255, 255, 0.28);
+    --metal-fallback-highlight: rgba(255, 255, 255, 0.55);
+    box-shadow:
+        inset 0 1px 0 var(--metal-fallback-highlight),
+        inset 0 -2px 6px rgba(0, 0, 0, 0.55),
+        0 10px 22px rgba(0, 0, 0, 0.4),
+        0 0 22px rgba(0, 60, 120, 0.28);
 }
 
-/* ---------- Outline variant (Learn More) ----------
-   Same material, more transparent, subtle glass edge. */
+/* ---------- Outline variant (Learn More) — same material, subtler depth ---------- */
 .hero-cta .glass-cta-outline {
-    --glass-cta-bg: rgba(255, 255, 255, 0.42);
-    --glass-cta-border: rgba(255, 255, 255, 0.7);
-    --glass-cta-highlight: rgba(255, 255, 255, 0.85);
-    --glass-cta-glow: rgba(15, 23, 42, 0.12);
-    color: var(--text-main);
-}
-html.dark .hero-cta .glass-cta-outline {
-    --glass-cta-bg: rgba(30, 41, 59, 0.5);
-    --glass-cta-border: rgba(148, 163, 184, 0.4);
-    --glass-cta-highlight: rgba(255, 255, 255, 0.22);
-    --glass-cta-glow: rgba(56, 189, 248, 0.16);
-    color: var(--text-main);
+    --metal-fallback-border: rgba(255, 255, 255, 0.22);
+    --metal-fallback-highlight: rgba(255, 255, 255, 0.42);
+    box-shadow:
+        inset 0 1px 0 var(--metal-fallback-highlight),
+        inset 0 -2px 6px rgba(0, 0, 0, 0.5),
+        0 8px 18px rgba(0, 0, 0, 0.35);
 }
 
-/* ---------- Hover — brighten the glass, lift a touch ---------- */
+/* ---------- Hover — subtle lift, brighter edges, stronger shadow ---------- */
 .hero-cta .glass-cta:hover {
     transform: translateY(-2px);
 }
-
 .hero-cta .glass-cta-primary:hover {
-    --glass-cta-bg: rgba(0, 98, 155, 0.55);
-    --glass-cta-border: rgba(255, 255, 255, 0.75);
-    --glass-cta-glow: rgba(0, 98, 155, 0.48);
+    background: var(--metal-fallback-hover);
+    border-color: rgba(255, 255, 255, 0.42);
     box-shadow:
-        inset 0 1px 0 var(--glass-cta-highlight),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.08),
-        inset 0 0 14px rgba(255, 255, 255, 0.12),
-        0 6px 20px rgba(15, 23, 42, 0.18),
-        0 0 32px var(--glass-cta-glow);
+        inset 0 1px 0 rgba(255, 255, 255, 0.65),
+        inset 0 -2px 8px rgba(0, 0, 0, 0.55),
+        0 14px 28px rgba(0, 0, 0, 0.45),
+        0 0 32px rgba(0, 60, 120, 0.4);
 }
-html.dark .hero-cta .glass-cta-primary:hover {
-    --glass-cta-bg: rgba(56, 189, 248, 0.36);
-    --glass-cta-border: rgba(125, 211, 252, 0.8);
-    --glass-cta-glow: rgba(56, 189, 248, 0.55);
-    box-shadow:
-        inset 0 1px 0 var(--glass-cta-highlight),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.12),
-        inset 0 0 14px rgba(255, 255, 255, 0.14),
-        0 6px 20px rgba(0, 0, 0, 0.4),
-        0 0 34px var(--glass-cta-glow);
-}
-
 .hero-cta .glass-cta-outline:hover {
-    --glass-cta-bg: rgba(255, 255, 255, 0.62);
-    --glass-cta-border: rgba(255, 255, 255, 0.9);
-    --glass-cta-glow: rgba(15, 23, 42, 0.18);
-    border-color: var(--primary);
+    background: var(--metal-fallback-hover);
+    border-color: rgba(255, 255, 255, 0.36);
     box-shadow:
-        inset 0 1px 0 var(--glass-cta-highlight),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.06),
-        inset 0 0 14px rgba(255, 255, 255, 0.14),
-        0 6px 18px rgba(15, 23, 42, 0.12),
-        0 0 24px var(--glass-cta-glow);
+        inset 0 1px 0 rgba(255, 255, 255, 0.55),
+        inset 0 -2px 8px rgba(0, 0, 0, 0.5),
+        0 12px 24px rgba(0, 0, 0, 0.42);
 }
-html.dark .hero-cta .glass-cta-outline:hover {
-    --glass-cta-bg: rgba(30, 41, 59, 0.72);
-    --glass-cta-border: rgba(125, 211, 252, 0.55);
-    --glass-cta-glow: rgba(56, 189, 248, 0.28);
-    box-shadow:
-        inset 0 1px 0 var(--glass-cta-highlight),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.12),
-        inset 0 0 14px rgba(255, 255, 255, 0.08),
-        0 6px 18px rgba(0, 0, 0, 0.4),
-        0 0 26px var(--glass-cta-glow);
+.hero-cta .glass-cta:hover::before {
+    opacity: 1;
 }
 
-/* Shadow layer reacts to hover — grows slightly and softens */
+/* ---------- Active / press state ---------- */
+.hero-cta .glass-cta:active {
+    transform: translateY(0) scale(0.975);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        inset 0 -4px 14px rgba(0, 0, 0, 0.7),
+        0 4px 10px rgba(0, 0, 0, 0.45);
+}
+
+/* ---------- Shadow layer reacts with the button ---------- */
 .hero-cta .glass-cta-wrap:hover .glass-cta-shadow {
     opacity: 1;
     filter: blur(16px);
     transform: translateY(2px) scale(1.02);
 }
+.hero-cta .glass-cta-wrap:active .glass-cta-shadow {
+    opacity: 0.6;
+    filter: blur(10px);
+    transform: translateY(4px) scale(0.98);
+}
 
-/* ---------- Active / press state ---------- */
-.hero-cta .glass-cta:active {
-    transform: translateY(0) scale(0.98);
+/* ---------- Click ripple ---------- */
+.hero-cta .glass-cta-ripple {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    margin-left: -10px;
+    margin-top: -10px;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.55) 0%,
+        rgba(255, 255, 255, 0.15) 40%,
+        rgba(255, 255, 255, 0) 70%
+    );
+    pointer-events: none;
+    z-index: 4;
+    animation: cta-ripple 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes cta-ripple {
+    0% {
+        transform: scale(0.6);
+        opacity: 0.9;
+    }
+    100% {
+        transform: scale(8);
+        opacity: 0;
+    }
 }
 
 /* ==================================================
@@ -965,7 +976,6 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
     100% { transform: translateX(0); }
 }
 
-/* ---------- Individual technology pill (glass, no blur) ---------- */
 .tech-pill {
     font-size: 0.95rem;
     font-weight: 500;
@@ -1370,24 +1380,10 @@ html.dark .footer-bottom {
     .nav-link::before { display: none; }
     .nav-link:hover { background: var(--surface-hover); border-radius: 8px; }
 
-    /* Hero CTA fallback: solid tinted surface, edge glow retained */
-    .hero-cta .glass-cta-primary {
-        background: rgba(0, 98, 155, 0.85);
-        color: #ffffff;
-    }
-    html.dark .hero-cta .glass-cta-primary {
-        background: rgba(56, 189, 248, 0.75);
-        color: #0b1120;
-    }
-    .hero-cta .glass-cta-outline {
-        background: var(--surface);
-    }
-
     .footer {
         background: var(--surface);
         border-color: var(--border);
     }
-    /* .tech-pill no longer uses backdrop-filter, so it needs no fallback here */
 }
 
 /* ==================================================
@@ -1402,16 +1398,17 @@ html.dark .footer-bottom {
     .marquee-track-1, .marquee-track-2 { animation: none !important; flex-wrap: wrap; justify-content: center; }
     .reveal-up, .reveal-left, .reveal-right, .stagger-item { opacity: 1 !important; transform: none !important; }
 
-    /* Hero CTA: no transform on hover for reduced-motion users */
+    /* CTA: keep the metal surface but skip motion */
     .hero-cta .glass-cta:hover { transform: none; }
+    .hero-cta .glass-cta:active { transform: none; }
     .hero-cta .glass-cta-text svg { transition: none; }
+    .hero-cta .glass-cta-ripple { animation: none; display: none; }
 }
 
 /* ==================================================
    18. EVENTS PAGE — SCOPED STYLES (restored, intact)
 ================================================== */
 
-/* ---------- Events page hero ---------- */
 .events-page .events-hero {
     padding: 130px 0 50px 0;
     text-align: center;
@@ -1453,12 +1450,10 @@ html.dark .events-page .events-eyebrow {
     line-height: 1.65;
 }
 
-/* ---------- Events intro ---------- */
 .events-page .events-intro {
     padding: 50px 0 20px 0;
     text-align: center;
 }
-
 .events-page .events-intro .eyebrow {
     display: inline-block;
     font-size: 0.72rem;
@@ -1468,14 +1463,12 @@ html.dark .events-page .events-eyebrow {
     color: var(--primary);
     margin-bottom: 0.75rem;
 }
-
 .events-page .events-intro h2 {
     font-size: 2rem;
     font-weight: 800;
     letter-spacing: -0.02em;
     margin-bottom: 0.75rem;
 }
-
 .events-page .events-intro p {
     color: var(--text-muted);
     max-width: 680px;
@@ -1484,17 +1477,13 @@ html.dark .events-page .events-eyebrow {
     font-size: 1rem;
 }
 
-/* ---------- Event blocks ---------- */
-.events-page .event-block {
-    padding: 40px 0;
-}
+.events-page .event-block { padding: 40px 0; }
 .events-page .event-block-alt {
     background: var(--bg-alt);
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
 }
 
-/* ---------- Event card ---------- */
 .events-page .event-card-full {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -1574,7 +1563,6 @@ html.dark .events-page .event-date-badge {
     flex-shrink: 0;
 }
 
-/* ---------- Event meta grid ---------- */
 .events-page .event-meta-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -1594,477 +1582,4 @@ html.dark .events-page .event-date-badge {
     width: 30px;
     height: 30px;
     background: rgba(0, 98, 155, 0.1);
-    color: var(--primary);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-html.dark .events-page .event-meta-icon { background: rgba(56, 189, 248, 0.1); }
-.events-page .event-meta-icon svg { width: 15px; height: 15px; }
-.events-page .event-meta-text { min-width: 0; }
-.events-page .event-meta-label {
-    font-size: 0.66rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 2px;
-}
-.events-page .event-meta-value {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--text-main);
-    line-height: 1.45;
-    word-wrap: break-word;
-}
-
-/* ---------- Event card body ---------- */
-.events-page .event-card-body {
-    display: flex;
-    flex-direction: column;
-    gap: 1.75rem;
-}
-.events-page .event-section-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text-main);
-    margin-bottom: 0.75rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    letter-spacing: -0.01em;
-}
-.events-page .event-section-title::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    background: var(--primary);
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-.events-page .event-summary {
-    color: var(--text-muted);
-    line-height: 1.75;
-    font-size: 0.98rem;
-}
-
-/* ---------- Explore grid ---------- */
-.events-page .explore-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1rem;
-    margin-top: 0.75rem;
-}
-.events-page .explore-item {
-    padding: 1.15rem;
-    background: var(--bg-alt);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    transition: border-color 0.25s ease, transform 0.25s ease;
-}
-.events-page .explore-item:hover {
-    border-color: var(--primary);
-    transform: translateY(-2px);
-}
-.events-page .explore-num {
-    display: inline-block;
-    font-size: 0.68rem;
-    font-weight: 800;
-    color: var(--primary);
-    letter-spacing: 0.05em;
-    margin-bottom: 0.35rem;
-}
-.events-page .explore-item h4 {
-    font-size: 0.98rem;
-    font-weight: 700;
-    color: var(--text-main);
-    margin-bottom: 0.45rem;
-    line-height: 1.3;
-}
-.events-page .explore-item p {
-    font-size: 0.88rem;
-    line-height: 1.65;
-    color: var(--text-muted);
-}
-
-/* ---------- Timeline ---------- */
-.events-page .event-timeline {
-    display: flex;
-    flex-direction: column;
-    gap: 0.7rem;
-    margin-top: 0.4rem;
-}
-.events-page .timeline-item {
-    display: grid;
-    grid-template-columns: 100px 1fr;
-    gap: 1rem;
-    padding: 0.9rem 1rem;
-    background: var(--bg-alt);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    align-items: start;
-}
-.events-page .timeline-time {
-    font-size: 0.78rem;
-    font-weight: 800;
-    color: var(--primary);
-    letter-spacing: 0.03em;
-    padding-top: 2px;
-}
-.events-page .timeline-content h4 {
-    font-size: 0.94rem;
-    font-weight: 700;
-    color: var(--text-main);
-    margin-bottom: 0.3rem;
-}
-.events-page .timeline-content p {
-    font-size: 0.88rem;
-    color: var(--text-muted);
-    line-height: 1.6;
-}
-.events-page .timeline-content ul {
-    margin-top: 0.45rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-}
-.events-page .timeline-content ul li {
-    font-size: 0.86rem;
-    color: var(--text-muted);
-    line-height: 1.55;
-    padding-left: 1rem;
-    position: relative;
-}
-.events-page .timeline-content ul li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0.55em;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--primary);
-    opacity: 0.7;
-}
-
-/* ---------- Accomplishments ---------- */
-.events-page .accomplishments {
-    background: rgba(0, 98, 155, 0.04);
-    border: 1px solid rgba(0, 98, 155, 0.15);
-    border-radius: 14px;
-    padding: 1.5rem;
-}
-html.dark .events-page .accomplishments {
-    background: rgba(56, 189, 248, 0.05);
-    border-color: rgba(56, 189, 248, 0.18);
-}
-.events-page .accomplishments .event-section-title { margin-bottom: 0.85rem; }
-.events-page .accomplishments-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.55rem;
-}
-.events-page .accomplishments-list li {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    line-height: 1.6;
-}
-.events-page .accomplishments-list li svg {
-    width: 17px;
-    height: 17px;
-    color: var(--primary);
-    flex-shrink: 0;
-    margin-top: 3px;
-}
-
-/* ---------- Flagship (TechForge'26) ---------- */
-.events-page .event-flagship {
-    padding: 50px 0 70px 0;
-}
-.events-page .flagship-card {
-    position: relative;
-    background: var(--surface);
-    border: 2px solid var(--primary);
-    border-radius: 22px;
-    overflow: hidden;
-    box-shadow: 0 12px 40px rgba(0, 98, 155, 0.1);
-}
-html.dark .events-page .flagship-card {
-    box-shadow: 0 12px 40px rgba(56, 189, 248, 0.1);
-}
-
-.events-page .flagship-badge {
-    position: absolute;
-    top: 22px;
-    right: 22px;
-    z-index: 5;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 7px 14px;
-    background: var(--primary);
-    color: #fff;
-    border-radius: 100px;
-    font-size: 0.7rem;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    box-shadow: 0 4px 14px rgba(0, 98, 155, 0.3);
-}
-html.dark .events-page .flagship-badge { color: #0b1120; }
-.events-page .flagship-badge svg { width: 13px; height: 13px; }
-
-.events-page .flagship-header {
-    padding: 2.75rem 2.25rem 2.25rem 2.25rem;
-    background: rgba(0, 98, 155, 0.06);
-    border-bottom: 1px solid var(--border);
-}
-html.dark .events-page .flagship-header { background: rgba(56, 189, 248, 0.06); }
-
-.events-page .flagship-eyebrow {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--primary);
-    margin-bottom: 0.7rem;
-}
-.events-page .flagship-title {
-    font-size: 2.5rem;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.1;
-    color: var(--text-main);
-    margin-bottom: 0.75rem;
-}
-.events-page .flagship-tagline {
-    font-size: 1rem;
-    color: var(--text-muted);
-    line-height: 1.6;
-    max-width: 720px;
-    margin-bottom: 1.5rem;
-}
-.events-page .flagship-meta {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 0.85rem;
-}
-.events-page .flagship-meta .event-meta-item { background: var(--surface); }
-
-.events-page .flagship-body {
-    padding: 2.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 2.25rem;
-}
-.events-page .flagship-section {
-    display: flex;
-    flex-direction: column;
-    gap: 0.7rem;
-}
-.events-page .flagship-section-title {
-    font-size: 1.25rem;
-    font-weight: 800;
-    color: var(--text-main);
-    letter-spacing: -0.01em;
-    padding-bottom: 0.65rem;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 0.4rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-.events-page .flagship-section-title::before {
-    content: '';
-    width: 8px;
-    height: 8px;
-    background: var(--primary);
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-.events-page .flagship-section p {
-    font-size: 0.96rem;
-    line-height: 1.75;
-    color: var(--text-muted);
-}
-.events-page .flagship-section .bullet-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.55rem;
-}
-.events-page .flagship-section .bullet-list li {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    font-size: 0.93rem;
-    color: var(--text-muted);
-    line-height: 1.65;
-}
-.events-page .flagship-section .bullet-list li svg {
-    width: 16px;
-    height: 16px;
-    color: var(--primary);
-    flex-shrink: 0;
-    margin-top: 4px;
-}
-
-/* ---------- Team grid inside flagship ---------- */
-.events-page .team-grid-flagship {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-    gap: 0.9rem;
-    margin-top: 0.5rem;
-}
-.events-page .team-block-flagship {
-    background: var(--bg-alt);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 1.05rem;
-}
-.events-page .team-block-flagship h4 {
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--primary);
-    margin-bottom: 0.5rem;
-}
-.events-page .team-block-flagship ul {
-    display: flex;
-    flex-direction: column;
-    gap: 0.28rem;
-}
-.events-page .team-block-flagship li {
-    font-size: 0.88rem;
-    color: var(--text-main);
-    line-height: 1.5;
-    font-weight: 500;
-}
-.events-page .team-block-flagship li small {
-    display: block;
-    font-size: 0.76rem;
-    color: var(--text-muted);
-    font-weight: 400;
-}
-
-/* ---------- Tables ---------- */
-.events-page .table-wrapper {
-    width: 100%;
-    overflow-x: auto;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    margin-top: 0.4rem;
-    -webkit-overflow-scrolling: touch;
-}
-.events-page .data-table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 560px;
-    background: var(--surface);
-    font-size: 0.88rem;
-}
-.events-page .data-table thead th {
-    background: var(--bg-alt);
-    color: var(--text-main);
-    font-weight: 700;
-    font-size: 0.75rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    text-align: left;
-    padding: 0.85rem 1rem;
-    border-bottom: 1px solid var(--border);
-    white-space: nowrap;
-}
-.events-page .data-table tbody td {
-    padding: 0.85rem 1rem;
-    border-bottom: 1px solid var(--border);
-    color: var(--text-main);
-    vertical-align: top;
-    line-height: 1.5;
-}
-.events-page .data-table tbody tr:last-child td { border-bottom: none; }
-.events-page .data-table tbody tr:hover { background: var(--bg-alt); }
-.events-page .data-table tbody td:first-child {
-    font-weight: 700;
-    color: var(--primary);
-    white-space: nowrap;
-}
-.events-page .results-table tbody td:nth-child(2) {
-    font-weight: 700;
-    color: var(--text-main);
-}
-.events-page .results-table tbody td:last-child {
-    font-weight: 800;
-    color: var(--primary);
-    white-space: nowrap;
-}
-
-/* ---------- Stat row ---------- */
-.events-page .stat-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-    gap: 0.7rem;
-    margin-top: 0.4rem;
-}
-.events-page .stat-box {
-    padding: 0.95rem;
-    background: var(--bg-alt);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    text-align: center;
-}
-.events-page .stat-box .stat-value {
-    font-size: 1.55rem;
-    font-weight: 800;
-    color: var(--primary);
-    line-height: 1;
-    letter-spacing: -0.02em;
-    margin-bottom: 0.3rem;
-}
-.events-page .stat-box .stat-label {
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-}
-
-/* ---------- Flagship accomplishments ---------- */
-.events-page .flagship-accomplishments {
-    background: rgba(0, 98, 155, 0.05);
-    border: 1px solid rgba(0, 98, 155, 0.15);
-    border-radius: 14px;
-    padding: 1.75rem;
-}
-html.dark .events-page .flagship-accomplishments {
-    background: rgba(56, 189, 248, 0.05);
-    border-color: rgba(56, 189, 248, 0.18);
-}
-.events-page .flagship-accomplishments .flagship-section-title {
-    border-bottom: none;
-    padding-bottom: 0;
-    margin-bottom: 0.85rem;
-}
-
-/* ==================================================
-   19. HOMEPAGE — REMOVE SECTION DIVIDER LINES
-================================================== */
-.home-page .bg-alt {
-    border-top: none;
-    border-bottom: none;
-}
-
-.home-page .tech-marquee-section {
-    border-top: none;
-    border-bottom: none;
-}
-
-.home-page .marquee-wrapper {
-    border-top: none;
-    border-bottom: none;
-}
+    color: var(--
