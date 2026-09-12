@@ -144,7 +144,7 @@
 }
 
 /* ==================================================
-   RESPONSIVE — EVENTS PAGE (restored, intact)
+   RESPONSIVE — EVENTS PAGE
 ================================================== */
 
 /* ---------- Tablet & below ---------- */
@@ -244,5 +244,157 @@
     }
     .events-page .flagship-accomplishments {
         padding: 1.1rem;
+    }
+
+    /* ==================================================
+       TECHFORGE'26 — MOBILE OVERFLOW FIX
+       Everything below is scoped inside this media query
+       and to .events-page .flagship-* / .team-* /
+       .accomplishments-* selectors, so it cannot affect
+       desktop or other event cards.
+    ================================================== */
+
+    /* ---- 1. Contain the whole flagship card ---- */
+    .events-page .flagship-card,
+    .events-page .flagship-header,
+    .events-page .flagship-body,
+    .events-page .flagship-section,
+    .events-page .flagship-accomplishments {
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    /* ---- 2. All text wraps cleanly ---- */
+    .events-page .flagship-title,
+    .events-page .flagship-tagline,
+    .events-page .flagship-eyebrow,
+    .events-page .flagship-section-title,
+    .events-page .flagship-section p,
+    .events-page .flagship-section .bullet-list,
+    .events-page .accomplishments,
+    .events-page .accomplishments-list,
+    .events-page .accomplishments-list li,
+    .events-page .flagship-accomplishments,
+    .events-page .team-block-flagship,
+    .events-page .team-block-flagship ul,
+    .events-page .team-block-flagship li,
+    .events-page .team-block-flagship li small {
+        max-width: 100%;
+        min-width: 0;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    /* ---- 3. Bullet / accomplishment items ----
+       Switch from flex to grid so the text column can
+       actually shrink. In flex, an inline-content sibling
+       (text + <strong>) creates anonymous flex items with
+       min-width: auto and cannot wrap below the longest
+       unbreakable word. Grid with minmax(0, 1fr) forces
+       the text column to shrink to 0 and wrap. */
+    .events-page .flagship-section .bullet-list li,
+    .events-page .accomplishments-list li {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: flex-start;
+        gap: 10px;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+    /* Keep the icon at its intrinsic size inside column 1 */
+    .events-page .flagship-section .bullet-list li > svg,
+    .events-page .accomplishments-list li > svg {
+        flex-shrink: 0;
+        width: 16px;
+        height: 16px;
+        margin-top: 4px;
+    }
+    .events-page .accomplishments-list li > svg {
+        width: 17px;
+        height: 17px;
+        margin-top: 3px;
+    }
+
+    /* ---- 4. Team grid (Judges / Dignitaries / Event Team) ----
+       Collapse to a single column so long names + tags have room. */
+    .events-page .team-grid-flagship {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    /* ---- 5. Flagship meta grid ---- */
+    .events-page .flagship-meta {
+        grid-template-columns: 1fr;
+    }
+    .events-page .flagship-meta .event-meta-item,
+    .events-page .flagship-meta .event-meta-text,
+    .events-page .flagship-meta .event-meta-value {
+        max-width: 100%;
+        min-width: 0;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    /* ---- 6. Tables: horizontal scroll ONLY inside the wrapper ---- */
+    .events-page .table-wrapper {
+        max-width: 100%;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .events-page .data-table {
+        min-width: 480px;
+    }
+    .events-page .data-table thead th,
+    .events-page .data-table tbody td {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    /* ---- 7. Stat boxes ---- */
+    .events-page .stat-box {
+        min-width: 0;
+        max-width: 100%;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    /* ---- 8. Overall events page body clip safety ---- */
+    .events-page .events-hero,
+    .events-page .events-intro,
+    .events-page .event-block,
+    .events-page .event-flagship {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+    }
+}
+
+/* ==================================================
+   EXTRA-NARROW PHONES (e.g. 320px)
+================================================== */
+@media (max-width: 380px) {
+    .events-page .flagship-header {
+        padding: 3.25rem 0.9rem 1.1rem 0.9rem;
+    }
+    .events-page .flagship-body {
+        padding: 0.9rem;
+    }
+    .events-page .flagship-title {
+        font-size: 1.35rem;
+    }
+    .events-page .flagship-section-title {
+        font-size: 1rem;
+    }
+    .events-page .flagship-badge {
+        font-size: 0.54rem;
+        padding: 4px 8px;
+        letter-spacing: 0.06em;
+    }
+    .events-page .data-table {
+        min-width: 420px;
+    }
+    .events-page .flagship-section .bullet-list li,
+    .events-page .accomplishments-list li {
+        gap: 8px;
     }
 }
