@@ -40,7 +40,7 @@
     --glass-pill-border: rgba(203, 213, 225, 0.85);
     --glass-pill-highlight: rgba(255, 255, 255, 0.95);
 
-    /* Hover CTA — light mode */
+    /* Hover CTA — light mode: white surface, transitions to IEEE blue on hover */
     --hover-cta-bg: #ffffff;
     --hover-cta-bg-hover: #00629B;
     --hover-cta-text: #0f172a;
@@ -86,6 +86,7 @@ html.dark {
     --glass-pill-border: rgba(56, 189, 248, 0.35);
     --glass-pill-highlight: rgba(255, 255, 255, 0.12);
 
+    /* Hover CTA — dark mode: black surface, transitions to IEEE blue on hover */
     --hover-cta-bg: #000000;
     --hover-cta-bg-hover: #00629B;
     --hover-cta-text: #ffffff;
@@ -179,7 +180,7 @@ ul {
 .highlight { color: var(--primary); }
 
 /* ==================================================
-   4. NAVBAR
+   4. NAVBAR (Liquid Glass — unchanged reference)
 ================================================== */
 .navbar {
     position: fixed;
@@ -448,7 +449,7 @@ html.dark .badge { background: rgba(56, 189, 248, 0.15); }
 }
 
 /* ==================================================
-   6. BUTTONS (base glass)
+   6. BUTTONS (base glass — used across the site)
 ================================================== */
 .btn {
     padding: 12px 28px;
@@ -524,16 +525,22 @@ html.dark .btn-primary:hover {
 }
 
 /* ==================================================
-   6b. HERO CTA — simple color-transition
+   6b. HOVER CTA — SIMPLE COLOR-TRANSITION BUTTONS
+   ---------------------------------------------------
+   Used by the Hero "Explore Events" / "Learn More"
+   buttons AND the Signal Match "Play Now" button.
+   Only the surface color transitions on hover; text
+   and arrow remain static.
 ================================================== */
 
-.hero-cta .hover-cta {
+.hover-cta {
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: 14px 30px;
     border-radius: 999px;
+    font-family: inherit;
     font-weight: 600;
     font-size: 0.95rem;
     line-height: 1;
@@ -546,6 +553,9 @@ html.dark .btn-primary:hover {
     border: 1px solid var(--hover-cta-border);
     box-shadow: var(--hover-cta-shadow);
     -webkit-tap-highlight-color: transparent;
+    appearance: none;
+    -webkit-appearance: none;
+    text-align: center;
     transition:
         background-color 0.3s ease,
         color 0.3s ease,
@@ -554,8 +564,8 @@ html.dark .btn-primary:hover {
         transform 0.2s ease;
 }
 
-.hero-cta .hover-cta:hover,
-.hero-cta .hover-cta:focus-visible {
+.hover-cta:hover,
+.hover-cta:focus-visible {
     background-color: var(--hover-cta-bg-hover);
     color: var(--hover-cta-text-hover);
     border-color: var(--hover-cta-border-hover);
@@ -563,11 +573,11 @@ html.dark .btn-primary:hover {
     outline: none;
 }
 
-.hero-cta .hover-cta:active {
+.hover-cta:active {
     transform: translateY(1px);
 }
 
-.hero-cta .hover-cta-text {
+.hover-cta-text {
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -579,11 +589,12 @@ html.dark .btn-primary:hover {
     letter-spacing: 0.01em;
 }
 
-.hero-cta .hover-cta-text svg {
+.hover-cta-text svg {
     width: 16px;
     height: 16px;
     flex-shrink: 0;
     color: inherit;
+    transition: none;
 }
 
 /* ==================================================
@@ -799,17 +810,9 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
 
 /* ==================================================
    9. SIGNAL MATCH GAME — WIDE DESKTOP MODAL
-   ---------------------------------------------------
-   Sizing tuned so the game opens as a large, wide
-   landscape "game window" on desktop (roughly 90–94vw
-   × 82–88vh) and fits compactly inside the phone
-   viewport without becoming a tall narrow column.
-   Uses dvh for mobile browser chrome.
 ================================================== */
 .signal-match-section { padding: 80px 0 60px 0; }
 .game-launch-wrapper { display: flex; justify-content: center; margin-top: 20px; }
-.launch-btn { font-size: 1.2rem; padding: 16px 40px; gap: 12px; }
-.launch-btn svg { width: 22px; }
 
 .signal-match-modal-overlay {
     display: none;
@@ -891,7 +894,7 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
 }
 
 /* ==================================================
-   10. FOOTER
+   10. FOOTER — LIQUID GLASS PANEL
 ================================================== */
 
 .footer {
@@ -1213,10 +1216,10 @@ html.dark .footer-bottom {
     .marquee-track-1, .marquee-track-2 { animation: none !important; flex-wrap: wrap; justify-content: center; }
     .reveal-up, .reveal-left, .reveal-right, .stagger-item { opacity: 1 !important; transform: none !important; }
 
-    .hero-cta .hover-cta {
+    .hover-cta {
         transition: none;
     }
-    .hero-cta .hover-cta:active {
+    .hover-cta:active {
         transform: none;
     }
 }
