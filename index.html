@@ -408,14 +408,24 @@
 
     <!-- ============================================================
          LIQUID-METAL SHADER — WebGL renderer for the CTA buttons
-         Two tiny canvases, one shared WebGL program, cleaned up on
-         pagehide. Falls back to CSS if WebGL is unavailable.
+
+         The fragment shader below renders a smooth, low-frequency
+         liquid-metal surface. The previous high-frequency noise
+         octave (which produced a "snow / speckle" appearance) has
+         been removed. All remaining noise is sampled at low
+         frequencies for large, smooth flowing features. The
+         contour mapping uses a WIDE smoothstep transition and a
+         small `pow` exponent so highlights are BROAD and SOFT,
+         never tiny isolated white dots.
+
+         Everything else (WebGL setup, ripple, hover, pause-on-
+         hidden) is unchanged.
          ============================================================ -->
     <script>
     (function () {
         'use strict';
 
-        // --- Fragment shader: procedural liquid metal ---
+        // --- Fragment shader: smooth liquid metal (no snow/speckle) ---
         const FRAG_SRC = `
             precision highp float;
             uniform vec2  u_res;
@@ -460,50 +470,76 @@
                 vec2 p  = uv - 0.5;
                 p.x *= u_res.x / u_res.y;
 
-                // 45° rotation (matches reference u_angle)
+                // 45° rotation (matches the original reference angle)
                 float a = 0.785398;
                 p = mat2(cos(a), -sin(a), sin(a), cos(a)) * p;
 
-                // Scale + offset (u_scale = 8, u_offsetX = 0.1, u_offsetY = -0.1)
+                // Broad scale + slight offset (kept from the reference)
                 p *= 8.0;
                 p += vec2(0.1, -0.1);
 
-                // Time accelerates on hover (2× nominal)
+                // Time — accelerates on hover
                 float t = u_time * (0.15 + 0.35 * u_hover);
 
-                // Layered flow noise (u_repetition ≈ 4 → 3 layers)
-                float n1 = snoise(p + vec2(t * 0.6, -t * 0.3));
-                float n2 = snoise(p * 1.8 + vec2(-t * 0.4, t * 0.5));
-                float n3 = snoise(p * 3.2 + vec2(t * 0.3, t * 0.2));
-                float flow = n1 * 0.55 + n2 * 0.30 + n3 * 0.15;
+                // ---------------------------------------------------
+                // LOW-FREQUENCY FLOW ONLY.
+                // The previous version had a third high-frequency
+                // octave (`snoise(p * 3.2 + ...)`) at weight 0.15.
+                // That octave was the primary source of the "snow".
+                // It is REMOVED entirely. The two remaining octaves
+                // are sampled at lower frequencies so features are
+                // large, soft, and smooth.
+                // ---------------------------------------------------
+                float n1 = snoise(p * 0.85 + vec2(t * 0.55, -t * 0.28));
+                float n2 = snoise(p * 1.55 + vec2(-t * 0.35, t * 0.45));
+                float flow = n1 * 0.68 + n2 * 0.32;
                 flow = flow * 0.5 + 0.5;
 
-                // Contour (u_contour = 0, u_softness = 0.5)
-                float contour = smoothstep(0.42, 0.68, flow);
-                contour = pow(contour, 2.2);
+                // ---------------------------------------------------
+                // BROAD CONTOUR.
+                // Previous: smoothstep(0.42, 0.68, flow) + pow(., 2.2)
+                //   → narrow transition + sharpening = tiny bright peaks
+                // Now:      smoothstep(0.30, 0.80, flow) + pow(., 1.15)
+                //   → wide transition + gentle shaping = broad highlight
+                // ---------------------------------------------------
+                float contour = smoothstep(0.30, 0.80, flow);
+                contour = pow(contour, 1.15);
 
-                // Chromatic shift (u_shiftRed = u_shiftBlue = 0.3)
+                // ---------------------------------------------------
+                // CHROMATIC REFLECTIONS.
+                // Sample from the SAME low-frequency field so the tint
+                // is a broad wash, not per-pixel speckle. Intensity
+                // reduced from 0.12 to 0.045.
+                // ---------------------------------------------------
                 float shiftRed  =  0.3;
                 float shiftBlue =  0.3;
-                float nr = snoise(p + vec2(t * 0.6 + shiftRed,  -t * 0.3));
-                float nb = snoise(p + vec2(t * 0.6 - shiftBlue, -t * 0.3));
+                float nr = snoise(p * 0.85 + vec2(t * 0.5 + shiftRed,  -t * 0.25));
+                float nb = snoise(p * 0.85 + vec2(t * 0.5 - shiftBlue, -t * 0.25));
 
-                // Metal palette
+                // ---------------------------------------------------
+                // METAL PALETTE.
+                // colBright lowered from (0.95, 0.97, 1.0) to
+                // (0.78, 0.82, 0.90) so even the brightest highlight
+                // stays a soft silver, never a pure white dot.
+                // ---------------------------------------------------
                 vec3 colDark   = vec3(0.05, 0.06, 0.08);
-                vec3 colMid    = vec3(0.28, 0.30, 0.34);
-                vec3 colBright = vec3(0.95, 0.97, 1.00);
+                vec3 colMid    = vec3(0.30, 0.32, 0.36);
+                vec3 colBright = vec3(0.78, 0.82, 0.90);
 
                 vec3 col = mix(colDark, colMid, flow);
-                col = mix(col, colBright, contour * (0.85 + 0.15 * u_hover));
+                // Cap the highlight mix so it never blows out:
+                // previously 0.85 + 0.15 * u_hover  →  up to 1.0
+                // now        0.45 + 0.15 * u_hover  →  up to 0.60
+                col = mix(col, colBright, contour * (0.45 + 0.15 * u_hover));
 
-                // Subtle chromatic reflections
-                col.r += nr * 0.12 * (0.6 + 0.4 * u_hover);
-                col.b += nb * 0.12 * (0.6 + 0.4 * u_hover);
+                // Very subtle chromatic tint — broad, low-frequency
+                col.r += nr * 0.045 * (0.6 + 0.4 * u_hover);
+                col.b += nb * 0.045 * (0.6 + 0.4 * u_hover);
 
-                // Soft edge highlight
+                // Soft edge highlight (kept from previous version)
                 float edgeX = smoothstep(0.42, 0.50, abs(uv.x - 0.5));
                 float edgeY = smoothstep(0.32, 0.50, abs(uv.y - 0.5));
-                col = mix(col, vec3(1.0), max(edgeX, edgeY) * 0.14);
+                col = mix(col, vec3(1.0), max(edgeX, edgeY) * 0.10);
 
                 gl_FragColor = vec4(col, 1.0);
             }
