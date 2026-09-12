@@ -672,93 +672,199 @@
         }
     }
 
-    /* MOBILE */
+    /* ============================================================
+       RESPONSIVE — COMPACT LAYOUT FOR SMALL VIEWPORTS
+       ------------------------------------------------------------
+       Only resizes and reflows existing components. No gameplay,
+       content, or JS changes.
+       ============================================================ */
 
-    @media (max-width: 620px) {
-
+    /* ---------- SHORT VIEWPORT: fits shorter laptop windows ---------- */
+    @media (max-height: 750px) {
         .app {
-            width: min(100% - 18px, 920px);
-            padding-top: 17px;
+            width: min(960px, calc(100% - 24px));
+            padding: 14px 0 18px;
         }
+        header { margin-bottom: 12px; }
+        .logo { width: 36px; height: 36px; border-radius: 10px; }
+        .logo svg { width: 22px; height: 22px; }
+        .title-wrap h1 { font-size: 18px; }
+        .title-wrap p { font-size: 10px; letter-spacing: 1.1px; }
+        .high-score span { font-size: 8px; }
+        .high-score strong { font-size: 18px; }
 
-        header {
-            margin-bottom: 17px;
-        }
+        .leaderboard { padding: 11px 13px; margin-bottom: 9px; }
+        .leaderboard-header { margin-bottom: 7px; }
+        .leaderboard-title { font-size: 9px; }
+        .leaderboard-tag { font-size: 7px; padding: 3px 6px; }
+        .players { gap: 7px; }
+        .player { padding: 7px 9px; gap: 8px; border-radius: 9px; }
+        .rank { font-size: 9px; width: 15px; }
+        .player-name { font-size: 10px; }
+        .player-score { font-size: 8px; margin-top: 1px; }
 
-        .logo {
-            width: 37px;
-            height: 37px;
-            border-radius: 10px;
-        }
+        .stats { gap: 7px; margin-bottom: 9px; }
+        .stat { padding: 9px 11px; border-radius: 11px; }
+        .stat-label { font-size: 8px; }
+        .stat-value { font-size: 17px; margin-top: 2px; }
 
-        .title-wrap h1 {
-            font-size: 18px;
-        }
+        .timer-track { margin-bottom: 9px; }
 
-        .high-score strong {
-            font-size: 18px;
-        }
+        .signal-card { padding: 13px; border-radius: 15px; }
+        .signal-header { margin-bottom: 9px; }
+        .signal-label { font-size: 9px; }
+        .live { font-size: 8px; }
+        .live-dot { width: 5px; height: 5px; }
+        .wave-container { height: 165px; }
+        .signal-info { margin-top: 8px; font-size: 9px; }
 
-        .players {
-            grid-template-columns: 1fr;
-            gap: 6px;
-        }
+        .question { margin: 13px 0 10px; }
+        .question h2 { font-size: 18px; }
+        .question p { font-size: 11px; margin-top: 4px; }
 
-        .player {
-            padding: 8px 10px;
-        }
+        .options { gap: 8px; }
+        .option { min-height: 60px; padding: 11px 9px; border-radius: 11px; }
+        .option .icon { font-size: 15px; margin-bottom: 3px; }
+        .option .name { font-size: 11px; }
+        .option .desc { font-size: 8px; margin-top: 2px; }
 
-        .stats {
-            gap: 7px;
-        }
+        .hint { margin-top: 10px; font-size: 9px; }
+        kbd { padding: 1px 4px; }
 
-        .stat {
-            padding: 10px 11px;
-        }
-
-        .stat-value {
-            font-size: 17px;
-        }
-
-        .wave-container {
-            height: 205px;
-        }
-
-        .options {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-        .option {
-            min-height: 70px;
-            padding: 13px 8px;
-        }
-
-        .option .desc {
-            display: none;
-        }
-
-        .question {
-            margin: 19px 0 13px;
-        }
+        .modal { padding: 22px 18px; }
+        .modal h2 { font-size: 21px; }
+        .failure-icon { width: 48px; height: 48px; font-size: 20px; margin-bottom: 13px; }
+        .technical-message { font-size: 10px; margin-bottom: 15px; }
+        .result { padding: 12px; gap: 20px; margin-bottom: 15px; }
+        .result div strong { font-size: 18px; }
+        .restart { padding: 12px; font-size: 11px; }
     }
 
+    /* ---------- VERY SHORT VIEWPORT (small laptop / landscape phone) ---------- */
+    @media (max-height: 600px) {
+        .app {
+            padding: 10px 0 12px;
+        }
+        header { margin-bottom: 9px; }
+        .logo { width: 32px; height: 32px; border-radius: 9px; }
+        .logo svg { width: 19px; height: 19px; }
+        .title-wrap h1 { font-size: 16px; }
+        .title-wrap p { font-size: 9px; letter-spacing: 1px; }
+        .high-score strong { font-size: 15px; }
+
+        .leaderboard { padding: 8px 10px; margin-bottom: 7px; }
+        .leaderboard-header { margin-bottom: 5px; }
+        .leaderboard-title { font-size: 8px; letter-spacing: 1px; }
+        .leaderboard-tag { font-size: 6px; padding: 2px 5px; }
+        .players { gap: 5px; }
+        .player { padding: 5px 7px; gap: 6px; border-radius: 8px; }
+        .rank { font-size: 8px; width: 12px; }
+        .player-name { font-size: 9px; }
+        .player-score { font-size: 7px; }
+
+        .stats { gap: 5px; margin-bottom: 7px; }
+        .stat { padding: 7px 9px; border-radius: 9px; }
+        .stat-label { font-size: 7px; letter-spacing: 1px; }
+        .stat-value { font-size: 15px; }
+
+        .timer-track { margin-bottom: 7px; }
+
+        .signal-card { padding: 10px; border-radius: 13px; }
+        .signal-header { margin-bottom: 6px; }
+        .signal-label { font-size: 8px; }
+        .live { font-size: 7px; }
+        .wave-container { height: 120px; }
+        .signal-info { margin-top: 6px; font-size: 8px; }
+
+        .question { margin: 9px 0 7px; }
+        .question h2 { font-size: 15px; }
+        .question p { font-size: 9px; margin-top: 3px; }
+
+        .options { gap: 6px; }
+        .option { min-height: 48px; padding: 8px 6px; border-radius: 9px; }
+        .option .icon { font-size: 13px; margin-bottom: 2px; }
+        .option .name { font-size: 10px; }
+        .option .desc { display: none; }
+
+        .hint { margin-top: 7px; font-size: 8px; }
+        kbd { padding: 1px 3px; font-size: 8px; }
+    }
+
+    /* ---------- MOBILE (narrow width) ---------- */
+    @media (max-width: 620px) {
+        .app {
+            width: 100%;
+            padding: 14px 12px 18px;
+        }
+        header { margin-bottom: 12px; }
+        .logo { width: 34px; height: 34px; border-radius: 9px; }
+        .logo svg { width: 20px; height: 20px; }
+        .title-wrap h1 { font-size: 17px; }
+        .title-wrap p { font-size: 9px; letter-spacing: 1px; }
+        .high-score span { font-size: 8px; }
+        .high-score strong { font-size: 17px; }
+
+        .leaderboard { padding: 10px 12px; margin-bottom: 10px; border-radius: 12px; }
+        .leaderboard-header { margin-bottom: 7px; }
+        .leaderboard-title { font-size: 9px; }
+        .leaderboard-tag { font-size: 7px; padding: 3px 6px; }
+
+        /* Keep 3 columns so the leaderboard does not become a tall column */
+        .players { grid-template-columns: repeat(3, 1fr); gap: 5px; }
+        .player { padding: 6px 7px; gap: 5px; border-radius: 8px; flex-direction: column; align-items: flex-start; }
+        .rank { font-size: 8px; width: auto; }
+        .player-name { font-size: 9px; }
+        .player-score { font-size: 7px; margin-top: 1px; }
+
+        .stats { gap: 6px; margin-bottom: 9px; }
+        .stat { padding: 8px 9px; border-radius: 10px; }
+        .stat-label { font-size: 7px; letter-spacing: 1px; }
+        .stat-value { font-size: 15px; }
+
+        .timer-track { margin-bottom: 9px; }
+
+        .signal-card { padding: 11px; border-radius: 14px; }
+        .signal-header { margin-bottom: 8px; }
+        .signal-label { font-size: 9px; letter-spacing: 1.1px; }
+        .live { font-size: 8px; }
+        .live-dot { width: 5px; height: 5px; }
+        .wave-container { height: 150px; border-radius: 10px; }
+        .signal-info { margin-top: 7px; font-size: 9px; }
+
+        .question { margin: 12px 0 9px; }
+        .question h2 { font-size: 16px; }
+        .question p { font-size: 10px; margin-top: 4px; }
+
+        /* Keep options in a 3-column grid — compact and short */
+        .options { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .option { min-height: 52px; padding: 9px 6px; border-radius: 10px; }
+        .option .icon { font-size: 14px; margin-bottom: 2px; }
+        .option .name { font-size: 10px; letter-spacing: .3px; }
+        .option .desc { display: none; }
+
+        .hint { margin-top: 9px; font-size: 9px; }
+        kbd { padding: 1px 4px; }
+
+        .modal { padding: 20px 16px; border-radius: 16px; }
+        .modal h2 { font-size: 20px; }
+        .failure-icon { width: 46px; height: 46px; font-size: 19px; margin-bottom: 12px; }
+        .technical-message { font-size: 10px; }
+        .result { padding: 11px; gap: 18px; margin-bottom: 14px; }
+        .result div strong { font-size: 17px; }
+        .restart { padding: 11px; font-size: 11px; }
+    }
+
+    /* ---------- VERY NARROW PHONES ---------- */
     @media (max-width: 380px) {
-
-        .stats {
-            grid-template-columns: repeat(3, 1fr);
-        }
-
-        .stat-label {
-            font-size: 8px;
-        }
-
-        .stat-value {
-            font-size: 15px;
-        }
-
-        .wave-container {
-            height: 180px;
-        }
+        .stats { gap: 5px; }
+        .stat { padding: 7px 8px; }
+        .stat-label { font-size: 7px; }
+        .stat-value { font-size: 14px; }
+        .wave-container { height: 135px; }
+        .option { min-height: 48px; padding: 8px 5px; }
+        .option .icon { font-size: 13px; }
+        .option .name { font-size: 9px; }
+        .question h2 { font-size: 15px; }
     }
 </style>
 </head>
@@ -1237,17 +1343,6 @@ highScoreEl.textContent =
 
 function getDifficulty() {
 
-    /*
-       Rounds 1-2:
-       AM / FM / PSK
-
-       Rounds 3-5:
-       + FSK
-
-       Round 6+:
-       + QAM
-    */
-
     if (round <= 2) {
         return MODULATIONS.slice(0, 3);
     }
@@ -1266,15 +1361,6 @@ function getDifficulty() {
    ------------------------------ */
 
 function getTimeLimit() {
-
-    /*
-       Starts at 8 seconds.
-
-       Gradually becomes faster
-       as the rounds increase.
-
-       Minimum = 2.2 seconds.
-    */
 
     return Math.max(
         2.2,
@@ -2424,17 +2510,13 @@ startTimer();
 /* ============================================================
    PARENT MODAL INTEGRATION
    ------------------------------------------------------------
-   Listens for messages from the parent (the site's modal
-   wrapper) to support the same open/close protocol the old
-   snake game used.
+   Listens for messages from the parent site modal to support
+   the same open/close protocol the old Snake Game used.
 
-   - "startGame": resets the round and immediately begins
-     a fresh game. Fires whenever the modal is opened.
-   - "stopGame": cleanly pauses the game (clears the timer,
-     disables answering) so re-opening the modal starts a
-     fresh round instead of resuming mid-countdown.
-
-   Only reacts to parent messages. Does NOT alter gameplay.
+   - "startGame": resets round, timer and score, then begins
+     a fresh game. Fires when the modal opens.
+   - "stopGame": cleanly pauses the game so reopening the
+     modal starts fresh instead of resuming mid-countdown.
    ============================================================ */
 
 window.addEventListener(
@@ -2455,8 +2537,6 @@ window.addEventListener(
             gameActive = true;
             answered = false;
 
-            /* Make sure any lingering timer is cleared
-               before we kick off a new round. */
             clearInterval(timerInterval);
 
             nextRound();
