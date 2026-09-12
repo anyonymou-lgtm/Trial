@@ -409,30 +409,20 @@
     <!-- ============================================================
          LIQUID-METAL SHADER — WebGL renderer for the CTA buttons
 
-         The fragment shader below renders a smooth, low-frequency
-         liquid-metal surface. The previous high-frequency noise
-         octave (which produced a "snow / speckle" appearance) has
-         been removed. All remaining noise is sampled at low
-         frequencies for large, smooth flowing features. The
-         contour mapping uses a WIDE smoothstep transition and a
-         small `pow` exponent so highlights are BROAD and SOFT,
-         never tiny isolated white dots.
-
-         Everything else (WebGL setup, ripple, hover, pause-on-
-         hidden) is unchanged.
+         Palette changed from black/silver to deep IEEE blue with
+         silver-blue highlights. Structure, animation, hover,
+         ripple, and every other behavior are unchanged.
          ============================================================ -->
     <script>
     (function () {
         'use strict';
 
-        // --- Fragment shader: smooth liquid metal (no snow/speckle) ---
         const FRAG_SRC = `
             precision highp float;
             uniform vec2  u_res;
             uniform float u_time;
             uniform float u_hover;
 
-            // Modulo-289 simplex noise (Ashima Arts / Ian McEwan)
             vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
             vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
             vec3 permute(vec3 x) { return mod289(((x * 34.0) + 1.0) * x); }
@@ -465,78 +455,42 @@
             }
 
             void main() {
-                // Normalized pixel coords
                 vec2 uv = gl_FragCoord.xy / u_res;
                 vec2 p  = uv - 0.5;
                 p.x *= u_res.x / u_res.y;
 
-                // 45° rotation (matches the original reference angle)
                 float a = 0.785398;
                 p = mat2(cos(a), -sin(a), sin(a), cos(a)) * p;
 
-                // Broad scale + slight offset (kept from the reference)
                 p *= 8.0;
                 p += vec2(0.1, -0.1);
 
-                // Time — accelerates on hover
                 float t = u_time * (0.15 + 0.35 * u_hover);
 
-                // ---------------------------------------------------
-                // LOW-FREQUENCY FLOW ONLY.
-                // The previous version had a third high-frequency
-                // octave (`snoise(p * 3.2 + ...)`) at weight 0.15.
-                // That octave was the primary source of the "snow".
-                // It is REMOVED entirely. The two remaining octaves
-                // are sampled at lower frequencies so features are
-                // large, soft, and smooth.
-                // ---------------------------------------------------
                 float n1 = snoise(p * 0.85 + vec2(t * 0.55, -t * 0.28));
                 float n2 = snoise(p * 1.55 + vec2(-t * 0.35, t * 0.45));
                 float flow = n1 * 0.68 + n2 * 0.32;
                 flow = flow * 0.5 + 0.5;
 
-                // ---------------------------------------------------
-                // BROAD CONTOUR.
-                // Previous: smoothstep(0.42, 0.68, flow) + pow(., 2.2)
-                //   → narrow transition + sharpening = tiny bright peaks
-                // Now:      smoothstep(0.30, 0.80, flow) + pow(., 1.15)
-                //   → wide transition + gentle shaping = broad highlight
-                // ---------------------------------------------------
                 float contour = smoothstep(0.30, 0.80, flow);
                 contour = pow(contour, 1.15);
 
-                // ---------------------------------------------------
-                // CHROMATIC REFLECTIONS.
-                // Sample from the SAME low-frequency field so the tint
-                // is a broad wash, not per-pixel speckle. Intensity
-                // reduced from 0.12 to 0.045.
-                // ---------------------------------------------------
                 float shiftRed  =  0.3;
                 float shiftBlue =  0.3;
                 float nr = snoise(p * 0.85 + vec2(t * 0.5 + shiftRed,  -t * 0.25));
                 float nb = snoise(p * 0.85 + vec2(t * 0.5 - shiftBlue, -t * 0.25));
 
-                // ---------------------------------------------------
-                // METAL PALETTE.
-                // colBright lowered from (0.95, 0.97, 1.0) to
-                // (0.78, 0.82, 0.90) so even the brightest highlight
-                // stays a soft silver, never a pure white dot.
-                // ---------------------------------------------------
-                vec3 colDark   = vec3(0.05, 0.06, 0.08);
-                vec3 colMid    = vec3(0.30, 0.32, 0.36);
-                vec3 colBright = vec3(0.78, 0.82, 0.90);
+                // ---- Deep IEEE blue palette with silver-blue highlights ----
+                vec3 colDark   = vec3(0.02, 0.07, 0.16);
+                vec3 colMid    = vec3(0.05, 0.24, 0.44);
+                vec3 colBright = vec3(0.68, 0.82, 0.96);
 
                 vec3 col = mix(colDark, colMid, flow);
-                // Cap the highlight mix so it never blows out:
-                // previously 0.85 + 0.15 * u_hover  →  up to 1.0
-                // now        0.45 + 0.15 * u_hover  →  up to 0.60
                 col = mix(col, colBright, contour * (0.45 + 0.15 * u_hover));
 
-                // Very subtle chromatic tint — broad, low-frequency
                 col.r += nr * 0.045 * (0.6 + 0.4 * u_hover);
                 col.b += nb * 0.045 * (0.6 + 0.4 * u_hover);
 
-                // Soft edge highlight (kept from previous version)
                 float edgeX = smoothstep(0.42, 0.50, abs(uv.x - 0.5));
                 float edgeY = smoothstep(0.32, 0.50, abs(uv.y - 0.5));
                 col = mix(col, vec3(1.0), max(edgeX, edgeY) * 0.10);
@@ -555,7 +509,6 @@
             gl.shaderSource(s, src);
             gl.compileShader(s);
             if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
-                // Silently bail; CSS fallback takes over
                 gl.deleteShader(s);
                 return null;
             }
@@ -586,7 +539,7 @@
             }) || canvas.getContext('experimental-webgl');
 
             if (!gl) {
-                canvas.style.display = 'none';   // CSS fallback remains visible
+                canvas.style.display = 'none';
                 button.classList.add('no-webgl');
                 return;
             }
@@ -600,7 +553,6 @@
 
             gl.useProgram(prog);
 
-            // Fullscreen quad
             const buf = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, buf);
             gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
@@ -645,7 +597,6 @@
                 raf = requestAnimationFrame(frame);
             }
 
-            // Public hook for the button's hover state
             button._liquidMetal = {
                 setHover: function (v) { targetHover = v ? 1 : 0; },
                 dispose: function () {
@@ -661,12 +612,11 @@
             button.addEventListener('focus',      function () { targetHover = 1; });
             button.addEventListener('blur',       function () { targetHover = 0; });
 
-            // Pause the shader while the tab is hidden (saves battery)
             document.addEventListener('visibilitychange', function () {
                 if (document.hidden) {
                     if (raf) { cancelAnimationFrame(raf); raf = null; }
                 } else if (!raf) {
-                    start = performance.now() - (start ? 0 : 0); // keep time roughly continuous
+                    start = performance.now() - (start ? 0 : 0);
                     frame();
                 }
             });
@@ -694,7 +644,6 @@
             });
         });
 
-        // Clean up on unload
         window.addEventListener('pagehide', function () {
             document.querySelectorAll('[data-liquid-metal]').forEach(function (b) {
                 if (b._liquidMetal && b._liquidMetal.dispose) b._liquidMetal.dispose();
