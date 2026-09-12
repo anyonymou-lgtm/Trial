@@ -92,15 +92,6 @@
         animation-duration: 35s;
     }
 
-    /* Snake modal */
-    .snake-modal-window {
-        width: 92vw;
-        height: 80vh;
-        max-height: none;
-    }
-    .snake-modal-body { padding: 8px; }
-    .snake-modal-close { top: 6px; right: 10px; font-size: 24px; }
-
     .launch-btn {
         font-size: 1rem;
         padding: 14px 28px;
@@ -144,10 +135,86 @@
 }
 
 /* ==================================================
+   SIGNAL MATCH MODAL — RESPONSIVE WINDOW SIZING
+   ---------------------------------------------------
+   Wide landscape game window on desktop.
+   Compact panel that fits the phone viewport on mobile.
+================================================== */
+
+/* ---------- Tablet / small laptop ---------- */
+@media (max-width: 1024px) {
+    .signal-match-modal-overlay {
+        padding: 18px;
+    }
+    .signal-match-modal-window {
+        width: 94vw;
+        height: 88vh;
+        height: 88dvh;
+        max-height: none;
+        border-radius: 20px;
+    }
+    .signal-match-modal-body {
+        padding: 10px;
+    }
+}
+
+/* ---------- Mobile & small tablets ---------- */
+@media (max-width: 768px) {
+    .signal-match-modal-overlay {
+        padding: 12px;
+    }
+    .signal-match-modal-window {
+        width: 96vw;
+        height: 92vh;
+        height: 92dvh;
+        max-height: none;
+        border-radius: 18px;
+    }
+    .signal-match-modal-body {
+        padding: 6px;
+    }
+    .signal-match-modal-body iframe {
+        border-radius: 10px;
+    }
+    .signal-match-modal-close {
+        top: 6px;
+        right: 10px;
+        font-size: 22px;
+        padding: 2px 6px;
+    }
+}
+
+/* ---------- Phones ---------- */
+@media (max-width: 480px) {
+    .signal-match-modal-overlay {
+        padding: 6px;
+    }
+    .signal-match-modal-window {
+        width: 100%;
+        height: calc(100vh - 12px);
+        height: calc(100dvh - 12px);
+        max-width: 100%;
+        max-height: none;
+        border-radius: 14px;
+    }
+    .signal-match-modal-body {
+        padding: 4px;
+    }
+    .signal-match-modal-body iframe {
+        border-radius: 8px;
+    }
+    .signal-match-modal-close {
+        top: 4px;
+        right: 8px;
+        font-size: 20px;
+        padding: 2px 5px;
+    }
+}
+
+/* ==================================================
    RESPONSIVE — EVENTS PAGE
 ================================================== */
 
-/* ---------- Tablet & below ---------- */
 @media (max-width: 900px) {
     .events-page .flagship-title {
         font-size: 2.1rem;
@@ -166,17 +233,7 @@
     }
 }
 
-/* ==================================================
-   MOBILE — TECHFORGE'26 + OTHER EVENTS
-   Everything below runs at max-width: 640px.
-   The TechForge'26 rules are grouped and strictly
-   scoped to .events-page .flagship-* / .team-* /
-   .accomplishments-* / .data-table so they cannot
-   affect other event cards or the desktop layout.
-================================================== */
 @media (max-width: 640px) {
-
-    /* ---------- Events page hero (all events) ---------- */
     .events-page .events-hero {
         padding: 115px 0 40px 0;
     }
@@ -193,7 +250,6 @@
         font-size: 1.55rem;
     }
 
-    /* ---------- Normal event cards (Sahyadri / LaTeX / Adani) ---------- */
     .events-page .event-block {
         padding: 28px 0;
     }
@@ -217,46 +273,20 @@
     .events-page .timeline-time { padding-top: 0; }
     .events-page .accomplishments { padding: 1.1rem; }
 
-    /* ============================================================
-       TECHFORGE'26 — FULL MOBILE REBUILD
-       Single-column, content-driven, no fixed heights.
-       ============================================================ */
-
-    /* ---------- 1. Card container ---------- */
     .events-page .event-flagship {
         padding: 35px 0 55px 0;
     }
     .events-page .flagship-card {
         border-radius: 16px;
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-        overflow: hidden;
     }
-
-    /* ---------- 2. Header ---------- */
     .events-page .flagship-header {
         padding: 3.5rem 1.1rem 1.25rem 1.1rem;
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-    }
-    .events-page .flagship-eyebrow {
-        max-width: 100%;
-        overflow-wrap: anywhere;
-        word-break: break-word;
     }
     .events-page .flagship-title {
         font-size: 1.55rem;
-        max-width: 100%;
-        overflow-wrap: anywhere;
-        word-break: break-word;
     }
     .events-page .flagship-tagline {
         font-size: 0.92rem;
-        max-width: 100%;
-        overflow-wrap: anywhere;
-        word-break: break-word;
     }
     .events-page .flagship-badge {
         top: 10px;
@@ -265,277 +295,128 @@
         padding: 5px 9px;
         letter-spacing: 0.08em;
     }
-
-    /* ---------- 3. Meta grid (Date / Venue / Participants / Prize Pool) ---------- */
-    /* Force single column so label + value never squeeze */
-    .events-page .flagship-meta {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-    }
-    .events-page .flagship-meta .event-meta-item {
-        background: var(--surface);
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-    }
-    .events-page .flagship-meta .event-meta-text {
-        min-width: 0;
-        max-width: 100%;
-    }
-    .events-page .flagship-meta .event-meta-value {
-        max-width: 100%;
-        overflow-wrap: anywhere;
-        word-break: break-word;
-    }
-
-    /* ---------- 4. Body + sections ---------- */
     .events-page .flagship-body {
         padding: 1.1rem;
         gap: 1.5rem;
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-    }
-    .events-page .flagship-section {
-        display: block;
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
     }
     .events-page .flagship-section-title {
         font-size: 1.08rem;
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 10px;
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-        overflow-wrap: anywhere;
-        word-break: break-word;
     }
-    .events-page .flagship-section-title::before {
-        flex-shrink: 0;
-    }
-    .events-page .flagship-section p {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-        overflow-wrap: anywhere;
-        word-break: break-word;
-    }
-
-    /* ---------- 5. Bullet lists ---------- */
-    /* THE KEY FIX:
-       Previously these used `display: grid; grid-template-columns: auto minmax(0, 1fr)`,
-       which sent the plain text node after <strong> into column 1 (auto) and forced
-       <strong> into a near-zero column 2 — producing "T / e / a / m / s".
-
-       Now: display:block + padding-left + SVG positioned absolutely.
-       The <strong> label and the value text flow as ONE inline text run and wrap
-       naturally inside the card's full content width. */
-    .events-page .flagship-section .bullet-list {
-        display: block;
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-    }
-    .events-page .flagship-section .bullet-list li {
-        display: block;
-        position: relative;
-        padding-left: 26px;
-        margin: 0 0 0.55rem 0;
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-        font-size: 0.93rem;
-        line-height: 1.65;
-        color: var(--text-muted);
-        overflow-wrap: anywhere;
-        word-break: break-word;
-    }
-    .events-page .flagship-section .bullet-list li:last-child {
-        margin-bottom: 0;
-    }
-    .events-page .flagship-section .bullet-list li > svg {
-        position: absolute;
-        left: 0;
-        top: 4px;
-        width: 16px;
-        height: 16px;
-        margin: 0;
-        flex-shrink: 0;
-    }
-    .events-page .flagship-section .bullet-list li > strong {
-        font-weight: 700;
-        color: var(--text-main);
-    }
-
-    /* ---------- 6. Team grid (Event Team / Judges / Dignitaries) ---------- */
-    .events-page .team-grid-flagship {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-    }
-    .events-page .team-block-flagship {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-        padding: 1rem;
-    }
-    .events-page .team-block-flagship h4 {
-        overflow-wrap: anywhere;
-        word-break: break-word;
-    }
-    .events-page .team-block-flagship ul {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-    }
-    .events-page .team-block-flagship li {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-        overflow-wrap: anywhere;
-        word-break: break-word;
-    }
-    .events-page .team-block-flagship li small {
-        max-width: 100%;
-        overflow-wrap: anywhere;
-        word-break: break-word;
-    }
-
-    /* ---------- 7. Stat row (44 / 24 / 14 / 6) ---------- */
     .events-page .stat-row {
-        display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 0.6rem;
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-    }
-    .events-page .stat-box {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-        padding: 0.85rem 0.5rem;
-        overflow-wrap: anywhere;
-        word-break: break-word;
     }
     .events-page .stat-box .stat-value {
         font-size: 1.3rem;
     }
-    .events-page .stat-box .stat-label {
-        font-size: 0.66rem;
-    }
-
-    /* ---------- 8. Tables (Evaluation + Final Results) ----------
-       Confine horizontal scroll to the table's own wrapper.
-       The rest of the card stays fully vertical. */
-    .events-page .table-wrapper {
-        display: block;
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        margin-top: 0.6rem;
-    }
-    .events-page .data-table {
-        min-width: 480px;
-        font-size: 0.84rem;
-    }
-    .events-page .data-table thead th,
-    .events-page .data-table tbody td {
-        padding: 0.7rem 0.8rem;
-        overflow-wrap: anywhere;
-        word-break: break-word;
-    }
-
-    /* ---------- 9. Accomplishments box ---------- */
-    .events-page .accomplishments,
     .events-page .flagship-accomplishments {
-        display: block;
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
         padding: 1.1rem;
     }
-    .events-page .flagship-accomplishments .flagship-section-title {
-        margin-bottom: 0.85rem;
-    }
-    .events-page .accomplishments-list {
-        display: block;
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-    }
-    .events-page .accomplishments-list li {
-        display: block;
-        position: relative;
-        padding-left: 26px;
-        margin: 0 0 0.55rem 0;
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-        font-size: 0.9rem;
-        line-height: 1.6;
-        color: var(--text-muted);
-        overflow-wrap: anywhere;
-        word-break: break-word;
-    }
-    .events-page .accomplishments-list li:last-child {
-        margin-bottom: 0;
-    }
-    .events-page .accomplishments-list li > svg {
-        position: absolute;
-        left: 0;
-        top: 3px;
-        width: 17px;
-        height: 17px;
-        margin: 0;
-        flex-shrink: 0;
-    }
-    .events-page .accomplishments-list li > strong {
-        font-weight: 700;
-        color: var(--text-main);
-    }
 
-    /* ---------- 10. Safety clip guards ---------- */
-    .events-page .events-hero,
-    .events-page .events-intro,
-    .events-page .event-block,
-    .events-page .event-card-full,
-    .events-page .event-card-header,
-    .events-page .event-card-body,
-    .events-page .event-flagship,
     .events-page .flagship-card,
     .events-page .flagship-header,
     .events-page .flagship-body,
     .events-page .flagship-section,
-    .events-page .accomplishments,
     .events-page .flagship-accomplishments {
         max-width: 100%;
         min-width: 0;
     }
+
+    .events-page .flagship-title,
+    .events-page .flagship-tagline,
+    .events-page .flagship-eyebrow,
+    .events-page .flagship-section-title,
+    .events-page .flagship-section p,
+    .events-page .flagship-section .bullet-list,
+    .events-page .accomplishments,
+    .events-page .accomplishments-list,
+    .events-page .accomplishments-list li,
+    .events-page .flagship-accomplishments,
+    .events-page .team-block-flagship,
+    .events-page .team-block-flagship ul,
+    .events-page .team-block-flagship li,
+    .events-page .team-block-flagship li small {
+        max-width: 100%;
+        min-width: 0;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    .events-page .flagship-section .bullet-list li,
+    .events-page .accomplishments-list li {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: flex-start;
+        gap: 10px;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+    .events-page .flagship-section .bullet-list li > svg,
+    .events-page .accomplishments-list li > svg {
+        flex-shrink: 0;
+        width: 16px;
+        height: 16px;
+        margin-top: 4px;
+    }
+    .events-page .accomplishments-list li > svg {
+        width: 17px;
+        height: 17px;
+        margin-top: 3px;
+    }
+
+    .events-page .team-grid-flagship {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .events-page .flagship-meta {
+        grid-template-columns: 1fr;
+    }
+    .events-page .flagship-meta .event-meta-item,
+    .events-page .flagship-meta .event-meta-text,
+    .events-page .flagship-meta .event-meta-value {
+        max-width: 100%;
+        min-width: 0;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    .events-page .table-wrapper {
+        max-width: 100%;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .events-page .data-table {
+        min-width: 480px;
+    }
+    .events-page .data-table thead th,
+    .events-page .data-table tbody td {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    .events-page .stat-box {
+        min-width: 0;
+        max-width: 100%;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    .events-page .events-hero,
+    .events-page .events-intro,
+    .events-page .event-block,
+    .events-page .event-flagship {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+    }
 }
 
-/* ==================================================
-   EXTRA-NARROW PHONES (e.g. 320px)
-================================================== */
 @media (max-width: 380px) {
-
-    /* TechForge'26 fine tuning */
     .events-page .flagship-header {
         padding: 3.25rem 0.9rem 1.1rem 0.9rem;
     }
     .events-page .flagship-body {
         padding: 0.9rem;
-        gap: 1.25rem;
     }
     .events-page .flagship-title {
         font-size: 1.35rem;
@@ -548,29 +429,11 @@
         padding: 4px 8px;
         letter-spacing: 0.06em;
     }
-
-    /* Tables get a smaller minimum so more fits on-screen */
     .events-page .data-table {
         min-width: 420px;
     }
-
-    /* Stat row: keep 2 columns but tighten */
-    .events-page .stat-box {
-        padding: 0.75rem 0.4rem;
-    }
-    .events-page .stat-box .stat-value {
-        font-size: 1.2rem;
-    }
-
-    /* Slightly tighter indent for bullets */
     .events-page .flagship-section .bullet-list li,
     .events-page .accomplishments-list li {
-        padding-left: 24px;
-    }
-
-    /* Accomplishments box padding */
-    .events-page .accomplishments,
-    .events-page .flagship-accomplishments {
-        padding: 0.95rem;
+        gap: 8px;
     }
 }
