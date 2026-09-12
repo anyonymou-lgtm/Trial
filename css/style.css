@@ -1864,15 +1864,6 @@ html.dark .events-page .flagship-accomplishments {
 
 /* ==================================================
    20. HOMEPAGE — UNIFY DARK-MODE BACKGROUND
-   ---------------------------------------------------
-   Forces every Home page section to share the same
-   --bg-main dark blue in dark mode, removing the
-   lighter --bg-alt bands behind:
-     • Events & Activities  (.bg-alt)
-     • Technologies marquee (.tech-marquee-section)
-   The default --bg-main already covers the hero,
-   about, snake, gallery, and footer areas.
-   Light mode is untouched.
 ================================================== */
 html.dark .home-page,
 html.dark .home-page body {
@@ -1889,4 +1880,50 @@ html.dark .home-page .tech-marquee-section {
 
 html.dark .home-page .marquee-wrapper {
     background-color: var(--bg-main);
+}
+
+/* ==================================================
+   21. SECONDARY PAGES — UNIFY BACKGROUNDS
+   ---------------------------------------------------
+   Removes the full-width horizontal background bands
+   on About, Events, Gallery, and Team pages so the
+   page background remains continuous from below the
+   navbar to the end of the page. Only full-width
+   background declarations and their separating borders
+   are overridden. Card surfaces, buttons, and all
+   other component styling are preserved.
+================================================== */
+
+/* About page — page header + bg-alt "What We Do" section */
+.about-page .page-header {
+    background: var(--bg-main);
+    border-bottom: none;
+}
+.about-page .bg-alt {
+    background-color: var(--bg-main);
+    border-top: none;
+    border-bottom: none;
+}
+
+/* Events page — hero gradient + LaTeX block bg-alt band */
+.events-page .events-hero {
+    background: var(--bg-main);
+    border-bottom: none;
+}
+.events-page .event-block-alt {
+    background-color: var(--bg-main);
+    border-top: none;
+    border-bottom: none;
+}
+
+/* Gallery page — page header gradient */
+.gallery-page .page-header {
+    background: var(--bg-main);
+    border-bottom: none;
+}
+
+/* Team page — team header gradient */
+.team-page .team-header {
+    background: var(--bg-main);
+    border-bottom: none;
 }
