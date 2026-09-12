@@ -17,7 +17,6 @@
     <script src="js/theme.js"></script>
 
     <style>
-        /* Team page specific styles */
         .team-header {
             padding: 120px 0 40px 0;
             text-align: center;
@@ -154,7 +153,6 @@
             line-height: 1.5;
         }
 
-        /* Empty state */
         .empty-state {
             text-align: center;
             padding: 4rem 0;
@@ -175,7 +173,6 @@
             font-size: 1rem;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .team-header {
                 padding: 100px 0 30px 0;
@@ -216,9 +213,9 @@
         }
     </style>
 </head>
-<body>
+<body class="team-page">
 
-    <!-- NAVBAR – with Team link -->
+    <!-- NAVBAR -->
     <header class="navbar" id="navbar">
         <div class="nav-container">
             <a href="index.html" class="brand">
@@ -336,21 +333,9 @@
     <script src="js/animation.js"></script>
     <script src="js/main.js"></script>
 
-    <!-- Team page JavaScript -->
     <script>
         (function() {
-            // Sample data structure – replace with real members later
-            const members = [
-                // Add real team members here when available
-                // Example:
-                // {
-                //     name: "John Doe",
-                //     role: "Chairperson",
-                //     category: "core",
-                //     description: "Leads the overall branch operations.",
-                //     image: "assets/john.jpg" // optional
-                // },
-            ];
+            const members = [];
 
             const grid = document.getElementById('teamGrid');
             const filterTabs = document.querySelectorAll('.filter-tab');
@@ -362,7 +347,6 @@
                 }
 
                 if (filtered.length === 0) {
-                    // Show empty state
                     grid.innerHTML = `
                         <div class="empty-state" style="grid-column: 1 / -1;">
                             <div class="empty-icon">👥</div>
@@ -391,7 +375,6 @@
                 grid.innerHTML = cards;
             }
 
-            // Filter click handler
             filterTabs.forEach(tab => {
                 tab.addEventListener('click', function() {
                     filterTabs.forEach(t => t.classList.remove('active'));
@@ -401,16 +384,11 @@
                 });
             });
 
-            // Initial render (Everyone)
             renderMembers('all');
-
-            // Also re-render when dark/light theme toggles? Not needed.
-
         })();
     </script>
 
     <script>
-        // Decorative tech lines (same as about/events)
         document.addEventListener("DOMContentLoaded", () => {
             const container = document.getElementById('team-tech-lines');
             if (!container) return;
