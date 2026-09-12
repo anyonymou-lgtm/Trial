@@ -67,7 +67,7 @@
         }
     </style>
 </head>
-<body>
+<body class="gallery-page">
 
     <!-- NAVBAR -->
     <header class="navbar" id="navbar">
@@ -181,7 +181,6 @@
     <script src="js/main.js"></script>
 
     <script>
-        // Gallery images for the dedicated page
         const galleryImages = [
             'assets/gallery/p1.jpg',
             'assets/gallery/p2.jpg',
@@ -197,8 +196,6 @@
 
             galleryImages.forEach((src, index) => {
                 const item = document.createElement('div');
-                // Do NOT use 'stagger-item' here – it hides the images.
-                // We'll make them visible immediately.
                 item.classList.add('gallery-item');
                 const img = document.createElement('img');
                 img.src = src;
@@ -206,7 +203,6 @@
                 img.loading = 'lazy';
                 item.appendChild(img);
 
-                // Lightbox click handler
                 item.addEventListener('click', function() {
                     const lightbox = document.getElementById('lightbox');
                     const lightboxImg = document.getElementById('lightbox-image');
@@ -219,10 +215,6 @@
                 container.appendChild(item);
             });
 
-            // All images are now visible. If you want a subtle entrance animation,
-            // you can add a class and use CSS, but they are already visible.
-
-            // Close lightbox
             const lightbox = document.getElementById('lightbox');
             const closeBtn = document.querySelector('.lightbox-close');
             if (closeBtn && lightbox) {
@@ -243,7 +235,6 @@
         });
     </script>
     <script>
-        // Tech lines for the gallery header
         document.addEventListener("DOMContentLoaded", function() {
             const container = document.getElementById('gallery-tech-lines');
             if (!container) return;
