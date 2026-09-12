@@ -34,30 +34,6 @@
     --glass-primary-border: rgba(0, 98, 155, 0.95);
     --glass-primary-highlight: rgba(255, 255, 255, 0.3);
 
-    /* Liquid Glass: Hero CTA (light) — translucent + subtle luminous edge */
-    --glass-cta-bg: rgba(0, 98, 155, 0.42);
-    --glass-cta-bg-hover: rgba(0, 98, 155, 0.58);
-    --glass-cta-border: rgba(255, 255, 255, 0.55);
-    --glass-cta-highlight: rgba(255, 255, 255, 0.55);
-    --glass-cta-shadow:
-        0 4px 16px rgba(15, 23, 42, 0.1),
-        0 0 18px rgba(0, 98, 155, 0.18);
-    --glass-cta-shadow-hover:
-        0 6px 22px rgba(15, 23, 42, 0.14),
-        0 0 26px rgba(0, 98, 155, 0.3);
-
-    /* Liquid Glass: Hero CTA outline (light) */
-    --glass-cta-outline-bg: rgba(255, 255, 255, 0.5);
-    --glass-cta-outline-bg-hover: rgba(255, 255, 255, 0.72);
-    --glass-cta-outline-border: rgba(203, 213, 225, 0.8);
-    --glass-cta-outline-highlight: rgba(255, 255, 255, 0.9);
-    --glass-cta-outline-shadow:
-        0 4px 16px rgba(15, 23, 42, 0.06),
-        0 0 14px rgba(0, 98, 155, 0.08);
-    --glass-cta-outline-shadow-hover:
-        0 6px 20px rgba(15, 23, 42, 0.1),
-        0 0 22px rgba(0, 98, 155, 0.16);
-
     /* Marquee pill (light) — solid-ish glass without backdrop-filter */
     --glass-pill-bg: rgba(255, 255, 255, 0.88);
     --glass-pill-bg-hover: rgba(255, 255, 255, 0.98);
@@ -95,31 +71,6 @@ html.dark {
     --glass-primary-border: rgba(56, 189, 248, 0.95);
     --glass-primary-highlight: rgba(255, 255, 255, 0.35);
 
-    /* Liquid Glass: Hero CTA (dark) — translucent + subtle luminous edge */
-    --glass-cta-bg: rgba(56, 189, 248, 0.22);
-    --glass-cta-bg-hover: rgba(56, 189, 248, 0.4);
-    --glass-cta-border: rgba(125, 211, 252, 0.5);
-    --glass-cta-highlight: rgba(255, 255, 255, 0.4);
-    --glass-cta-shadow:
-        0 4px 16px rgba(0, 0, 0, 0.3),
-        0 0 20px rgba(56, 189, 248, 0.22);
-    --glass-cta-shadow-hover:
-        0 6px 22px rgba(0, 0, 0, 0.4),
-        0 0 30px rgba(56, 189, 248, 0.4);
-
-    /* Liquid Glass: Hero CTA outline (dark) */
-    --glass-cta-outline-bg: rgba(30, 41, 59, 0.55);
-    --glass-cta-outline-bg-hover: rgba(30, 41, 59, 0.78);
-    --glass-cta-outline-border: rgba(56, 189, 248, 0.3);
-    --glass-cta-outline-highlight: rgba(255, 255, 255, 0.15);
-    --glass-cta-outline-shadow:
-        0 4px 16px rgba(0, 0, 0, 0.3),
-        0 0 14px rgba(56, 189, 248, 0.1);
-    --glass-cta-outline-shadow-hover:
-        0 6px 20px rgba(0, 0, 0, 0.4),
-        0 0 22px rgba(56, 189, 248, 0.2);
-
-    /* Marquee pill (dark) — solid-ish glass without backdrop-filter */
     --glass-pill-bg: rgba(30, 41, 59, 0.88);
     --glass-pill-bg-hover: rgba(30, 41, 59, 0.98);
     --glass-pill-border: rgba(56, 189, 248, 0.35);
@@ -551,82 +502,284 @@ html.dark .btn-primary:hover {
 }
 
 /* ==================================================
-   6b. HERO CTA BUTTONS — LIQUID GLASS + SUBTLE GLOW
-   Scoped to .hero-cta so the base .btn-primary /
-   .btn-outline rules (used by Play Now etc.) stay
-   untouched. Reuses the navbar's glass vocabulary:
-   translucent bg, backdrop blur, subtle border, inset
-   top highlight, PLUS a soft luminous edge glow that
-   reads as light catching the glass — not a neon halo.
+   6b. HERO CTA — LAYERED LIQUID GLASS BUTTONS
+   ---------------------------------------------------
+   Recreates the reference glass-button component as
+   plain HTML/CSS. Structure:
+
+       .glass-cta-wrap    → positioning context (isolation)
+       .glass-cta         → translucent glass surface
+       .glass-cta-text    → content layer kept above reflections
+       .glass-cta-shadow  → soft colored depth layer behind the surface
+
+   Reuses the navbar/footer glass vocabulary (blur + saturate,
+   inset top highlight, subtle border, soft neutral depth).
+   Adds a small, tight, low-alpha edge glow that reads as light
+   catching the glass — not a neon halo.
 ================================================== */
 
-/* Explore Events — glass primary */
-.hero-cta .btn-primary {
-    /* Top reflection gradient layered over translucent base */
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 55%),
-        var(--glass-cta-bg);
-    color: #ffffff;
-    border: 1px solid var(--glass-cta-border);
-    backdrop-filter: blur(14px) saturate(180%);
-    -webkit-backdrop-filter: blur(14px) saturate(180%);
-    box-shadow:
-        var(--glass-cta-shadow),
-        inset 0 1px 0 var(--glass-cta-highlight),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.08);
-    transition: background 0.3s ease, transform 0.25s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-}
-.hero-cta .btn-primary:hover {
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 55%),
-        var(--glass-cta-bg-hover);
-    border-color: var(--glass-cta-border);
-    transform: translateY(-2px);
-    box-shadow:
-        var(--glass-cta-shadow-hover),
-        inset 0 1px 0 var(--glass-cta-highlight),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.08);
-}
-.hero-cta .btn-primary:active {
-    transform: translateY(0) scale(0.98);
-    box-shadow:
-        var(--glass-cta-shadow),
-        inset 0 1px 0 var(--glass-cta-highlight),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+/* ---------- Wrapper: anchors the sibling shadow layer ---------- */
+.hero-cta .glass-cta-wrap {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    /* Allow the wrap itself to shrink on narrow screens */
+    min-width: 0;
 }
 
-/* Learn More — glass outline */
-.hero-cta .btn-outline {
+/* ---------- Depth layer behind the glass surface ----------
+   A blurred colored shape sitting just below the button.
+   This is the reference component's separate shadow layer. */
+.hero-cta .glass-cta-shadow {
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    bottom: -10px;
+    height: 55%;
+    border-radius: 999px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.9;
+    filter: blur(14px);
+    transition: opacity 0.35s ease, filter 0.35s ease, transform 0.35s ease;
+}
+
+/* Primary CTA — soft blue-tinted depth */
+.hero-cta .glass-cta-wrap-primary .glass-cta-shadow {
+    background: radial-gradient(
+        ellipse at center,
+        rgba(0, 98, 155, 0.55) 0%,
+        rgba(0, 98, 155, 0.22) 45%,
+        rgba(0, 98, 155, 0) 100%
+    );
+}
+html.dark .hero-cta .glass-cta-wrap-primary .glass-cta-shadow {
+    background: radial-gradient(
+        ellipse at center,
+        rgba(56, 189, 248, 0.45) 0%,
+        rgba(56, 189, 248, 0.18) 45%,
+        rgba(56, 189, 248, 0) 100%
+    );
+}
+
+/* Outline CTA — neutral, understated depth */
+.hero-cta .glass-cta-wrap-outline .glass-cta-shadow {
+    background: radial-gradient(
+        ellipse at center,
+        rgba(15, 23, 42, 0.28) 0%,
+        rgba(15, 23, 42, 0.1) 45%,
+        rgba(15, 23, 42, 0) 100%
+    );
+}
+html.dark .hero-cta .glass-cta-wrap-outline .glass-cta-shadow {
+    background: radial-gradient(
+        ellipse at center,
+        rgba(0, 0, 0, 0.55) 0%,
+        rgba(0, 0, 0, 0.2) 45%,
+        rgba(0, 0, 0, 0) 100%
+    );
+}
+
+/* ---------- The glass surface itself ---------- */
+.hero-cta .glass-cta {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 30px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    line-height: 1;
+    cursor: pointer;
+    overflow: hidden;
+    isolation: isolate;
+    max-width: 100%;
+    min-width: 0;
+
+    /* Layered translucent glass surface:
+       soft top-edge reflection over the base tint */
     background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0) 55%),
-        var(--glass-cta-outline-bg);
+        linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.28) 0%,
+            rgba(255, 255, 255, 0.06) 40%,
+            rgba(255, 255, 255, 0) 60%
+        ),
+        var(--glass-cta-bg);
+
+    border: 1px solid var(--glass-cta-border);
+
+    /* Core glass effect */
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+
+    /* Inset top highlight + subtle inner bottom shade +
+       neutral depth + tight luminous edge */
+    box-shadow:
+        inset 0 1px 0 var(--glass-cta-highlight),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+        inset 0 0 12px rgba(255, 255, 255, 0.08),
+        0 4px 14px rgba(15, 23, 42, 0.14),
+        0 0 22px var(--glass-cta-glow);
+
+    transition:
+        background 0.35s ease,
+        border-color 0.35s ease,
+        box-shadow 0.35s ease,
+        transform 0.25s ease;
+}
+
+/* Reflective highlight layer — light catching the top of the glass */
+.hero-cta .glass-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(255, 255, 255, 0.1) 28%,
+        rgba(255, 255, 255, 0) 55%
+    );
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.9;
+    transition: opacity 0.35s ease;
+}
+
+/* Subtle bottom inner glow — depth inside the glass */
+.hero-cta .glass-cta::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 -10px 18px -10px rgba(0, 98, 155, 0.3);
+    pointer-events: none;
+    z-index: 0;
+}
+html.dark .hero-cta .glass-cta::after {
+    box-shadow: inset 0 -10px 18px -10px rgba(56, 189, 248, 0.35);
+}
+
+/* ---------- Content layer above all reflections ---------- */
+.hero-cta .glass-cta-text {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.hero-cta .glass-cta-text svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hero-cta .glass-cta:hover .glass-cta-text svg {
+    transform: translateX(4px);
+}
+
+/* ---------- Primary variant (Explore Events) ----------
+   Slightly stronger glass tint + brighter border + more
+   luminous edge, but still fully translucent. */
+.hero-cta .glass-cta-primary {
+    --glass-cta-bg: rgba(0, 98, 155, 0.42);
+    --glass-cta-border: rgba(255, 255, 255, 0.55);
+    --glass-cta-highlight: rgba(255, 255, 255, 0.6);
+    --glass-cta-glow: rgba(0, 98, 155, 0.32);
+    color: #ffffff;
+}
+html.dark .hero-cta .glass-cta-primary {
+    --glass-cta-bg: rgba(56, 189, 248, 0.22);
+    --glass-cta-border: rgba(125, 211, 252, 0.5);
+    --glass-cta-highlight: rgba(255, 255, 255, 0.42);
+    --glass-cta-glow: rgba(56, 189, 248, 0.38);
+    color: #ffffff;
+}
+
+/* ---------- Outline variant (Learn More) ----------
+   Same material, more transparent, subtle glass edge. */
+.hero-cta .glass-cta-outline {
+    --glass-cta-bg: rgba(255, 255, 255, 0.42);
+    --glass-cta-border: rgba(255, 255, 255, 0.7);
+    --glass-cta-highlight: rgba(255, 255, 255, 0.85);
+    --glass-cta-glow: rgba(15, 23, 42, 0.12);
     color: var(--text-main);
-    border: 1px solid var(--glass-cta-outline-border);
-    backdrop-filter: blur(14px) saturate(180%);
-    -webkit-backdrop-filter: blur(14px) saturate(180%);
-    box-shadow:
-        var(--glass-cta-outline-shadow),
-        inset 0 1px 0 var(--glass-cta-outline-highlight),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.05);
-    transition: background 0.3s ease, transform 0.25s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
-.hero-cta .btn-outline:hover {
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0) 55%),
-        var(--glass-cta-outline-bg-hover);
-    border-color: var(--primary);
+html.dark .hero-cta .glass-cta-outline {
+    --glass-cta-bg: rgba(30, 41, 59, 0.5);
+    --glass-cta-border: rgba(148, 163, 184, 0.4);
+    --glass-cta-highlight: rgba(255, 255, 255, 0.22);
+    --glass-cta-glow: rgba(56, 189, 248, 0.16);
+    color: var(--text-main);
+}
+
+/* ---------- Hover — brighten the glass, lift a touch ---------- */
+.hero-cta .glass-cta:hover {
     transform: translateY(-2px);
-    box-shadow:
-        var(--glass-cta-outline-shadow-hover),
-        inset 0 1px 0 var(--glass-cta-outline-highlight),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.05);
 }
-.hero-cta .btn-outline:active {
-    transform: translateY(0) scale(0.98);
+
+.hero-cta .glass-cta-primary:hover {
+    --glass-cta-bg: rgba(0, 98, 155, 0.55);
+    --glass-cta-border: rgba(255, 255, 255, 0.75);
+    --glass-cta-glow: rgba(0, 98, 155, 0.48);
     box-shadow:
-        var(--glass-cta-outline-shadow),
-        inset 0 1px 0 var(--glass-cta-outline-highlight),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+        inset 0 1px 0 var(--glass-cta-highlight),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+        inset 0 0 14px rgba(255, 255, 255, 0.12),
+        0 6px 20px rgba(15, 23, 42, 0.18),
+        0 0 32px var(--glass-cta-glow);
+}
+html.dark .hero-cta .glass-cta-primary:hover {
+    --glass-cta-bg: rgba(56, 189, 248, 0.36);
+    --glass-cta-border: rgba(125, 211, 252, 0.8);
+    --glass-cta-glow: rgba(56, 189, 248, 0.55);
+    box-shadow:
+        inset 0 1px 0 var(--glass-cta-highlight),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.12),
+        inset 0 0 14px rgba(255, 255, 255, 0.14),
+        0 6px 20px rgba(0, 0, 0, 0.4),
+        0 0 34px var(--glass-cta-glow);
+}
+
+.hero-cta .glass-cta-outline:hover {
+    --glass-cta-bg: rgba(255, 255, 255, 0.62);
+    --glass-cta-border: rgba(255, 255, 255, 0.9);
+    --glass-cta-glow: rgba(15, 23, 42, 0.18);
+    border-color: var(--primary);
+    box-shadow:
+        inset 0 1px 0 var(--glass-cta-highlight),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.06),
+        inset 0 0 14px rgba(255, 255, 255, 0.14),
+        0 6px 18px rgba(15, 23, 42, 0.12),
+        0 0 24px var(--glass-cta-glow);
+}
+html.dark .hero-cta .glass-cta-outline:hover {
+    --glass-cta-bg: rgba(30, 41, 59, 0.72);
+    --glass-cta-border: rgba(125, 211, 252, 0.55);
+    --glass-cta-glow: rgba(56, 189, 248, 0.28);
+    box-shadow:
+        inset 0 1px 0 var(--glass-cta-highlight),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.12),
+        inset 0 0 14px rgba(255, 255, 255, 0.08),
+        0 6px 18px rgba(0, 0, 0, 0.4),
+        0 0 26px var(--glass-cta-glow);
+}
+
+/* Shadow layer reacts to hover — grows slightly and softens */
+.hero-cta .glass-cta-wrap:hover .glass-cta-shadow {
+    opacity: 1;
+    filter: blur(16px);
+    transform: translateY(2px) scale(1.02);
+}
+
+/* ---------- Active / press state ---------- */
+.hero-cta .glass-cta:active {
+    transform: translateY(0) scale(0.98);
 }
 
 /* ==================================================
@@ -1217,26 +1370,17 @@ html.dark .footer-bottom {
     .nav-link::before { display: none; }
     .nav-link:hover { background: var(--surface-hover); border-radius: 8px; }
 
-    /* Hero CTA fallback: solid but with subtle edge glow retained */
-    .hero-cta .btn-primary {
-        background: var(--primary);
+    /* Hero CTA fallback: solid tinted surface, edge glow retained */
+    .hero-cta .glass-cta-primary {
+        background: rgba(0, 98, 155, 0.85);
         color: #ffffff;
-        box-shadow:
-            0 4px 16px rgba(15, 23, 42, 0.1),
-            0 0 18px rgba(0, 98, 155, 0.18),
-            inset 0 1px 0 rgba(255, 255, 255, 0.35);
     }
-    html.dark .hero-cta .btn-primary {
-        background: var(--primary);
+    html.dark .hero-cta .glass-cta-primary {
+        background: rgba(56, 189, 248, 0.75);
         color: #0b1120;
-        box-shadow:
-            0 4px 16px rgba(0, 0, 0, 0.3),
-            0 0 20px rgba(56, 189, 248, 0.22),
-            inset 0 1px 0 rgba(255, 255, 255, 0.35);
     }
-    .hero-cta .btn-outline {
+    .hero-cta .glass-cta-outline {
         background: var(--surface);
-        border-color: var(--border);
     }
 
     .footer {
@@ -1257,6 +1401,10 @@ html.dark .footer-bottom {
     }
     .marquee-track-1, .marquee-track-2 { animation: none !important; flex-wrap: wrap; justify-content: center; }
     .reveal-up, .reveal-left, .reveal-right, .stagger-item { opacity: 1 !important; transform: none !important; }
+
+    /* Hero CTA: no transform on hover for reduced-motion users */
+    .hero-cta .glass-cta:hover { transform: none; }
+    .hero-cta .glass-cta-text svg { transition: none; }
 }
 
 /* ==================================================
