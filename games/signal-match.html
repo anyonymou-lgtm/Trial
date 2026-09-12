@@ -1,0 +1,2428 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>Signal Match — EXTC</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+        --bg: #0a0e17;
+        --panel: #0e1524;
+        --panel-2: #111b2d;
+        --border: #1b3049;
+        --cyan: #19e6ff;
+        --blue: #278cff;
+        --green: #32f5a5;
+        --red: #ff4668;
+        --yellow: #ffd166;
+        --text: #edf8ff;
+        --muted: #71849d;
+    }
+
+    html, body {
+        margin: 0;
+        min-height: 100%;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+            Inter,
+            ui-sans-serif,
+            system-ui,
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            sans-serif;
+    }
+
+    body {
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.22;
+        background-image:
+            linear-gradient(rgba(25,230,255,.035) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(25,230,255,.035) 1px, transparent 1px);
+        background-size: 36px 36px;
+        mask-image: linear-gradient(to bottom, black, transparent 85%);
+    }
+
+    .app {
+        width: min(920px, calc(100% - 28px));
+        margin: 0 auto;
+        padding: 28px 0 40px;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* HEADER */
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .logo {
+        width: 42px;
+        height: 42px;
+        border: 1px solid rgba(25,230,255,.45);
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        background: rgba(25,230,255,.06);
+        box-shadow: 0 0 25px rgba(25,230,255,.08);
+    }
+
+    .logo svg {
+        width: 25px;
+        height: 25px;
+    }
+
+    .title-wrap h1 {
+        margin: 0;
+        font-size: 21px;
+        letter-spacing: -.4px;
+    }
+
+    .title-wrap p {
+        margin: 3px 0 0;
+        color: var(--muted);
+        font-size: 11px;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
+    .high-score {
+        text-align: right;
+    }
+
+    .high-score span {
+        display: block;
+        color: var(--muted);
+        text-transform: uppercase;
+        font-size: 9px;
+        letter-spacing: 1.5px;
+        font-weight: 800;
+    }
+
+    .high-score strong {
+        font-size: 22px;
+        color: var(--cyan);
+    }
+
+    /* LEADERBOARD */
+
+    .leaderboard {
+        background:
+            radial-gradient(circle at 100% 0%, rgba(25,230,255,.06), transparent 45%),
+            var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        padding: 15px 16px;
+        margin-bottom: 13px;
+    }
+
+    .leaderboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .leaderboard-title {
+        font-size: 10px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-weight: 900;
+    }
+
+    .leaderboard-tag {
+        font-size: 8px;
+        letter-spacing: 1px;
+        color: var(--cyan);
+        border: 1px solid rgba(25,230,255,.25);
+        padding: 4px 7px;
+        border-radius: 5px;
+        background: rgba(25,230,255,.04);
+    }
+
+    .players {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+
+    .player {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        background: rgba(17,27,45,.7);
+        border: 1px solid #172840;
+        border-radius: 10px;
+        padding: 9px 10px;
+    }
+
+    .rank {
+        font-size: 10px;
+        font-weight: 900;
+        color: var(--yellow);
+        width: 18px;
+    }
+
+    .player-info {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .player-name {
+        font-size: 11px;
+        font-weight: 800;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .player-score {
+        font-size: 9px;
+        color: var(--muted);
+        margin-top: 2px;
+    }
+
+    .player-score strong {
+        color: var(--cyan);
+    }
+
+    /* STATS */
+
+    .stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .stat {
+        background: rgba(14,21,36,.82);
+        border: 1px solid var(--border);
+        border-radius: 13px;
+        padding: 13px 15px;
+    }
+
+    .stat-label {
+        font-size: 9px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 1.3px;
+        font-weight: 800;
+    }
+
+    .stat-value {
+        margin-top: 3px;
+        font-size: 20px;
+        font-weight: 800;
+    }
+
+    #score {
+        color: var(--cyan);
+    }
+
+    #round {
+        color: var(--text);
+    }
+
+    #timer {
+        color: var(--green);
+        transition: color .2s;
+    }
+
+    #timer.warning {
+        color: var(--yellow);
+    }
+
+    #timer.danger {
+        color: var(--red);
+    }
+
+    /* TIMER */
+
+    .timer-track {
+        height: 3px;
+        width: 100%;
+        background: #152135;
+        border-radius: 99px;
+        overflow: hidden;
+        margin-bottom: 13px;
+    }
+
+    .timer-bar {
+        height: 100%;
+        width: 100%;
+        background: linear-gradient(90deg, var(--cyan), var(--blue));
+        transform-origin: left;
+        transition: width .08s linear;
+        box-shadow: 0 0 10px rgba(25,230,255,.55);
+    }
+
+    /* SIGNAL CARD */
+
+    .signal-card {
+        background:
+            radial-gradient(circle at 50% 20%, rgba(25,230,255,.055), transparent 45%),
+            var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 18px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .signal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 13px;
+    }
+
+    .signal-label {
+        font-size: 10px;
+        letter-spacing: 1.5px;
+        color: var(--muted);
+        text-transform: uppercase;
+        font-weight: 800;
+    }
+
+    .live {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--green);
+        font-size: 9px;
+        letter-spacing: 1px;
+        font-weight: 800;
+    }
+
+    .live-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 8px var(--green);
+        animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+        50% {
+            opacity: .3;
+        }
+    }
+
+    .wave-container {
+        height: 245px;
+        border-radius: 12px;
+        border: 1px solid #172840;
+        background:
+            linear-gradient(rgba(25,230,255,.035) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(25,230,255,.035) 1px, transparent 1px),
+            #080d17;
+        background-size: 25px 25px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .wave-container::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        height: 1px;
+        background: rgba(113,132,157,.16);
+    }
+
+    .wave-container::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 1px;
+        background: rgba(113,132,157,.1);
+    }
+
+    canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+    .signal-info {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 11px;
+        color: var(--muted);
+        font-size: 10px;
+        font-family: "SFMono-Regular", Consolas, monospace;
+    }
+
+    .signal-info strong {
+        color: #a7bdd4;
+    }
+
+    /* QUESTION */
+
+    .question {
+        text-align: center;
+        margin: 23px 0 15px;
+    }
+
+    .question h2 {
+        margin: 0;
+        font-size: clamp(19px, 4vw, 25px);
+        letter-spacing: -.5px;
+    }
+
+    .question p {
+        color: var(--muted);
+        font-size: 12px;
+        margin: 6px 0 0;
+    }
+
+    /* OPTIONS */
+
+    .options {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .option {
+        appearance: none;
+        border: 1px solid var(--border);
+        background: linear-gradient(145deg, #101a2b, #0c1422);
+        color: var(--text);
+        border-radius: 13px;
+        padding: 16px 12px;
+        cursor: pointer;
+        font: inherit;
+        transition:
+            transform .15s ease,
+            border-color .15s ease,
+            background .15s ease,
+            box-shadow .15s ease;
+        min-height: 74px;
+    }
+
+    .option:hover {
+        transform: translateY(-2px);
+        border-color: rgba(25,230,255,.55);
+        background: #122035;
+        box-shadow: 0 7px 25px rgba(0,0,0,.25);
+    }
+
+    .option:active {
+        transform: scale(.98);
+    }
+
+    .option .icon {
+        font-size: 18px;
+        margin-bottom: 5px;
+        color: var(--cyan);
+    }
+
+    .option .name {
+        display: block;
+        font-weight: 800;
+        font-size: 12px;
+        letter-spacing: .5px;
+    }
+
+    .option .desc {
+        display: block;
+        color: var(--muted);
+        font-size: 9px;
+        margin-top: 3px;
+    }
+
+    .option.correct {
+        border-color: var(--green);
+        background: rgba(50,245,165,.09);
+        box-shadow: 0 0 25px rgba(50,245,165,.12);
+    }
+
+    .option.wrong {
+        border-color: var(--red);
+        background: rgba(255,70,104,.09);
+        animation: shake .35s ease;
+    }
+
+    @keyframes shake {
+        20% {
+            transform: translateX(-5px);
+        }
+
+        40% {
+            transform: translateX(5px);
+        }
+
+        60% {
+            transform: translateX(-4px);
+        }
+
+        80% {
+            transform: translateX(4px);
+        }
+    }
+
+    .hint {
+        text-align: center;
+        margin-top: 16px;
+        color: #52657e;
+        font-size: 10px;
+    }
+
+    kbd {
+        border: 1px solid #263950;
+        background: #101a29;
+        border-radius: 4px;
+        padding: 2px 5px;
+        color: #8ea4bc;
+        font-family: inherit;
+    }
+
+    /* GAME OVER */
+
+    .overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 10;
+        display: grid;
+        place-items: center;
+        padding: 20px;
+        background: rgba(5,9,16,.82);
+        backdrop-filter: blur(10px);
+    }
+
+    .overlay.hidden {
+        display: none;
+    }
+
+    .modal {
+        width: min(430px, 100%);
+        background:
+            radial-gradient(circle at 50% 0%, rgba(25,230,255,.08), transparent 55%),
+            #0d1523;
+        border: 1px solid #1c344d;
+        border-radius: 20px;
+        padding: 30px 25px;
+        text-align: center;
+        box-shadow: 0 30px 80px rgba(0,0,0,.5);
+        animation: modalIn .3s ease;
+    }
+
+    @keyframes modalIn {
+        from {
+            opacity: 0;
+            transform: translateY(15px) scale(.97);
+        }
+    }
+
+    .failure-icon {
+        width: 58px;
+        height: 58px;
+        margin: 0 auto 17px;
+        border: 1px solid rgba(255,70,104,.5);
+        border-radius: 16px;
+        display: grid;
+        place-items: center;
+        color: var(--red);
+        font-size: 25px;
+        background: rgba(255,70,104,.06);
+        box-shadow: 0 0 30px rgba(255,70,104,.1);
+    }
+
+    .modal .eyebrow {
+        color: var(--red);
+        font-size: 9px;
+        letter-spacing: 2px;
+        font-weight: 900;
+        text-transform: uppercase;
+    }
+
+    .modal h2 {
+        margin: 8px 0 4px;
+        font-size: 25px;
+    }
+
+    .technical-message {
+        font-family: "SFMono-Regular", Consolas, monospace;
+        font-size: 11px;
+        color: #72859d;
+        margin: 0 auto 20px;
+        max-width: 320px;
+        line-height: 1.6;
+    }
+
+    .result {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .result div span {
+        display: block;
+        color: var(--muted);
+        font-size: 9px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .result div strong {
+        font-size: 21px;
+    }
+
+    .restart {
+        width: 100%;
+        border: 0;
+        border-radius: 11px;
+        padding: 14px;
+        color: #021016;
+        background: var(--cyan);
+        font: inherit;
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: .5px;
+        cursor: pointer;
+        box-shadow: 0 0 25px rgba(25,230,255,.16);
+        transition: transform .15s, box-shadow .15s;
+    }
+
+    .restart:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(25,230,255,.22);
+    }
+
+    /* ROUND ANIMATION */
+
+    .signal-card.next {
+        animation: signalIn .35s ease;
+    }
+
+    @keyframes signalIn {
+        from {
+            opacity: 0;
+            transform: translateX(15px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .score-pop {
+        position: fixed;
+        pointer-events: none;
+        color: var(--green);
+        font-weight: 900;
+        font-size: 20px;
+        z-index: 20;
+        animation: scorePop .7s ease forwards;
+    }
+
+    @keyframes scorePop {
+        0% {
+            opacity: 0;
+            transform: translateY(10px) scale(.7);
+        }
+
+        25% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        100% {
+            opacity: 0;
+            transform: translateY(-45px) scale(1.1);
+        }
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 620px) {
+
+        .app {
+            width: min(100% - 18px, 920px);
+            padding-top: 17px;
+        }
+
+        header {
+            margin-bottom: 17px;
+        }
+
+        .logo {
+            width: 37px;
+            height: 37px;
+            border-radius: 10px;
+        }
+
+        .title-wrap h1 {
+            font-size: 18px;
+        }
+
+        .high-score strong {
+            font-size: 18px;
+        }
+
+        .players {
+            grid-template-columns: 1fr;
+            gap: 6px;
+        }
+
+        .player {
+            padding: 8px 10px;
+        }
+
+        .stats {
+            gap: 7px;
+        }
+
+        .stat {
+            padding: 10px 11px;
+        }
+
+        .stat-value {
+            font-size: 17px;
+        }
+
+        .wave-container {
+            height: 205px;
+        }
+
+        .options {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .option {
+            min-height: 70px;
+            padding: 13px 8px;
+        }
+
+        .option .desc {
+            display: none;
+        }
+
+        .question {
+            margin: 19px 0 13px;
+        }
+    }
+
+    @media (max-width: 380px) {
+
+        .stats {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .stat-label {
+            font-size: 8px;
+        }
+
+        .stat-value {
+            font-size: 15px;
+        }
+
+        .wave-container {
+            height: 180px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- HEADER -->
+
+    <header>
+
+        <div class="brand">
+
+            <div class="logo">
+                <svg viewBox="0 0 30 30" fill="none">
+                    <path
+                        d="M2 15C5 15 5 7 8 7C11 7 11 23 14 23C17 23 17 5 20 5C23 5 23 15 28 15"
+                        stroke="#19e6ff"
+                        stroke-width="2"
+                        stroke-linecap="round"/>
+                </svg>
+            </div>
+
+            <div class="title-wrap">
+                <h1>Signal Match</h1>
+                <p>EXTC Signal Intelligence</p>
+            </div>
+
+        </div>
+
+        <div class="high-score">
+            <span>Your High Score</span>
+            <strong id="highScore">0</strong>
+        </div>
+
+    </header>
+
+
+    <!-- STATIC LEADERBOARD -->
+
+    <section class="leaderboard">
+
+        <div class="leaderboard-header">
+
+            <div class="leaderboard-title">
+                Top Signal Analysts
+            </div>
+
+            <div class="leaderboard-tag">
+                ALL TIME
+            </div>
+
+        </div>
+
+        <div class="players">
+
+            <div class="player">
+
+                <div class="rank">01</div>
+
+                <div class="player-info">
+                    <div class="player-name">
+                        WaveRider_21
+                    </div>
+
+                    <div class="player-score">
+                        High Score:
+                        <strong>1840</strong>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="player">
+
+                <div class="rank">02</div>
+
+                <div class="player-info">
+                    <div class="player-name">
+                        PhaseHunter
+                    </div>
+
+                    <div class="player-score">
+                        High Score:
+                        <strong>1620</strong>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="player">
+
+                <div class="rank">03</div>
+
+                <div class="player-info">
+                    <div class="player-name">
+                        AMPLIFY_404
+                    </div>
+
+                    <div class="player-score">
+                        High Score:
+                        <strong>1390</strong>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- GAME STATS -->
+
+    <div class="stats">
+
+        <div class="stat">
+            <div class="stat-label">Score</div>
+            <div class="stat-value" id="score">0</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-label">Round</div>
+            <div class="stat-value" id="round">1</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-label">Time</div>
+            <div class="stat-value" id="timer">8.0s</div>
+        </div>
+
+    </div>
+
+
+    <!-- TIMER -->
+
+    <div class="timer-track">
+        <div class="timer-bar" id="timerBar"></div>
+    </div>
+
+
+    <!-- SIGNAL -->
+
+    <main class="signal-card" id="signalCard">
+
+        <div class="signal-header">
+
+            <div class="signal-label">
+                Incoming Signal
+            </div>
+
+            <div class="live">
+                <span class="live-dot"></span>
+                RECEIVING
+            </div>
+
+        </div>
+
+
+        <div class="wave-container">
+            <canvas id="waveCanvas"></canvas>
+        </div>
+
+
+        <div class="signal-info">
+
+            <span>
+                F<sub>c</sub>:
+                <strong id="carrier">100 kHz</strong>
+            </span>
+
+            <span>
+                SNR:
+                <strong id="snr">24 dB</strong>
+            </span>
+
+            <span>
+                BW:
+                <strong id="bandwidth">10 kHz</strong>
+            </span>
+
+        </div>
+
+    </main>
+
+
+    <!-- QUESTION -->
+
+    <div class="question">
+
+        <h2>
+            Identify the demodulation technique
+        </h2>
+
+        <p>
+            Analyze the waveform. Choose the correct receiver.
+        </p>
+
+    </div>
+
+
+    <!-- OPTIONS -->
+
+    <div class="options" id="options"></div>
+
+
+    <div class="hint">
+        Desktop:
+        use
+        <kbd>1</kbd>
+        <kbd>2</kbd>
+        <kbd>3</kbd>
+        <kbd>4</kbd>
+        <kbd>5</kbd>
+    </div>
+
+</div>
+
+
+<!-- GAME OVER -->
+
+<div class="overlay hidden" id="gameOver">
+
+    <div class="modal">
+
+        <div class="failure-icon">
+            !
+        </div>
+
+        <div class="eyebrow">
+            Transmission Terminated
+        </div>
+
+        <h2 id="failureTitle">
+            Demodulation Failed
+        </h2>
+
+        <p class="technical-message" id="failureMessage">
+            Receiver selected an incompatible demodulator.
+        </p>
+
+        <div class="result">
+
+            <div>
+                <span>Score</span>
+                <strong id="finalScore">0</strong>
+            </div>
+
+            <div>
+                <span>Best</span>
+                <strong id="finalHighScore">0</strong>
+            </div>
+
+            <div>
+                <span>Round</span>
+                <strong id="finalRound">1</strong>
+            </div>
+
+        </div>
+
+        <button class="restart" id="restart">
+            REINITIALIZE RECEIVER
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* ============================================================
+   SIGNAL MATCH
+   ============================================================ */
+
+
+/* ------------------------------
+   DOM
+   ------------------------------ */
+
+const canvas =
+    document.getElementById("waveCanvas");
+
+const ctx =
+    canvas.getContext("2d");
+
+const scoreEl =
+    document.getElementById("score");
+
+const roundEl =
+    document.getElementById("round");
+
+const timerEl =
+    document.getElementById("timer");
+
+const timerBar =
+    document.getElementById("timerBar");
+
+const highScoreEl =
+    document.getElementById("highScore");
+
+const carrierEl =
+    document.getElementById("carrier");
+
+const snrEl =
+    document.getElementById("snr");
+
+const bandwidthEl =
+    document.getElementById("bandwidth");
+
+const optionsEl =
+    document.getElementById("options");
+
+const signalCard =
+    document.getElementById("signalCard");
+
+const gameOver =
+    document.getElementById("gameOver");
+
+const failureTitle =
+    document.getElementById("failureTitle");
+
+const failureMessage =
+    document.getElementById("failureMessage");
+
+const finalScore =
+    document.getElementById("finalScore");
+
+const finalHighScore =
+    document.getElementById("finalHighScore");
+
+const finalRound =
+    document.getElementById("finalRound");
+
+const restartBtn =
+    document.getElementById("restart");
+
+
+/* ------------------------------
+   Modulations
+   ------------------------------ */
+
+const MODULATIONS = [
+
+    {
+        id: "AM",
+        name: "AM",
+        full: "Amplitude Modulation",
+        icon: "〰",
+        description: "Envelope varies"
+    },
+
+    {
+        id: "FM",
+        name: "FM",
+        full: "Frequency Modulation",
+        icon: "≋",
+        description: "Frequency varies"
+    },
+
+    {
+        id: "PSK",
+        name: "PSK",
+        full: "Phase Shift Keying",
+        icon: "◈",
+        description: "Phase changes"
+    },
+
+    {
+        id: "FSK",
+        name: "FSK",
+        full: "Frequency Shift Keying",
+        icon: "≋",
+        description: "Binary frequency"
+    },
+
+    {
+        id: "QAM",
+        name: "QAM",
+        full: "Quadrature Amplitude",
+        icon: "✦",
+        description: "Amplitude + phase"
+    }
+
+];
+
+
+/* ------------------------------
+   Failure messages
+   ------------------------------ */
+
+const FAILURE_MESSAGES = [
+
+    {
+        title: "Carrier Lost",
+        message:
+            "Receiver failed to recover the carrier from the incoming signal."
+    },
+
+    {
+        title: "Demodulation Failed",
+        message:
+            "Selected demodulator is incompatible with the detected modulation."
+    },
+
+    {
+        title: "Phase Error Detected",
+        message:
+            "Incorrect phase reference caused symbol recovery failure."
+    },
+
+    {
+        title: "Symbol Timing Lost",
+        message:
+            "Receiver could not correctly identify the transmitted symbols."
+    },
+
+    {
+        title: "SNR Below Threshold",
+        message:
+            "Signal classification failed under the current noise conditions."
+    },
+
+    {
+        title: "Bit Error Rate Critical",
+        message:
+            "Incorrect detection method produced an unacceptable BER."
+    },
+
+    {
+        title: "Synchronization Failure",
+        message:
+            "Receiver synchronization could not be maintained."
+    }
+
+];
+
+
+/* ------------------------------
+   Game state
+   ------------------------------ */
+
+let score = 0;
+
+let round = 1;
+
+let currentSignal = null;
+
+let timeRemaining = 8;
+
+let maxTime = 8;
+
+let timerInterval = null;
+
+let animationFrame = null;
+
+let gameActive = true;
+
+let answered = false;
+
+let highScore =
+    Number(
+        localStorage.getItem("signalMatchHighScore")
+    ) || 0;
+
+highScoreEl.textContent =
+    highScore;
+
+
+/* ------------------------------
+   Difficulty
+   ------------------------------ */
+
+function getDifficulty() {
+
+    /*
+       Rounds 1-2:
+       AM / FM / PSK
+
+       Rounds 3-5:
+       + FSK
+
+       Round 6+:
+       + QAM
+    */
+
+    if (round <= 2) {
+        return MODULATIONS.slice(0, 3);
+    }
+
+    if (round <= 5) {
+        return MODULATIONS.slice(0, 4);
+    }
+
+    return MODULATIONS;
+
+}
+
+
+/* ------------------------------
+   Timer difficulty
+   ------------------------------ */
+
+function getTimeLimit() {
+
+    /*
+       Starts at 8 seconds.
+
+       Gradually becomes faster
+       as the rounds increase.
+
+       Minimum = 2.2 seconds.
+    */
+
+    return Math.max(
+        2.2,
+        8 - (round - 1) * 0.16
+    );
+
+}
+
+
+/* ------------------------------
+   Random helpers
+   ------------------------------ */
+
+function random(min, max) {
+
+    return Math.random() *
+        (max - min) +
+        min;
+
+}
+
+
+function randomInt(min, max) {
+
+    return Math.floor(
+        random(min, max + 1)
+    );
+
+}
+
+
+function choose(array) {
+
+    return array[
+        Math.floor(
+            Math.random() * array.length
+        )
+    ];
+
+}
+
+
+/* ------------------------------
+   Generate signal
+   ------------------------------ */
+
+function generateSignal() {
+
+    const available =
+        getDifficulty();
+
+    currentSignal =
+        choose(available);
+
+    const carrier =
+        currentSignal.id === "FM" ||
+        currentSignal.id === "FSK"
+            ? randomInt(80, 180)
+            : randomInt(90, 160);
+
+    const snr =
+        Math.max(
+            8,
+            randomInt(16, 31) -
+            Math.floor(round / 5)
+        );
+
+    const bandwidth = {
+
+        AM: randomInt(8, 22),
+
+        FM: randomInt(30, 90),
+
+        PSK: randomInt(10, 40),
+
+        FSK: randomInt(12, 50),
+
+        QAM: randomInt(20, 80)
+
+    }[currentSignal.id];
+
+
+    carrierEl.textContent =
+        carrier + " kHz";
+
+    snrEl.textContent =
+        snr + " dB";
+
+    bandwidthEl.textContent =
+        bandwidth + " kHz";
+
+
+    renderOptions();
+
+}
+
+
+/* ------------------------------
+   Render options
+   ------------------------------ */
+
+function renderOptions() {
+
+    optionsEl.innerHTML = "";
+
+    const available =
+        getDifficulty();
+
+    const shuffled =
+        [...available]
+        .sort(() => Math.random() - 0.5);
+
+
+    shuffled.forEach(
+        (mod, index) => {
+
+            const button =
+                document.createElement("button");
+
+            button.className =
+                "option";
+
+            button.dataset.id =
+                mod.id;
+
+            button.dataset.index =
+                index + 1;
+
+            button.innerHTML = `
+
+                <span class="icon">
+                    ${mod.icon}
+                </span>
+
+                <span class="name">
+                    ${mod.name}
+                </span>
+
+                <span class="desc">
+                    ${mod.full}
+                </span>
+
+            `;
+
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    answer(
+                        mod.id,
+                        button
+                    );
+
+                }
+            );
+
+
+            optionsEl.appendChild(
+                button
+            );
+
+        }
+    );
+
+}
+
+
+/* ------------------------------
+   Answer
+   ------------------------------ */
+
+function answer(
+    selected,
+    button
+) {
+
+    if (
+        !gameActive ||
+        answered
+    ) {
+        return;
+    }
+
+    answered = true;
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    if (
+        selected ===
+        currentSignal.id
+    ) {
+
+        button.classList.add(
+            "correct"
+        );
+
+
+        score +=
+            10 +
+            Math.floor(
+                timeRemaining * 2
+            );
+
+
+        scoreEl.textContent =
+            score;
+
+
+        createScorePop(
+            button
+        );
+
+
+        setTimeout(
+            () => {
+
+                round++;
+
+                roundEl.textContent =
+                    round;
+
+                answered = false;
+
+                nextRound();
+
+            },
+            280
+        );
+
+
+    } else {
+
+        button.classList.add(
+            "wrong"
+        );
+
+
+        document
+            .querySelectorAll(".option")
+            .forEach(btn => {
+
+                if (
+                    btn.dataset.id ===
+                    currentSignal.id
+                ) {
+
+                    btn.classList.add(
+                        "correct"
+                    );
+
+                }
+
+                btn.disabled = true;
+
+            });
+
+
+        setTimeout(
+            () => {
+
+                endGame(
+                    "wrong"
+                );
+
+            },
+            500
+        );
+
+    }
+
+}
+
+
+/* ------------------------------
+   Timer
+   ------------------------------ */
+
+function startTimer() {
+
+    clearInterval(
+        timerInterval
+    );
+
+    maxTime =
+        getTimeLimit();
+
+    timeRemaining =
+        maxTime;
+
+    updateTimer();
+
+    const start =
+        performance.now();
+
+
+    timerInterval =
+        setInterval(
+            () => {
+
+                const elapsed =
+                    (
+                        performance.now() -
+                        start
+                    ) / 1000;
+
+
+                timeRemaining =
+                    maxTime -
+                    elapsed;
+
+
+                if (
+                    timeRemaining <= 0
+                ) {
+
+                    timeRemaining =
+                        0;
+
+                    updateTimer();
+
+                    clearInterval(
+                        timerInterval
+                    );
+
+
+                    if (!answered) {
+
+                        answered = true;
+
+                        document
+                            .querySelectorAll(
+                                ".option"
+                            )
+                            .forEach(
+                                btn =>
+                                    btn.disabled =
+                                        true
+                            );
+
+
+                        endGame(
+                            "timeout"
+                        );
+
+                    }
+
+                    return;
+
+                }
+
+
+                updateTimer();
+
+            },
+            50
+        );
+
+}
+
+
+function updateTimer() {
+
+    const seconds =
+        Math.max(
+            0,
+            timeRemaining
+        );
+
+
+    timerEl.textContent =
+        seconds.toFixed(1) +
+        "s";
+
+
+    const percentage =
+        Math.max(
+            0,
+            seconds /
+            maxTime *
+            100
+        );
+
+
+    timerBar.style.width =
+        percentage +
+        "%";
+
+
+    timerEl.classList.remove(
+        "warning",
+        "danger"
+    );
+
+
+    if (
+        seconds <=
+        maxTime * .28
+    ) {
+
+        timerEl.classList.add(
+            "danger"
+        );
+
+    } else if (
+        seconds <=
+        maxTime * .5
+    ) {
+
+        timerEl.classList.add(
+            "warning"
+        );
+
+    }
+
+}
+
+
+/* ------------------------------
+   Next round
+   ------------------------------ */
+
+function nextRound() {
+
+    signalCard.classList.remove(
+        "next"
+    );
+
+    void signalCard.offsetWidth;
+
+    signalCard.classList.add(
+        "next"
+    );
+
+    generateSignal();
+
+    startTimer();
+
+}
+
+
+/* ------------------------------
+   Game over
+   ------------------------------ */
+
+function endGame(reason) {
+
+    gameActive = false;
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    if (
+        reason === "timeout"
+    ) {
+
+        failureTitle.textContent =
+            "Symbol Timing Lost";
+
+        failureMessage.textContent =
+            "Response window expired. Receiver synchronization could not be maintained.";
+
+    } else {
+
+        const failure =
+            choose(
+                FAILURE_MESSAGES
+            );
+
+        failureTitle.textContent =
+            failure.title;
+
+        failureMessage.textContent =
+            failure.message;
+
+    }
+
+
+    if (
+        score > highScore
+    ) {
+
+        highScore =
+            score;
+
+        localStorage.setItem(
+            "signalMatchHighScore",
+            highScore
+        );
+
+        highScoreEl.textContent =
+            highScore;
+
+    }
+
+
+    finalScore.textContent =
+        score;
+
+    finalHighScore.textContent =
+        highScore;
+
+    finalRound.textContent =
+        round;
+
+
+    setTimeout(
+        () => {
+
+            gameOver.classList.remove(
+                "hidden"
+            );
+
+        },
+        100
+    );
+
+}
+
+
+/* ------------------------------
+   Restart
+   ------------------------------ */
+
+restartBtn.addEventListener(
+    "click",
+    () => {
+
+        gameOver.classList.add(
+            "hidden"
+        );
+
+        score = 0;
+
+        round = 1;
+
+        scoreEl.textContent =
+            "0";
+
+        roundEl.textContent =
+            "1";
+
+        gameActive = true;
+
+        answered = false;
+
+        nextRound();
+
+    }
+);
+
+
+/* ------------------------------
+   Score animation
+   ------------------------------ */
+
+function createScorePop(
+    element
+) {
+
+    const rect =
+        element.getBoundingClientRect();
+
+    const pop =
+        document.createElement(
+            "div"
+        );
+
+    pop.className =
+        "score-pop";
+
+    pop.textContent =
+        "+";
+
+    pop.style.left =
+        (
+            rect.left +
+            rect.width / 2
+        ) + "px";
+
+    pop.style.top =
+        rect.top + "px";
+
+
+    document.body.appendChild(
+        pop
+    );
+
+
+    setTimeout(
+        () => pop.remove(),
+        750
+    );
+
+}
+
+
+/* ============================================================
+   WAVEFORM ENGINE
+   ============================================================ */
+
+let phase = 0;
+
+
+function resizeCanvas() {
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+    const dpr =
+        Math.min(
+            window.devicePixelRatio || 1,
+            2
+        );
+
+
+    canvas.width =
+        rect.width * dpr;
+
+    canvas.height =
+        rect.height * dpr;
+
+
+    ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+    );
+
+}
+
+
+function drawWaveform() {
+
+    const width =
+        canvas.clientWidth;
+
+    const height =
+        canvas.clientHeight;
+
+
+    ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    if (!currentSignal) {
+
+        animationFrame =
+            requestAnimationFrame(
+                drawWaveform
+            );
+
+        return;
+
+    }
+
+
+    const center =
+        height / 2;
+
+    const amplitude =
+        height * .31;
+
+    const modulation =
+        currentSignal.id;
+
+
+    /* Glow */
+
+    ctx.save();
+
+    ctx.lineWidth = 4;
+
+    ctx.globalAlpha = .08;
+
+    drawSignal(
+        modulation,
+        width,
+        center,
+        amplitude
+    );
+
+    ctx.restore();
+
+
+    /* Main waveform */
+
+    ctx.save();
+
+    ctx.lineWidth = 1.7;
+
+    ctx.globalAlpha = .95;
+
+    drawSignal(
+        modulation,
+        width,
+        center,
+        amplitude
+    );
+
+    ctx.restore();
+
+
+    /* Scan line */
+
+    const scanX =
+        (
+            phase * 45
+        ) %
+        (
+            width + 100
+        ) -
+        50;
+
+
+    const gradient =
+        ctx.createLinearGradient(
+            scanX - 30,
+            0,
+            scanX + 30,
+            0
+        );
+
+
+    gradient.addColorStop(
+        0,
+        "rgba(25,230,255,0)"
+    );
+
+    gradient.addColorStop(
+        .5,
+        "rgba(25,230,255,.13)"
+    );
+
+    gradient.addColorStop(
+        1,
+        "rgba(25,230,255,0)"
+    );
+
+
+    ctx.fillStyle =
+        gradient;
+
+
+    ctx.fillRect(
+        scanX - 30,
+        0,
+        60,
+        height
+    );
+
+
+    phase += .016;
+
+
+    animationFrame =
+        requestAnimationFrame(
+            drawWaveform
+        );
+
+}
+
+
+/* ------------------------------
+   Signal drawing
+   ------------------------------ */
+
+function drawSignal(
+    type,
+    width,
+    center,
+    amplitude
+) {
+
+    function noise() {
+
+        return random(
+            -1.5,
+            1.5
+        );
+
+    }
+
+
+    ctx.beginPath();
+
+
+    for (
+        let x = 0;
+        x <= width;
+        x += 1.5
+    ) {
+
+        const t =
+            x / width;
+
+        const time =
+            t *
+            Math.PI *
+            20 +
+            phase;
+
+        let y =
+            center;
+
+
+        /* AM */
+
+        if (
+            type === "AM"
+        ) {
+
+            const envelope =
+                .35 +
+                .65 *
+                (
+                    .5 +
+                    .5 *
+                    Math.sin(
+                        t *
+                        Math.PI *
+                        5
+                    )
+                );
+
+
+            const carrier =
+                Math.sin(
+                    time * 8
+                );
+
+
+            y =
+                center +
+                amplitude *
+                envelope *
+                carrier;
+
+        }
+
+
+        /* FM */
+
+        else if (
+            type === "FM"
+        ) {
+
+            const freq =
+                5 +
+                3 *
+                Math.sin(
+                    t *
+                    Math.PI *
+                    4
+                );
+
+
+            y =
+                center +
+                amplitude *
+                .72 *
+                Math.sin(
+                    t *
+                    Math.PI *
+                    2 *
+                    freq *
+                    3 +
+                    phase
+                );
+
+        }
+
+
+        /* PSK */
+
+        else if (
+            type === "PSK"
+        ) {
+
+            const symbols =
+                12;
+
+            const symbol =
+                Math.floor(
+                    t * symbols
+                );
+
+
+            const local =
+                t *
+                symbols -
+                symbol;
+
+
+            const carrier =
+                Math.sin(
+                    local *
+                    Math.PI *
+                    2 *
+                    4 +
+                    phase
+                );
+
+
+            const phaseFlip =
+                symbol % 2 === 0
+                    ? 1
+                    : -1;
+
+
+            y =
+                center +
+                amplitude *
+                .72 *
+                carrier *
+                phaseFlip;
+
+        }
+
+
+        /* FSK */
+
+        else if (
+            type === "FSK"
+        ) {
+
+            const symbols =
+                10;
+
+
+            const symbol =
+                Math.floor(
+                    t * symbols
+                );
+
+
+            const frequency =
+                symbol % 2 === 0
+                    ? 5
+                    : 11;
+
+
+            y =
+                center +
+                amplitude *
+                .72 *
+                Math.sin(
+                    t *
+                    Math.PI *
+                    frequency *
+                    7 +
+                    phase
+                );
+
+        }
+
+
+        /* QAM */
+
+        else if (
+            type === "QAM"
+        ) {
+
+            const symbols =
+                8;
+
+
+            const symbol =
+                Math.floor(
+                    t * symbols
+                );
+
+
+            const amplitudes =
+                [
+                    .35,
+                    .65,
+                    1,
+                    .5
+                ];
+
+
+            const amp =
+                amplitudes[
+                    symbol %
+                    amplitudes.length
+                ];
+
+
+            const phaseShift =
+                (
+                    symbol % 4
+                ) *
+                Math.PI / 2;
+
+
+            y =
+                center +
+                amplitude *
+                amp *
+                Math.sin(
+                    time * 7 +
+                    phaseShift
+                );
+
+        }
+
+
+        y +=
+            noise();
+
+
+        if (
+            x === 0
+        ) {
+
+            ctx.moveTo(
+                x,
+                y
+            );
+
+        } else {
+
+            ctx.lineTo(
+                x,
+                y
+            );
+
+        }
+
+    }
+
+
+    ctx.strokeStyle =
+        "#19e6ff";
+
+    ctx.shadowBlur =
+        12;
+
+    ctx.shadowColor =
+        "#19e6ff";
+
+    ctx.stroke();
+
+    ctx.shadowBlur =
+        0;
+
+}
+
+
+/* ------------------------------
+   Keyboard controls
+   ------------------------------ */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            !gameActive ||
+            answered
+        ) {
+            return;
+        }
+
+
+        const number =
+            Number(event.key);
+
+
+        if (
+            number >= 1 &&
+            number <= 5
+        ) {
+
+            const button =
+                [
+                    ...document
+                        .querySelectorAll(
+                            ".option"
+                        )
+                ][number - 1];
+
+
+            if (button) {
+
+                answer(
+                    button.dataset.id,
+                    button
+                );
+
+            }
+
+        }
+
+
+        if (
+            event.key === "Enter" &&
+            !gameOver
+                .classList
+                .contains("hidden")
+        ) {
+
+            restartBtn.click();
+
+        }
+
+    }
+);
+
+
+/* ------------------------------
+   Canvas setup
+   ------------------------------ */
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+resizeCanvas();
+
+drawWaveform();
+
+
+/* ------------------------------
+   Start
+   ------------------------------ */
+
+generateSignal();
+
+startTimer();
+
+</script>
+
+</body>
+</html>
+```
