@@ -673,9 +673,7 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
     100% { transform: translateX(0); }
 }
 
-/* ---------- Individual technology pill (Liquid Glass) ----------
-   Reuses the same --glass-btn-* variables as the navbar, buttons,
-   and footer so it feels like part of the same design system. */
+/* ---------- Individual technology pill (Liquid Glass) ---------- */
 .tech-pill {
     font-size: 0.95rem;
     font-weight: 500;
@@ -690,7 +688,6 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
     letter-spacing: -0.01em;
     flex-shrink: 0;
 
-    /* Liquid glass treatment */
     backdrop-filter: blur(12px) saturate(160%);
     -webkit-backdrop-filter: blur(12px) saturate(160%);
     box-shadow:
@@ -1083,13 +1080,10 @@ html.dark .footer-bottom {
     .nav-link::before { display: none; }
     .nav-link:hover { background: var(--surface-hover); border-radius: 8px; }
 
-    /* Footer fallback: solid surface if backdrop-filter unsupported */
     .footer {
         background: var(--surface);
         border-color: var(--border);
     }
-
-    /* Marquee pills fallback: solid surface */
     .tech-pill {
         background: var(--surface);
         border-color: var(--border);
@@ -1754,4 +1748,33 @@ html.dark .events-page .flagship-accomplishments {
     border-bottom: none;
     padding-bottom: 0;
     margin-bottom: 0.85rem;
+}
+
+/* ==================================================
+   19. HOMEPAGE — REMOVE SECTION DIVIDER LINES
+   ---------------------------------------------------
+   Scoped to .home-page (added on <body> in index.html)
+   so this does NOT affect about.html, events.html,
+   gallery.html, or team.html. Removes only the visible
+   horizontal separator lines between homepage sections
+   (.bg-alt and .tech-marquee-section outer borders,
+   plus the internal .marquee-wrapper row borders).
+   Section spacing, background transitions, card
+   borders, the .section-line accent bar, the glass
+   footer border, and every other border remain intact.
+================================================== */
+
+.home-page .bg-alt {
+    border-top: none;
+    border-bottom: none;
+}
+
+.home-page .tech-marquee-section {
+    border-top: none;
+    border-bottom: none;
+}
+
+.home-page .marquee-wrapper {
+    border-top: none;
+    border-bottom: none;
 }
