@@ -262,15 +262,15 @@
         </div>
     </section>
 
-    <!-- SNAKE GAME SECTION -->
-    <section class="section snake-section" id="snake-game">
+    <!-- SIGNAL MATCH SECTION -->
+    <section class="section signal-match-section" id="signal-match">
         <div class="container">
             <div class="section-header reveal-up">
-                <h2 class="section-title">Play Snake</h2>
-                <p class="section-subtitle">Take a quick break and challenge yourself to a game of Snake.</p>
+                <h2 class="section-title">Play Signal Match</h2>
+                <p class="section-subtitle">Take a quick break and test your signal recognition skills.</p>
             </div>
             <div class="game-launch-wrapper reveal-up">
-                <button id="launchSnakeBtn" class="btn btn-primary launch-btn">
+                <button id="launchMatchBtn" class="btn btn-primary launch-btn">
                     Play Now
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                 </button>
@@ -300,13 +300,13 @@
         </div>
     </div>
 
-    <!-- SNAKE GAME MODAL -->
-    <div id="snakeModal" class="snake-modal-overlay">
-        <div class="snake-modal-backdrop"></div>
-        <div class="snake-modal-window">
-            <button class="snake-modal-close" id="closeSnakeModal" aria-label="Close game">×</button>
-            <div class="snake-modal-body">
-                <iframe id="snakeIframe" src="games/snake.html" title="Snake Game"></iframe>
+    <!-- SIGNAL MATCH MODAL -->
+    <div id="signalMatchModal" class="signal-match-modal-overlay">
+        <div class="signal-match-modal-backdrop"></div>
+        <div class="signal-match-modal-window">
+            <button class="signal-match-modal-close" id="closeSignalMatchModal" aria-label="Close game">×</button>
+            <div class="signal-match-modal-body">
+                <iframe id="signalMatchIframe" src="games/signal-match.html" title="Signal Match"></iframe>
             </div>
         </div>
     </div>
@@ -359,10 +359,10 @@
     <script src="js/main.js"></script>
     <script>
         (function() {
-            const modal = document.getElementById('snakeModal');
-            const iframe = document.getElementById('snakeIframe');
-            const closeBtn = document.getElementById('closeSnakeModal');
-            const launchBtn = document.getElementById('launchSnakeBtn');
+            const modal = document.getElementById('signalMatchModal');
+            const iframe = document.getElementById('signalMatchIframe');
+            const closeBtn = document.getElementById('closeSignalMatchModal');
+            const launchBtn = document.getElementById('launchMatchBtn');
             const body = document.body;
 
             function openModal() {
@@ -389,7 +389,7 @@
             });
 
             window.addEventListener('message', (e) => {
-                if (e.data === 'openSnakeModal') {
+                if (e.data === 'openSignalMatchModal' || e.data === 'openSnakeModal') {
                     openModal();
                 }
             });
