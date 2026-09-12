@@ -34,8 +34,15 @@
     --glass-primary-border: rgba(0, 98, 155, 0.95);
     --glass-primary-highlight: rgba(255, 255, 255, 0.3);
 
-    /* Marquee pill (light) — solid-ish glass that does NOT require
-       backdrop-filter. This keeps 64 animated pills cheap to composite. */
+    /* Liquid Glass: Hero CTA buttons (light) — translucent, no colored glow */
+    --glass-cta-bg: rgba(0, 98, 155, 0.6);
+    --glass-cta-bg-hover: rgba(0, 98, 155, 0.75);
+    --glass-cta-border: rgba(0, 98, 155, 0.6);
+    --glass-cta-highlight: rgba(255, 255, 255, 0.35);
+    --glass-cta-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+    --glass-cta-shadow-hover: 0 6px 20px rgba(15, 23, 42, 0.14);
+
+    /* Marquee pill (light) — solid-ish glass without backdrop-filter */
     --glass-pill-bg: rgba(255, 255, 255, 0.88);
     --glass-pill-bg-hover: rgba(255, 255, 255, 0.98);
     --glass-pill-border: rgba(203, 213, 225, 0.85);
@@ -71,6 +78,14 @@ html.dark {
     --glass-primary-bg-hover: rgba(56, 189, 248, 0.96);
     --glass-primary-border: rgba(56, 189, 248, 0.95);
     --glass-primary-highlight: rgba(255, 255, 255, 0.35);
+
+    /* Liquid Glass: Hero CTA buttons (dark) — translucent, no colored glow */
+    --glass-cta-bg: rgba(56, 189, 248, 0.6);
+    --glass-cta-bg-hover: rgba(56, 189, 248, 0.75);
+    --glass-cta-border: rgba(56, 189, 248, 0.6);
+    --glass-cta-highlight: rgba(255, 255, 255, 0.4);
+    --glass-cta-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    --glass-cta-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.4);
 
     /* Marquee pill (dark) — solid-ish glass without backdrop-filter */
     --glass-pill-bg: rgba(30, 41, 59, 0.88);
@@ -162,7 +177,7 @@ ul {
 .highlight { color: var(--primary); }
 
 /* ==================================================
-   4. NAVBAR (Liquid Glass — unchanged)
+   4. NAVBAR (Liquid Glass — unchanged reference)
 ================================================== */
 .navbar {
     position: fixed;
@@ -428,7 +443,7 @@ html.dark .badge { background: rgba(56, 189, 248, 0.15); }
 }
 
 /* ==================================================
-   6. BUTTONS (Liquid Glass)
+   6. BUTTONS (base glass — used across the site)
 ================================================== */
 .btn {
     padding: 12px 28px;
@@ -501,6 +516,73 @@ html.dark .btn-primary:hover {
 }
 .btn-outline:active {
     transform: scale(0.97) translateY(0);
+}
+
+/* ==================================================
+   6b. HERO CTA BUTTONS — LIQUID GLASS
+   Scoped to .hero-cta so the base .btn-primary /
+   .btn-outline rules (used by Play Now etc.) stay
+   untouched. Reuses the navbar/footer glass vocabulary:
+   translucent bg, backdrop blur, subtle border, inset
+   top highlight, and a soft NEUTRAL shadow — no
+   colored glow / bloom.
+================================================== */
+
+/* Explore Events — glass primary */
+.hero-cta .btn-primary {
+    background: var(--glass-cta-bg);
+    color: #ffffff;
+    border: 1px solid var(--glass-cta-border);
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    box-shadow:
+        var(--glass-cta-shadow),
+        inset 0 1px 0 var(--glass-cta-highlight);
+    transition: background 0.3s ease, transform 0.25s ease, box-shadow 0.3s ease;
+}
+html.dark .hero-cta .btn-primary {
+    color: #0b1120;
+}
+.hero-cta .btn-primary:hover {
+    background: var(--glass-cta-bg-hover);
+    border-color: var(--glass-cta-border);
+    transform: translateY(-2px);
+    box-shadow:
+        var(--glass-cta-shadow-hover),
+        inset 0 1px 0 var(--glass-cta-highlight);
+}
+.hero-cta .btn-primary:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow:
+        var(--glass-cta-shadow),
+        inset 0 1px 0 var(--glass-cta-highlight);
+}
+
+/* Learn More — glass outline */
+.hero-cta .btn-outline {
+    background: var(--glass-btn-bg);
+    color: var(--text-main);
+    border: 1px solid var(--glass-btn-border);
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    box-shadow:
+        0 2px 10px rgba(15, 23, 42, 0.05),
+        inset 0 1px 0 var(--glass-btn-highlight);
+    transition: background 0.3s ease, transform 0.25s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.hero-cta .btn-outline:hover {
+    background: var(--glass-btn-bg-hover);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow:
+        0 6px 18px rgba(15, 23, 42, 0.1),
+        inset 0 1px 0 var(--glass-btn-highlight);
+}
+.hero-cta .btn-outline:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow:
+        0 2px 10px rgba(15, 23, 42, 0.05),
+        inset 0 1px 0 var(--glass-btn-highlight);
 }
 
 /* ==================================================
@@ -637,10 +719,6 @@ html.dark .event-icon { background: rgba(56, 189, 248, 0.1); }
 
 /* ==================================================
    8. TECHNOLOGIES MARQUEE
-   Pills use a solid-ish glass surface WITHOUT
-   backdrop-filter. This is the key scroll-performance fix:
-   with 64 continuously-animated pills, per-pill blur was
-   the dominant GPU cost during scroll on every page.
 ================================================== */
 .tech-marquee-section {
     padding: 60px 0 40px 0;
@@ -949,7 +1027,7 @@ html.dark .footer-bottom {
 }
 
 /* ==================================================
-   11. REVEAL ANIMATIONS (safe: content visible by default)
+   11. REVEAL ANIMATIONS
 ================================================== */
 .reveal-up {
     opacity: 1;
@@ -1094,6 +1172,11 @@ html.dark .footer-bottom {
     .btn-outline { background: var(--surface); }
     .nav-link::before { display: none; }
     .nav-link:hover { background: var(--surface-hover); border-radius: 8px; }
+
+    /* Hero CTA fallback (matches the base .btn-primary/.btn-outline fallback) */
+    .hero-cta .btn-primary { background: var(--primary); color: #fff; }
+    html.dark .hero-cta .btn-primary { background: var(--primary); color: #0b1120; }
+    .hero-cta .btn-outline { background: var(--surface); }
 
     .footer {
         background: var(--surface);
