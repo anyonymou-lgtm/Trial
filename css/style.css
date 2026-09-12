@@ -34,13 +34,29 @@
     --glass-primary-border: rgba(0, 98, 155, 0.95);
     --glass-primary-highlight: rgba(255, 255, 255, 0.3);
 
-    /* Liquid Glass: Hero CTA buttons (light) — translucent, no colored glow */
-    --glass-cta-bg: rgba(0, 98, 155, 0.6);
-    --glass-cta-bg-hover: rgba(0, 98, 155, 0.75);
-    --glass-cta-border: rgba(0, 98, 155, 0.6);
-    --glass-cta-highlight: rgba(255, 255, 255, 0.35);
-    --glass-cta-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
-    --glass-cta-shadow-hover: 0 6px 20px rgba(15, 23, 42, 0.14);
+    /* Liquid Glass: Hero CTA (light) — translucent + subtle luminous edge */
+    --glass-cta-bg: rgba(0, 98, 155, 0.42);
+    --glass-cta-bg-hover: rgba(0, 98, 155, 0.58);
+    --glass-cta-border: rgba(255, 255, 255, 0.55);
+    --glass-cta-highlight: rgba(255, 255, 255, 0.55);
+    --glass-cta-shadow:
+        0 4px 16px rgba(15, 23, 42, 0.1),
+        0 0 18px rgba(0, 98, 155, 0.18);
+    --glass-cta-shadow-hover:
+        0 6px 22px rgba(15, 23, 42, 0.14),
+        0 0 26px rgba(0, 98, 155, 0.3);
+
+    /* Liquid Glass: Hero CTA outline (light) */
+    --glass-cta-outline-bg: rgba(255, 255, 255, 0.5);
+    --glass-cta-outline-bg-hover: rgba(255, 255, 255, 0.72);
+    --glass-cta-outline-border: rgba(203, 213, 225, 0.8);
+    --glass-cta-outline-highlight: rgba(255, 255, 255, 0.9);
+    --glass-cta-outline-shadow:
+        0 4px 16px rgba(15, 23, 42, 0.06),
+        0 0 14px rgba(0, 98, 155, 0.08);
+    --glass-cta-outline-shadow-hover:
+        0 6px 20px rgba(15, 23, 42, 0.1),
+        0 0 22px rgba(0, 98, 155, 0.16);
 
     /* Marquee pill (light) — solid-ish glass without backdrop-filter */
     --glass-pill-bg: rgba(255, 255, 255, 0.88);
@@ -79,13 +95,29 @@ html.dark {
     --glass-primary-border: rgba(56, 189, 248, 0.95);
     --glass-primary-highlight: rgba(255, 255, 255, 0.35);
 
-    /* Liquid Glass: Hero CTA buttons (dark) — translucent, no colored glow */
-    --glass-cta-bg: rgba(56, 189, 248, 0.6);
-    --glass-cta-bg-hover: rgba(56, 189, 248, 0.75);
-    --glass-cta-border: rgba(56, 189, 248, 0.6);
+    /* Liquid Glass: Hero CTA (dark) — translucent + subtle luminous edge */
+    --glass-cta-bg: rgba(56, 189, 248, 0.22);
+    --glass-cta-bg-hover: rgba(56, 189, 248, 0.4);
+    --glass-cta-border: rgba(125, 211, 252, 0.5);
     --glass-cta-highlight: rgba(255, 255, 255, 0.4);
-    --glass-cta-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-    --glass-cta-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.4);
+    --glass-cta-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(56, 189, 248, 0.22);
+    --glass-cta-shadow-hover:
+        0 6px 22px rgba(0, 0, 0, 0.4),
+        0 0 30px rgba(56, 189, 248, 0.4);
+
+    /* Liquid Glass: Hero CTA outline (dark) */
+    --glass-cta-outline-bg: rgba(30, 41, 59, 0.55);
+    --glass-cta-outline-bg-hover: rgba(30, 41, 59, 0.78);
+    --glass-cta-outline-border: rgba(56, 189, 248, 0.3);
+    --glass-cta-outline-highlight: rgba(255, 255, 255, 0.15);
+    --glass-cta-outline-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.3),
+        0 0 14px rgba(56, 189, 248, 0.1);
+    --glass-cta-outline-shadow-hover:
+        0 6px 20px rgba(0, 0, 0, 0.4),
+        0 0 22px rgba(56, 189, 248, 0.2);
 
     /* Marquee pill (dark) — solid-ish glass without backdrop-filter */
     --glass-pill-bg: rgba(30, 41, 59, 0.88);
@@ -519,70 +551,82 @@ html.dark .btn-primary:hover {
 }
 
 /* ==================================================
-   6b. HERO CTA BUTTONS — LIQUID GLASS
+   6b. HERO CTA BUTTONS — LIQUID GLASS + SUBTLE GLOW
    Scoped to .hero-cta so the base .btn-primary /
    .btn-outline rules (used by Play Now etc.) stay
-   untouched. Reuses the navbar/footer glass vocabulary:
+   untouched. Reuses the navbar's glass vocabulary:
    translucent bg, backdrop blur, subtle border, inset
-   top highlight, and a soft NEUTRAL shadow — no
-   colored glow / bloom.
+   top highlight, PLUS a soft luminous edge glow that
+   reads as light catching the glass — not a neon halo.
 ================================================== */
 
 /* Explore Events — glass primary */
 .hero-cta .btn-primary {
-    background: var(--glass-cta-bg);
+    /* Top reflection gradient layered over translucent base */
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 55%),
+        var(--glass-cta-bg);
     color: #ffffff;
     border: 1px solid var(--glass-cta-border);
-    backdrop-filter: blur(12px) saturate(160%);
-    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
     box-shadow:
         var(--glass-cta-shadow),
-        inset 0 1px 0 var(--glass-cta-highlight);
-    transition: background 0.3s ease, transform 0.25s ease, box-shadow 0.3s ease;
-}
-html.dark .hero-cta .btn-primary {
-    color: #0b1120;
+        inset 0 1px 0 var(--glass-cta-highlight),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+    transition: background 0.3s ease, transform 0.25s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 .hero-cta .btn-primary:hover {
-    background: var(--glass-cta-bg-hover);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 55%),
+        var(--glass-cta-bg-hover);
     border-color: var(--glass-cta-border);
     transform: translateY(-2px);
     box-shadow:
         var(--glass-cta-shadow-hover),
-        inset 0 1px 0 var(--glass-cta-highlight);
+        inset 0 1px 0 var(--glass-cta-highlight),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.08);
 }
 .hero-cta .btn-primary:active {
     transform: translateY(0) scale(0.98);
     box-shadow:
         var(--glass-cta-shadow),
-        inset 0 1px 0 var(--glass-cta-highlight);
+        inset 0 1px 0 var(--glass-cta-highlight),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.08);
 }
 
 /* Learn More — glass outline */
 .hero-cta .btn-outline {
-    background: var(--glass-btn-bg);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0) 55%),
+        var(--glass-cta-outline-bg);
     color: var(--text-main);
-    border: 1px solid var(--glass-btn-border);
-    backdrop-filter: blur(12px) saturate(160%);
-    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    border: 1px solid var(--glass-cta-outline-border);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
     box-shadow:
-        0 2px 10px rgba(15, 23, 42, 0.05),
-        inset 0 1px 0 var(--glass-btn-highlight);
-    transition: background 0.3s ease, transform 0.25s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        var(--glass-cta-outline-shadow),
+        inset 0 1px 0 var(--glass-cta-outline-highlight),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+    transition: background 0.3s ease, transform 0.25s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 .hero-cta .btn-outline:hover {
-    background: var(--glass-btn-bg-hover);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0) 55%),
+        var(--glass-cta-outline-bg-hover);
     border-color: var(--primary);
     transform: translateY(-2px);
     box-shadow:
-        0 6px 18px rgba(15, 23, 42, 0.1),
-        inset 0 1px 0 var(--glass-btn-highlight);
+        var(--glass-cta-outline-shadow-hover),
+        inset 0 1px 0 var(--glass-cta-outline-highlight),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.05);
 }
 .hero-cta .btn-outline:active {
     transform: translateY(0) scale(0.98);
     box-shadow:
-        0 2px 10px rgba(15, 23, 42, 0.05),
-        inset 0 1px 0 var(--glass-btn-highlight);
+        var(--glass-cta-outline-shadow),
+        inset 0 1px 0 var(--glass-cta-outline-highlight),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.05);
 }
 
 /* ==================================================
@@ -1173,10 +1217,27 @@ html.dark .footer-bottom {
     .nav-link::before { display: none; }
     .nav-link:hover { background: var(--surface-hover); border-radius: 8px; }
 
-    /* Hero CTA fallback (matches the base .btn-primary/.btn-outline fallback) */
-    .hero-cta .btn-primary { background: var(--primary); color: #fff; }
-    html.dark .hero-cta .btn-primary { background: var(--primary); color: #0b1120; }
-    .hero-cta .btn-outline { background: var(--surface); }
+    /* Hero CTA fallback: solid but with subtle edge glow retained */
+    .hero-cta .btn-primary {
+        background: var(--primary);
+        color: #ffffff;
+        box-shadow:
+            0 4px 16px rgba(15, 23, 42, 0.1),
+            0 0 18px rgba(0, 98, 155, 0.18),
+            inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+    html.dark .hero-cta .btn-primary {
+        background: var(--primary);
+        color: #0b1120;
+        box-shadow:
+            0 4px 16px rgba(0, 0, 0, 0.3),
+            0 0 20px rgba(56, 189, 248, 0.22),
+            inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+    .hero-cta .btn-outline {
+        background: var(--surface);
+        border-color: var(--border);
+    }
 
     .footer {
         background: var(--surface);
