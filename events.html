@@ -300,28 +300,11 @@
         </div>
     </section>
 
-    <!-- INTRO -->
-    <section class="events-intro">
-        <div class="container">
-            <span class="eyebrow">February → March 2026</span>
-            <h2>Engineering Beyond the Classroom</h2>
-            <p>From hands-on research-writing workshops to live broadcast facilities and thermal power plants, IEEE-RGIT organized a packed calendar of technical exposure for its members — culminating in TechForge'26, our flagship inter-collegiate project exhibition.</p>
-        </div>
-    </section>
-
     <!-- ============================================================
          STATE 1 — COMPACT CARDS (default view)
          ============================================================ -->
     <div id="events-cards-view" class="events-cards-view is-visible">
-        <section class="events-intro" style="padding-top: 20px;">
-            <div class="container">
-                <span class="eyebrow">Select an Event</span>
-                <h2>Click a Card to See Details</h2>
-                <p>Choose any event below to open its full recap — including timeline, highlights, and accomplishments.</p>
-            </div>
-        </section>
-
-        <section class="event-flagship" style="padding-top: 20px;">
+        <section class="event-flagship">
             <div class="container">
                 <div class="events-cards-grid" id="eventsCardsGrid">
 
@@ -418,9 +401,7 @@
          STATE 2 — DETAIL VIEWS (each hidden by default)
          ============================================================ -->
 
-    <!-- ============================================================
-         EVENT 1 — SAHYADRI DOORDARSHAN
-         ============================================================ -->
+    <!-- EVENT 1 — SAHYADRI DOORDARSHAN -->
     <div class="event-detail is-hidden" id="detail-sahyadri" role="region" aria-label="Sahyadri Doordarshan event details">
         <div class="event-detail-back-wrap">
             <button type="button" class="event-detail-back" data-back>
@@ -530,9 +511,7 @@
         </section>
     </div>
 
-    <!-- ============================================================
-         EVENT 2 — LATEX WORKSHOP
-         ============================================================ -->
+    <!-- EVENT 2 — LATEX WORKSHOP -->
     <div class="event-detail is-hidden" id="detail-latex" role="region" aria-label="LaTeX Workshop event details">
         <div class="event-detail-back-wrap">
             <button type="button" class="event-detail-back" data-back>
@@ -638,9 +617,7 @@
         </section>
     </div>
 
-    <!-- ============================================================
-         EVENT 3 — ADANI DAHANU POWER STATION
-         ============================================================ -->
+    <!-- EVENT 3 — ADANI DAHANU POWER STATION -->
     <div class="event-detail is-hidden" id="detail-adani" role="region" aria-label="Adani Dahanu event details">
         <div class="event-detail-back-wrap">
             <button type="button" class="event-detail-back" data-back>
@@ -778,9 +755,7 @@
         </section>
     </div>
 
-    <!-- ============================================================
-         EVENT 4 — TECHFORGE'26 (FLAGSHIP)
-         ============================================================ -->
+    <!-- EVENT 4 — TECHFORGE'26 (FLAGSHIP) -->
     <div class="event-detail is-hidden" id="detail-techforge" role="region" aria-label="TechForge 26 event details">
         <div class="event-detail-back-wrap">
             <button type="button" class="event-detail-back" data-back>
@@ -1171,7 +1146,6 @@
             hideAllDetails();
             if (cardsView) {
                 cardsView.classList.remove('is-hidden');
-                // retrigger fade animation
                 cardsView.classList.remove('is-visible');
                 void cardsView.offsetWidth;
                 cardsView.classList.add('is-visible');
@@ -1184,20 +1158,16 @@
                 showCards();
                 return;
             }
-            // Hide the cards view
             if (cardsView) {
                 cardsView.classList.add('is-hidden');
                 cardsView.classList.remove('is-visible');
             }
-            // Hide all details, then show the selected one
             hideAllDetails();
             const target = detailMap[id];
             target.classList.remove('is-hidden');
             void target.offsetWidth;
             target.classList.add('is-visible');
 
-            // Optionally scroll to top so the back button is visible
-            // (do it after the next frame so the detail section is in the layout)
             requestAnimationFrame(function () {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
@@ -1220,14 +1190,12 @@
             }
         }
 
-        // Click handler for compact cards
         if (cardsGrid) {
             cardsGrid.addEventListener('click', function (e) {
                 const btn = e.target.closest('.event-card-compact');
                 if (!btn) return;
                 const id = btn.getAttribute('data-event');
                 if (!id || VALID_EVENTS.indexOf(id) === -1) return;
-                // Update hash so state is shareable/refresh-safe
                 if (window.history && window.history.pushState) {
                     window.history.pushState(null, '', '#' + id);
                     showDetail(id);
@@ -1235,11 +1203,8 @@
                     window.location.hash = id;
                 }
             });
-
-            // Keyboard: Enter/Space on button are already handled by browser
         }
 
-        // Back button handler
         document.querySelectorAll('[data-back]').forEach(function (btn) {
             btn.addEventListener('click', function () {
                 if (window.history && window.history.pushState) {
@@ -1248,24 +1213,20 @@
                 } else {
                     window.location.hash = '';
                 }
-                // Scroll to top so the cards are visible
                 requestAnimationFrame(function () {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
             });
         });
 
-        // Handle back/forward browser navigation and direct hash changes
         window.addEventListener('hashchange', applyStateFromHash);
         window.addEventListener('popstate', applyStateFromHash);
 
-        // Initial state
         applyStateFromHash();
     })();
     </script>
 
     <script>
-        // Decorative tech lines for the events hero (unchanged behavior)
         document.addEventListener("DOMContentLoaded", () => {
             const container = document.getElementById('events-tech-lines');
             if (!container) return;
