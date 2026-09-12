@@ -98,35 +98,35 @@
             <p class="hero-subtitle">Empowering student innovators through collaborative research, hands-on technical workshops, VLSI design, embedded systems, and cutting-edge engineering projects.</p>
 
             <!-- ============================================================
-                 LIQUID-METAL CTA BUTTONS
-                 Layered structure (mirrors the reference liquid-metal component):
-                   .glass-cta-wrap     — positioning + isolation context
-                   .glass-cta          — surface (CSS fallback + canvas host)
-                     .glass-cta-canvas — WebGL shader render target
-                     .glass-cta-text   — crisp text above the shader
-                   .glass-cta-shadow   — soft colored depth layer behind the surface
+                 INTERACTIVE HOVER CTA BUTTONS
+                 Pure CSS/HTML recreation of the InteractiveHoverButton:
+                   .hover-cta               — pill-shaped dark button
+                   .hover-cta-dot           — small circle that expands to fill
+                   .hover-cta-text-default  — the visible text in the normal state
+                   .hover-cta-text-hover    — the text + arrow revealed on hover
                  ============================================================ -->
             <div class="hero-cta">
-                <div class="glass-cta-wrap glass-cta-wrap-primary">
-                    <a href="events.html" class="glass-cta glass-cta-primary" data-liquid-metal aria-label="Explore Events">
-                        <canvas class="glass-cta-canvas" aria-hidden="true"></canvas>
-                        <span class="glass-cta-text">
-                            Explore Events
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                            </svg>
-                        </span>
-                    </a>
-                    <div class="glass-cta-shadow" aria-hidden="true"></div>
-                </div>
+                <a href="events.html" class="hover-cta" aria-label="Explore Events">
+                    <span class="hover-cta-dot" aria-hidden="true"></span>
+                    <span class="hover-cta-text hover-cta-text-default">Explore Events</span>
+                    <span class="hover-cta-text hover-cta-text-hover" aria-hidden="true">
+                        Explore Events
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </svg>
+                    </span>
+                </a>
 
-                <div class="glass-cta-wrap glass-cta-wrap-outline">
-                    <a href="about.html" class="glass-cta glass-cta-outline" data-liquid-metal aria-label="Learn More">
-                        <canvas class="glass-cta-canvas" aria-hidden="true"></canvas>
-                        <span class="glass-cta-text">Learn More</span>
-                    </a>
-                    <div class="glass-cta-shadow" aria-hidden="true"></div>
-                </div>
+                <a href="about.html" class="hover-cta" aria-label="Learn More">
+                    <span class="hover-cta-dot" aria-hidden="true"></span>
+                    <span class="hover-cta-text hover-cta-text-default">Learn More</span>
+                    <span class="hover-cta-text hover-cta-text-hover" aria-hidden="true">
+                        Learn More
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </svg>
+                    </span>
+                </a>
             </div>
         </div>
     </section>
@@ -404,252 +404,6 @@
                 }
             });
         })();
-    </script>
-
-    <!-- ============================================================
-         LIQUID-METAL SHADER — WebGL renderer for the CTA buttons
-
-         Palette changed from black/silver to deep IEEE blue with
-         silver-blue highlights. Structure, animation, hover,
-         ripple, and every other behavior are unchanged.
-         ============================================================ -->
-    <script>
-    (function () {
-        'use strict';
-
-        const FRAG_SRC = `
-            precision highp float;
-            uniform vec2  u_res;
-            uniform float u_time;
-            uniform float u_hover;
-
-            vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-            vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-            vec3 permute(vec3 x) { return mod289(((x * 34.0) + 1.0) * x); }
-
-            float snoise(vec2 v) {
-                const vec4 C = vec4(0.211324865405187, 0.366025403784439,
-                                   -0.577350269189626, 0.024390243902439);
-                vec2 i  = floor(v + dot(v, C.yy));
-                vec2 x0 = v - i + dot(i, C.xx);
-                vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
-                vec4 x12 = x0.xyxy + C.xxzz;
-                x12.xy -= i1;
-                i = mod289(i);
-                vec3 p = permute(permute(i.y + vec3(0.0, i1.y, 1.0))
-                                          + i.x + vec3(0.0, i1.x, 1.0));
-                vec3 m = max(0.5 - vec3(dot(x0, x0),
-                                        dot(x12.xy, x12.xy),
-                                        dot(x12.zw, x12.zw)), 0.0);
-                m = m * m;
-                m = m * m;
-                vec3 x  = 2.0 * fract(p * C.www) - 1.0;
-                vec3 h  = abs(x) - 0.5;
-                vec3 ox = floor(x + 0.5);
-                vec3 a0 = x - ox;
-                m *= 1.79284291400159 - 0.85373472095314 * (a0 * a0 + h * h);
-                vec3 g;
-                g.x  = a0.x  * x0.x  + h.x  * x0.y;
-                g.yz = a0.yz * x12.xz + h.yz * x12.yw;
-                return 130.0 * dot(m, g);
-            }
-
-            void main() {
-                vec2 uv = gl_FragCoord.xy / u_res;
-                vec2 p  = uv - 0.5;
-                p.x *= u_res.x / u_res.y;
-
-                float a = 0.785398;
-                p = mat2(cos(a), -sin(a), sin(a), cos(a)) * p;
-
-                p *= 8.0;
-                p += vec2(0.1, -0.1);
-
-                float t = u_time * (0.15 + 0.35 * u_hover);
-
-                float n1 = snoise(p * 0.85 + vec2(t * 0.55, -t * 0.28));
-                float n2 = snoise(p * 1.55 + vec2(-t * 0.35, t * 0.45));
-                float flow = n1 * 0.68 + n2 * 0.32;
-                flow = flow * 0.5 + 0.5;
-
-                float contour = smoothstep(0.30, 0.80, flow);
-                contour = pow(contour, 1.15);
-
-                float shiftRed  =  0.3;
-                float shiftBlue =  0.3;
-                float nr = snoise(p * 0.85 + vec2(t * 0.5 + shiftRed,  -t * 0.25));
-                float nb = snoise(p * 0.85 + vec2(t * 0.5 - shiftBlue, -t * 0.25));
-
-                // ---- Deep IEEE blue palette with silver-blue highlights ----
-                vec3 colDark   = vec3(0.02, 0.07, 0.16);
-                vec3 colMid    = vec3(0.05, 0.24, 0.44);
-                vec3 colBright = vec3(0.68, 0.82, 0.96);
-
-                vec3 col = mix(colDark, colMid, flow);
-                col = mix(col, colBright, contour * (0.45 + 0.15 * u_hover));
-
-                col.r += nr * 0.045 * (0.6 + 0.4 * u_hover);
-                col.b += nb * 0.045 * (0.6 + 0.4 * u_hover);
-
-                float edgeX = smoothstep(0.42, 0.50, abs(uv.x - 0.5));
-                float edgeY = smoothstep(0.32, 0.50, abs(uv.y - 0.5));
-                col = mix(col, vec3(1.0), max(edgeX, edgeY) * 0.10);
-
-                gl_FragColor = vec4(col, 1.0);
-            }
-        `;
-
-        const VERT_SRC = `
-            attribute vec2 a_pos;
-            void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }
-        `;
-
-        function compile(gl, type, src) {
-            const s = gl.createShader(type);
-            gl.shaderSource(s, src);
-            gl.compileShader(s);
-            if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
-                gl.deleteShader(s);
-                return null;
-            }
-            return s;
-        }
-
-        function createProgram(gl) {
-            const vs = compile(gl, gl.VERTEX_SHADER, VERT_SRC);
-            const fs = compile(gl, gl.FRAGMENT_SHADER, FRAG_SRC);
-            if (!vs || !fs) return null;
-            const prog = gl.createProgram();
-            gl.attachShader(prog, vs);
-            gl.attachShader(prog, fs);
-            gl.linkProgram(prog);
-            if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return null;
-            return prog;
-        }
-
-        function setupButton(button) {
-            const canvas = button.querySelector('.glass-cta-canvas');
-            if (!canvas) return;
-
-            const gl = canvas.getContext('webgl', {
-                alpha: true,
-                antialias: false,
-                premultipliedAlpha: false,
-                powerPreference: 'low-power'
-            }) || canvas.getContext('experimental-webgl');
-
-            if (!gl) {
-                canvas.style.display = 'none';
-                button.classList.add('no-webgl');
-                return;
-            }
-
-            const prog = createProgram(gl);
-            if (!prog) {
-                canvas.style.display = 'none';
-                button.classList.add('no-webgl');
-                return;
-            }
-
-            gl.useProgram(prog);
-
-            const buf = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-                -1, -1,  1, -1,  -1, 1,
-                -1,  1,  1, -1,   1, 1
-            ]), gl.STATIC_DRAW);
-
-            const aPos = gl.getAttribLocation(prog, 'a_pos');
-            gl.enableVertexAttribArray(aPos);
-            gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
-
-            const uRes   = gl.getUniformLocation(prog, 'u_res');
-            const uTime  = gl.getUniformLocation(prog, 'u_time');
-            const uHover = gl.getUniformLocation(prog, 'u_hover');
-
-            let hover = 0, targetHover = 0;
-            let raf = null;
-            let start = performance.now();
-            let lastW = 0, lastH = 0;
-
-            function resize() {
-                const dpr = Math.min(window.devicePixelRatio || 1, 2);
-                const rect = canvas.getBoundingClientRect();
-                const w = Math.max(1, Math.floor(rect.width  * dpr));
-                const h = Math.max(1, Math.floor(rect.height * dpr));
-                if (w !== lastW || h !== lastH) {
-                    canvas.width = w;
-                    canvas.height = h;
-                    gl.viewport(0, 0, w, h);
-                    lastW = w; lastH = h;
-                }
-            }
-
-            function frame() {
-                resize();
-                hover += (targetHover - hover) * 0.08;
-                const t = (performance.now() - start) / 1000;
-                gl.uniform2f(uRes, canvas.width, canvas.height);
-                gl.uniform1f(uTime, t);
-                gl.uniform1f(uHover, hover);
-                gl.drawArrays(gl.TRIANGLES, 0, 6);
-                raf = requestAnimationFrame(frame);
-            }
-
-            button._liquidMetal = {
-                setHover: function (v) { targetHover = v ? 1 : 0; },
-                dispose: function () {
-                    if (raf) cancelAnimationFrame(raf);
-                    raf = null;
-                }
-            };
-
-            frame();
-
-            button.addEventListener('mouseenter', function () { targetHover = 1; });
-            button.addEventListener('mouseleave', function () { targetHover = 0; });
-            button.addEventListener('focus',      function () { targetHover = 1; });
-            button.addEventListener('blur',       function () { targetHover = 0; });
-
-            document.addEventListener('visibilitychange', function () {
-                if (document.hidden) {
-                    if (raf) { cancelAnimationFrame(raf); raf = null; }
-                } else if (!raf) {
-                    start = performance.now() - (start ? 0 : 0);
-                    frame();
-                }
-            });
-        }
-
-        function setupRipple(button) {
-            button.addEventListener('pointerdown', function (e) {
-                const rect = button.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const ripple = document.createElement('span');
-                ripple.className = 'glass-cta-ripple';
-                ripple.style.left = x + 'px';
-                ripple.style.top  = y + 'px';
-                button.appendChild(ripple);
-                setTimeout(function () { ripple.remove(); }, 650);
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const buttons = document.querySelectorAll('[data-liquid-metal]');
-            buttons.forEach(function (b) {
-                setupButton(b);
-                setupRipple(b);
-            });
-        });
-
-        window.addEventListener('pagehide', function () {
-            document.querySelectorAll('[data-liquid-metal]').forEach(function (b) {
-                if (b._liquidMetal && b._liquidMetal.dispose) b._liquidMetal.dispose();
-            });
-        });
-    })();
     </script>
 </body>
 </html>
