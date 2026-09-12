@@ -16,7 +16,7 @@
     --tech-line: rgba(0, 98, 155, 0.1);
     --glass-bg: rgba(255, 255, 255, 0.85);
 
-    /* Liquid Glass: Navbar (light) — also reused by the footer */
+    /* Liquid Glass: Navbar (light) */
     --glass-nav-bg: rgba(255, 255, 255, 0.68);
     --glass-nav-border: rgba(226, 232, 240, 0.8);
     --glass-nav-highlight: rgba(255, 255, 255, 0.95);
@@ -40,13 +40,15 @@
     --glass-pill-border: rgba(203, 213, 225, 0.85);
     --glass-pill-highlight: rgba(255, 255, 255, 0.95);
 
-    /* Hover CTA — surface (light theme keeps it dark for premium contrast) */
-    --hover-cta-bg: #0a0d14;
-    --hover-cta-border: rgba(255, 255, 255, 0.15);
-    --hover-cta-border-hover: rgba(255, 255, 255, 0.28);
-    --hover-cta-shadow: 0 6px 20px rgba(15, 23, 42, 0.18);
-    --hover-cta-shadow-hover: 0 10px 28px rgba(15, 23, 42, 0.28);
-    --hover-cta-fill: var(--primary);
+    /* Hover CTA — light mode: white surface, transitions to IEEE blue on hover */
+    --hover-cta-bg: #ffffff;
+    --hover-cta-bg-hover: #00629B;
+    --hover-cta-text: #0f172a;
+    --hover-cta-text-hover: #ffffff;
+    --hover-cta-border: #cbd5e1;
+    --hover-cta-border-hover: #00629B;
+    --hover-cta-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+    --hover-cta-shadow-hover: 0 8px 22px rgba(0, 98, 155, 0.28);
 }
 
 html.dark {
@@ -84,13 +86,15 @@ html.dark {
     --glass-pill-border: rgba(56, 189, 248, 0.35);
     --glass-pill-highlight: rgba(255, 255, 255, 0.12);
 
-    /* Hover CTA — dark theme, slightly lighter surface for contrast */
-    --hover-cta-bg: #141b26;
-    --hover-cta-border: rgba(255, 255, 255, 0.14);
-    --hover-cta-border-hover: rgba(56, 189, 248, 0.6);
-    --hover-cta-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
-    --hover-cta-shadow-hover: 0 10px 28px rgba(0, 0, 0, 0.55);
-    --hover-cta-fill: var(--primary);
+    /* Hover CTA — dark mode: black surface, transitions to IEEE blue on hover */
+    --hover-cta-bg: #000000;
+    --hover-cta-bg-hover: #00629B;
+    --hover-cta-text: #ffffff;
+    --hover-cta-text-hover: #ffffff;
+    --hover-cta-border: rgba(255, 255, 255, 0.18);
+    --hover-cta-border-hover: #00629B;
+    --hover-cta-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+    --hover-cta-shadow-hover: 0 8px 22px rgba(0, 98, 155, 0.45);
 }
 
 /* ==================================================
@@ -521,15 +525,13 @@ html.dark .btn-primary:hover {
 }
 
 /* ==================================================
-   6b. HERO CTA — INTERACTIVE HOVER BUTTONS
+   6b. HERO CTA — SIMPLE COLOR-TRANSITION BUTTONS
    ---------------------------------------------------
-   Pure CSS/HTML recreation of the InteractiveHoverButton:
-     • dark pill surface with subtle border
-     • small primary-colored dot at the left
-     • on hover the dot scales up dramatically to fill the button
-     • default text slides right and fades out
-     • hover text + right arrow slides in from the right
-     • all transitions ~300ms, smooth cubic-bezier
+   Pill-shaped buttons with a clean, stable text and arrow.
+   Hover only transitions the surface color:
+     • Dark mode  : black → IEEE blue (#00629B)
+     • Light mode : white → IEEE blue (#00629B)
+   No liquid, no glass, no shader, no text motion.
    =================================================== */
 
 .hero-cta .hover-cta {
@@ -546,50 +548,32 @@ html.dark .btn-primary:hover {
     max-width: 100%;
     cursor: pointer;
     overflow: hidden;
-    isolation: isolate;
-    color: #ffffff;
-    background: var(--hover-cta-bg);
+    color: var(--hover-cta-text);
+    background-color: var(--hover-cta-bg);
     border: 1px solid var(--hover-cta-border);
     box-shadow: var(--hover-cta-shadow);
     -webkit-tap-highlight-color: transparent;
     transition:
+        background-color 0.3s ease,
+        color 0.3s ease,
         border-color 0.3s ease,
         box-shadow 0.3s ease,
         transform 0.2s ease;
 }
 
-.hero-cta .hover-cta:hover {
+.hero-cta .hover-cta:hover,
+.hero-cta .hover-cta:focus-visible {
+    background-color: var(--hover-cta-bg-hover);
+    color: var(--hover-cta-text-hover);
     border-color: var(--hover-cta-border-hover);
     box-shadow: var(--hover-cta-shadow-hover);
+    outline: none;
 }
 
 .hero-cta .hover-cta:active {
     transform: translateY(1px);
 }
 
-/* Expanding primary-colored dot */
-.hero-cta .hover-cta-dot {
-    position: absolute;
-    left: 24px;
-    top: 50%;
-    width: 8px;
-    height: 8px;
-    margin-top: -4px;
-    margin-left: -4px;
-    border-radius: 50%;
-    background: var(--hover-cta-fill);
-    transform: scale(0);
-    transform-origin: center;
-    pointer-events: none;
-    z-index: 0;
-    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.hero-cta .hover-cta:hover .hover-cta-dot {
-    transform: scale(40);
-}
-
-/* Shared text layer base */
 .hero-cta .hover-cta-text {
     position: relative;
     display: inline-flex;
@@ -598,47 +582,15 @@ html.dark .btn-primary:hover {
     white-space: nowrap;
     font-weight: 600;
     font-size: 0.95rem;
-    color: #ffffff;
+    color: inherit;
+    letter-spacing: 0.01em;
 }
 
-/* Default text — centered in the normal state */
-.hero-cta .hover-cta-text-default {
-    position: relative;
-    z-index: 1;
-    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
-}
-
-.hero-cta .hover-cta:hover .hover-cta-text-default {
-    transform: translateX(30px);
-    opacity: 0;
-}
-
-/* Hover text — sits behind (absolute) and slides in from the right */
-.hero-cta .hover-cta-text-hover {
-    position: absolute;
-    inset: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    z-index: 2;
-    transform: translateX(30px);
-    opacity: 0;
-    pointer-events: none;
-    transition:
-        transform 0.35s cubic-bezier(0.22, 1, 0.36, 1) 0.05s,
-        opacity 0.3s ease 0.05s;
-}
-
-.hero-cta .hover-cta:hover .hover-cta-text-hover {
-    transform: translateX(0);
-    opacity: 1;
-}
-
-.hero-cta .hover-cta-text-hover svg {
+.hero-cta .hover-cta-text svg {
     width: 16px;
     height: 16px;
     flex-shrink: 0;
+    color: inherit;
 }
 
 /* ==================================================
@@ -1246,11 +1198,12 @@ html.dark .footer-bottom {
     .marquee-track-1, .marquee-track-2 { animation: none !important; flex-wrap: wrap; justify-content: center; }
     .reveal-up, .reveal-left, .reveal-right, .stagger-item { opacity: 1 !important; transform: none !important; }
 
-    /* Hover CTA: reveal final hover state immediately, no motion */
-    .hero-cta .hover-cta .hover-cta-dot { transform: scale(0); }
-    .hero-cta .hover-cta:hover .hover-cta-dot { transform: scale(40); }
-    .hero-cta .hover-cta:hover { transform: none; }
-    .hero-cta .hover-cta:active { transform: none; }
+    .hero-cta .hover-cta {
+        transition: none;
+    }
+    .hero-cta .hover-cta:active {
+        transform: none;
+    }
 }
 
 /* ==================================================
@@ -1268,7 +1221,7 @@ html.dark .footer-bottom {
     .hero-cta .hover-cta-text {
         font-size: 0.9rem;
     }
-    .hero-cta .hover-cta-text-hover svg {
+    .hero-cta .hover-cta-text svg {
         width: 14px;
         height: 14px;
     }
