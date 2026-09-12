@@ -526,13 +526,7 @@ html.dark .btn-primary:hover {
 
 /* ==================================================
    6b. HERO CTA — SIMPLE COLOR-TRANSITION BUTTONS
-   ---------------------------------------------------
-   Pill-shaped buttons with a clean, stable text and arrow.
-   Hover only transitions the surface color:
-     • Dark mode  : black → IEEE blue (#00629B)
-     • Light mode : white → IEEE blue (#00629B)
-   No liquid, no glass, no shader, no text motion.
-   =================================================== */
+================================================== */
 
 .hero-cta .hover-cta {
     position: relative;
@@ -1866,4 +1860,33 @@ html.dark .events-page .flagship-accomplishments {
 .home-page .marquee-wrapper {
     border-top: none;
     border-bottom: none;
+}
+
+/* ==================================================
+   20. HOMEPAGE — UNIFY DARK-MODE BACKGROUND
+   ---------------------------------------------------
+   Forces every Home page section to share the same
+   --bg-main dark blue in dark mode, removing the
+   lighter --bg-alt bands behind:
+     • Events & Activities  (.bg-alt)
+     • Technologies marquee (.tech-marquee-section)
+   The default --bg-main already covers the hero,
+   about, snake, gallery, and footer areas.
+   Light mode is untouched.
+================================================== */
+html.dark .home-page,
+html.dark .home-page body {
+    background-color: var(--bg-main);
+}
+
+html.dark .home-page .bg-alt {
+    background-color: var(--bg-main);
+}
+
+html.dark .home-page .tech-marquee-section {
+    background-color: var(--bg-main);
+}
+
+html.dark .home-page .marquee-wrapper {
+    background-color: var(--bg-main);
 }
