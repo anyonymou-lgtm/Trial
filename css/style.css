@@ -16,7 +16,7 @@
     --tech-line: rgba(0, 98, 155, 0.1);
     --glass-bg: rgba(255, 255, 255, 0.85);
 
-    /* Liquid Glass: Navbar (light) — also reused by the footer */
+    /* Liquid Glass: Navbar (light) */
     --glass-nav-bg: rgba(255, 255, 255, 0.68);
     --glass-nav-border: rgba(226, 232, 240, 0.8);
     --glass-nav-highlight: rgba(255, 255, 255, 0.95);
@@ -34,11 +34,11 @@
     --glass-primary-border: rgba(0, 98, 155, 0.95);
     --glass-primary-highlight: rgba(255, 255, 255, 0.3);
 
-    /* Liquid Metal: CTA fallback gradient (light, shows only if WebGL unavailable) */
-    --metal-fallback: linear-gradient(180deg, #2b2e35 0%, #17191d 55%, #0f1013 100%);
-    --metal-fallback-hover: linear-gradient(180deg, #34383f 0%, #1b1e22 55%, #121316 100%);
-    --metal-fallback-border: rgba(255, 255, 255, 0.22);
-    --metal-fallback-highlight: rgba(255, 255, 255, 0.5);
+    /* Liquid Metal: CTA fallback gradient (light theme) — deep IEEE blue */
+    --metal-fallback: linear-gradient(180deg, #163754 0%, #0a2038 55%, #061527 100%);
+    --metal-fallback-hover: linear-gradient(180deg, #1f4a72 0%, #0d2847 55%, #081c30 100%);
+    --metal-fallback-border: rgba(255, 255, 255, 0.28);
+    --metal-fallback-highlight: rgba(255, 255, 255, 0.55);
 
     /* Marquee pill (light) */
     --glass-pill-bg: rgba(255, 255, 255, 0.88);
@@ -77,11 +77,13 @@ html.dark {
     --glass-primary-border: rgba(56, 189, 248, 0.95);
     --glass-primary-highlight: rgba(255, 255, 255, 0.35);
 
-    --metal-fallback: linear-gradient(180deg, #23262c 0%, #131418 55%, #0b0c0f 100%);
-    --metal-fallback-hover: linear-gradient(180deg, #2c3038 0%, #16181d 55%, #0e0f12 100%);
-    --metal-fallback-border: rgba(255, 255, 255, 0.24);
+    /* Liquid Metal: CTA fallback gradient (dark theme) — deep IEEE blue */
+    --metal-fallback: linear-gradient(180deg, #1a4066 0%, #0c2748 55%, #071a30 100%);
+    --metal-fallback-hover: linear-gradient(180deg, #235a8a 0%, #10365c 55%, #0a2240 100%);
+    --metal-fallback-border: rgba(255, 255, 255, 0.28);
     --metal-fallback-highlight: rgba(255, 255, 255, 0.55);
 
+    /* Marquee pill (dark) */
     --glass-pill-bg: rgba(30, 41, 59, 0.88);
     --glass-pill-bg-hover: rgba(30, 41, 59, 0.98);
     --glass-pill-border: rgba(56, 189, 248, 0.35);
@@ -171,7 +173,7 @@ ul {
 .highlight { color: var(--primary); }
 
 /* ==================================================
-   4. NAVBAR (Liquid Glass — unchanged reference)
+   4. NAVBAR
 ================================================== */
 .navbar {
     position: fixed;
@@ -344,9 +346,6 @@ html:not(.dark) .moon-icon { display: block; }
 
 /* ==================================================
    5. HERO
-   Note: bottom padding increased so the CTA group has clear
-   breathing room and doesn't collide with the next section's
-   boundary line / divider.
 ================================================== */
 .hero {
     min-height: auto;
@@ -354,7 +353,7 @@ html:not(.dark) .moon-icon { display: block; }
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 110px 0 3.5rem 0;   /* was: 110px 0 0 0 — added bottom spacing */
+    padding: 110px 0 5rem 0;
     position: relative;
     overflow: hidden;
 }
@@ -433,14 +432,12 @@ html.dark .badge { background: rgba(56, 189, 248, 0.15); }
     margin-bottom: 2.5rem;
 }
 
-/* CTA group — holds the two liquid-metal buttons.
-   The explicit top padding guarantees the section boundary above
-   never sits flush against the buttons. */
 .hero-cta {
     display: flex;
     gap: 1.25rem;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
     padding-top: 0.5rem;
 }
 
@@ -522,21 +519,8 @@ html.dark .btn-primary:hover {
 
 /* ==================================================
    6b. HERO CTA — LIQUID-METAL BUTTONS
-   ---------------------------------------------------
-   Layered structure (mirrors the reference component):
-
-       .glass-cta-wrap      → positioning + isolation
-       .glass-cta           → the metal surface (canvas host + CSS fallback)
-         .glass-cta-canvas  → WebGL shader output
-         .glass-cta-text    → crisp text layer above the shader
-       .glass-cta-shadow    → soft colored depth layer behind the surface
-
-   Primary visual source: WebGL shader (silver/blue/red chromatic
-   reflections, animated liquid flow). CSS supplies a fallback
-   static metal gradient that only shows if WebGL is unavailable.
 ================================================== */
 
-/* ---------- Wrapper ---------- */
 .hero-cta .glass-cta-wrap {
     position: relative;
     isolation: isolate;
@@ -544,7 +528,6 @@ html.dark .btn-primary:hover {
     min-width: 0;
 }
 
-/* ---------- Depth layer behind the button ---------- */
 .hero-cta .glass-cta-shadow {
     position: absolute;
     left: 8px;
@@ -591,7 +574,6 @@ html.dark .hero-cta .glass-cta-wrap-outline .glass-cta-shadow {
     );
 }
 
-/* ---------- Metal button surface ---------- */
 .hero-cta .glass-cta {
     position: relative;
     z-index: 1;
@@ -609,7 +591,6 @@ html.dark .hero-cta .glass-cta-wrap-outline .glass-cta-shadow {
     max-width: 100%;
     min-width: 0;
 
-    /* CSS fallback metal surface — hidden behind the canvas when WebGL works */
     background: var(--metal-fallback);
     border: 1px solid var(--metal-fallback-border);
     color: #ffffff;
@@ -626,7 +607,6 @@ html.dark .hero-cta .glass-cta-wrap-outline .glass-cta-shadow {
         border-color 0.35s ease;
 }
 
-/* WebGL canvas overlays the CSS fallback perfectly */
 .hero-cta .glass-cta-canvas {
     position: absolute;
     inset: 0;
@@ -638,10 +618,6 @@ html.dark .hero-cta .glass-cta-wrap-outline .glass-cta-shadow {
     z-index: 1;
 }
 
-/* If WebGL is unavailable, JS toggles .no-webgl and hides the canvas,
-   leaving the CSS fallback metal gradient visible. */
-
-/* Reflective top highlight (thin, subtle) — sits above the canvas */
 .hero-cta .glass-cta::before {
     content: '';
     position: absolute;
@@ -659,7 +635,6 @@ html.dark .hero-cta .glass-cta-wrap-outline .glass-cta-shadow {
     transition: opacity 0.35s ease;
 }
 
-/* Inner bottom shade — depth inside the metal */
 .hero-cta .glass-cta::after {
     content: '';
     position: absolute;
@@ -672,7 +647,6 @@ html.dark .hero-cta .glass-cta-wrap-outline .glass-cta-shadow {
     z-index: 2;
 }
 
-/* ---------- Text layer, always crisp above everything ---------- */
 .hero-cta .glass-cta-text {
     position: relative;
     z-index: 3;
@@ -697,7 +671,6 @@ html.dark .hero-cta .glass-cta-wrap-outline .glass-cta-shadow {
     transform: translateX(4px);
 }
 
-/* ---------- Primary variant (Explore Events) ---------- */
 .hero-cta .glass-cta-primary {
     --metal-fallback-border: rgba(255, 255, 255, 0.28);
     --metal-fallback-highlight: rgba(255, 255, 255, 0.55);
@@ -708,7 +681,6 @@ html.dark .hero-cta .glass-cta-wrap-outline .glass-cta-shadow {
         0 0 22px rgba(0, 60, 120, 0.28);
 }
 
-/* ---------- Outline variant (Learn More) — same material, subtler depth ---------- */
 .hero-cta .glass-cta-outline {
     --metal-fallback-border: rgba(255, 255, 255, 0.22);
     --metal-fallback-highlight: rgba(255, 255, 255, 0.42);
@@ -718,7 +690,6 @@ html.dark .hero-cta .glass-cta-wrap-outline .glass-cta-shadow {
         0 8px 18px rgba(0, 0, 0, 0.35);
 }
 
-/* ---------- Hover — subtle lift, brighter edges, stronger shadow ---------- */
 .hero-cta .glass-cta:hover {
     transform: translateY(-2px);
 }
@@ -743,7 +714,6 @@ html.dark .hero-cta .glass-cta-wrap-outline .glass-cta-shadow {
     opacity: 1;
 }
 
-/* ---------- Active / press state ---------- */
 .hero-cta .glass-cta:active {
     transform: translateY(0) scale(0.975);
     box-shadow:
@@ -752,7 +722,6 @@ html.dark .hero-cta .glass-cta-wrap-outline .glass-cta-shadow {
         0 4px 10px rgba(0, 0, 0, 0.45);
 }
 
-/* ---------- Shadow layer reacts with the button ---------- */
 .hero-cta .glass-cta-wrap:hover .glass-cta-shadow {
     opacity: 1;
     filter: blur(16px);
@@ -764,7 +733,6 @@ html.dark .hero-cta .glass-cta-wrap-outline .glass-cta-shadow {
     transform: translateY(4px) scale(0.98);
 }
 
-/* ---------- Click ripple ---------- */
 .hero-cta .glass-cta-ripple {
     position: absolute;
     width: 20px;
@@ -1398,7 +1366,6 @@ html.dark .footer-bottom {
     .marquee-track-1, .marquee-track-2 { animation: none !important; flex-wrap: wrap; justify-content: center; }
     .reveal-up, .reveal-left, .reveal-right, .stagger-item { opacity: 1 !important; transform: none !important; }
 
-    /* CTA: keep the metal surface but skip motion */
     .hero-cta .glass-cta:hover { transform: none; }
     .hero-cta .glass-cta:active { transform: none; }
     .hero-cta .glass-cta-text svg { transition: none; }
@@ -1406,7 +1373,24 @@ html.dark .footer-bottom {
 }
 
 /* ==================================================
-   18. EVENTS PAGE — SCOPED STYLES (restored, intact)
+   17b. RESPONSIVE — CTA on small screens
+================================================== */
+@media (max-width: 480px) {
+    .hero-cta {
+        gap: 0.75rem;
+    }
+    .hero-cta .glass-cta {
+        padding: 12px 22px;
+        font-size: 0.9rem;
+    }
+    .hero-cta .glass-cta-text svg {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+/* ==================================================
+   18. EVENTS PAGE — SCOPED STYLES
 ================================================== */
 
 .events-page .events-hero {
